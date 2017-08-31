@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableJpaRepositories(basePackages = "fi.espoo.pythia.backend.repos")
 @EnableTransactionManagement
-public class AppilicationConfig {
+public class ApplicationConfig {
 
 	@Bean
 	  public DataSource dataSource() {
