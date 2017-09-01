@@ -29,7 +29,7 @@ repositories {
 dependencyManagement {
   imports {
     mavenBom 'org.springframework.data:spring-data-releasetrain:Ingalls-SR6'
-    mavenBom 'com.amazonaws:aws-java-sdk-bom:1.10.77'
+    mavenBom 'com.amazonaws:aws-java-sdk-bom:1.11.185'
   }
   
 }
