@@ -24,14 +24,14 @@ CREATE SEQUENCE project.plan_serial;
 -- object: project."Project" | type: TABLE --
 -- DROP TABLE IF EXISTS project."Project" CASCADE;
 CREATE TABLE project."Project"(
-	id bigint NOT NULL DEFAULT nextval('proj_serial'),
+	id bigint NOT NULL,
 	hansuprojectid varchar,
 	name varchar,
 	description varchar,
-	"createdAt" varchar,
-	"createdBy" timestamp,
-	"updatedAt" varchar,
-	"updatedBy" timestamp,
+	"createdAt" timestamp,
+	"createdBy" varchar,
+	"updatedAt" timestamp,
+	"updatedBy" varchar,
 	CONSTRAINT projectid_pri PRIMARY KEY (id)
 
 );
@@ -42,15 +42,15 @@ ALTER TABLE project."Project" OWNER TO pythiaservice;
 -- object: project."Plan" | type: TABLE --
 -- DROP TABLE IF EXISTS project."Plan" CASCADE;
 CREATE TABLE project."Plan"(
-	id bigint NOT NULL DEFAULT nextval('plan_serial'),
+	id bigint NOT NULL,
 	projectid smallint,
 	mainno smallint,
 	subno smallint,
 	version varchar,
-	"createdAt" varchar,
-	"createdBy" timestamp,
-	"updatedAt" varchar,
-	"updatedBy" timestamp,
+	"createdAt" timestamp,
+	"createdBy" varchar,
+	"updatedAt" timestamp,
+	"updatedBy" varchar,
 	CONSTRAINT planid_pri PRIMARY KEY (id)
 
 );
