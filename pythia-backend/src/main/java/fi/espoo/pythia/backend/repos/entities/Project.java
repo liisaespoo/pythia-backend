@@ -1,5 +1,5 @@
 package fi.espoo.pythia.backend.repos.entities;
 
-public class User {
+public class Project {
 
 }

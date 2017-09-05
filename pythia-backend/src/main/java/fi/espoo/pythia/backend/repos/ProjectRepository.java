@@ -2,8 +2,13 @@ package fi.espoo.pythia.backend.repos;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import fi.espoo.pythia.backend.repos.entities.User;
+import fi.espoo.pythia.backend.repos.entities.Project;
 
-public interface ProjectRepository extends JpaRepository<User, Long> {
+/**
+ * 
+ * @author jukkak
+ *
+ */
+public interface ProjectRepository extends JpaRepository<Project, Long> {
 
 }
