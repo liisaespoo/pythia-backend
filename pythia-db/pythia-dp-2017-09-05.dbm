@@ -19,7 +19,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<role name="pythiaservice"/>
 </schema>
 
-<table name="Project">
+<table name="project">
 	<schema name="project"/>
 	<role name="pythiaservice"/>
 	<position x="140" y="100"/>
@@ -35,24 +35,24 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="description">
 		<type name="varchar"/>
 	</column>
-	<column name="createdAt">
-		<type name="varchar"/>
-	</column>
-	<column name="createdBy">
+	<column name="created_at">
 		<type name="timestamp"/>
 	</column>
-	<column name="updatedAt">
+	<column name="created_by">
 		<type name="varchar"/>
 	</column>
-	<column name="updatedBy">
+	<column name="updated_at">
 		<type name="timestamp"/>
 	</column>
-	<constraint name="projectid_pri" type="pk-constr" table="project.&quot;Project&quot;">
+	<column name="updated_by">
+		<type name="varchar"/>
+	</column>
+	<constraint name="projectid_pri" type="pk-constr" table="project.project">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
 
-<table name="Plan">
+<table name="plan">
 	<schema name="project"/>
 	<role name="pythiaservice"/>
 	<position x="520" y="220"/>
@@ -71,24 +71,24 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="version">
 		<type name="varchar"/>
 	</column>
-	<column name="createdAt">
-		<type name="varchar"/>
-	</column>
-	<column name="createdBy">
+	<column name="created_at">
 		<type name="timestamp"/>
 	</column>
-	<column name="updatedAt">
+	<column name="created_by">
 		<type name="varchar"/>
 	</column>
-	<column name="updatedBy">
+	<column name="updated_at">
 		<type name="timestamp"/>
 	</column>
-	<constraint name="planid_pri" type="pk-constr" table="project.&quot;Plan&quot;">
+	<column name="updated_by">
+		<type name="varchar"/>
+	</column>
+	<constraint name="planid_pri" type="pk-constr" table="project.plan">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
 
-<index name="project_index" table="project.&quot;Project&quot;"
+<index name="project_index" table="project.project"
 	 concurrent="false" unique="false" fast-update="false" buffering="false"
 	 index-type="btree" factor="0">
 		<idxelement use-sorting="false">
@@ -96,7 +96,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		</idxelement>
 </index>
 
-<index name="plan_id" table="project.&quot;Plan&quot;"
+<index name="plan_id" table="project.plan"
 	 concurrent="false" unique="false" fast-update="false" buffering="false"
 	 index-type="btree" factor="0">
 		<idxelement use-sorting="false">
@@ -105,14 +105,14 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </index>
 
 <constraint name="projecid_for" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="project.&quot;Project&quot;" table="project.&quot;Plan&quot;">
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="project.project" table="project.plan">
 	<columns names="projectid" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
 <relationship name="&quot;rel_Plan_Project&quot;" type="relfk"
-	 src-table="project.&quot;Plan&quot;"
-	 dst-table="project.&quot;Project&quot;"
+	 src-table="project.plan"
+	 dst-table="project.project"
 	 src-required="false" dst-required="false"/>
 
 </dbmodel>
