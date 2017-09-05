@@ -21,46 +21,49 @@ CREATE SEQUENCE project.proj_serial;
 -- Create sequence for plan table id
 CREATE SEQUENCE project.plan_serial;
 
--- object: project."Project" | type: TABLE --
--- DROP TABLE IF EXISTS project."Project" CASCADE;
-CREATE TABLE project."Project"(
-	id bigint NOT NULL DEFAULT nextval('proj_serial'),
+-- object: project.project | type: TABLE --
+-- DROP TABLE IF EXISTS project.project CASCADE;
+CREATE TABLE project.project(
+	id bigint NOT NULL,
 	hansuprojectid varchar,
 	name varchar,
 	description varchar,
-	"createdAt" varchar,
-	"createdBy" timestamp,
-	"updatedAt" varchar,
-	"updatedBy" timestamp,
+	created_at timestamp,
+	created_by varchar,
+	updated_at timestamp,
+	updated_by varchar,
 	CONSTRAINT projectid_pri PRIMARY KEY (id)
 
 );
 -- ddl-end --
-ALTER TABLE project."Project" OWNER TO pythiaservice;
+ALTER TABLE project.project OWNER TO pythiaservice;
 -- ddl-end --
 
--- object: project."Plan" | type: TABLE --
--- DROP TABLE IF EXISTS project."Plan" CASCADE;
-CREATE TABLE project."Plan"(
-	id bigint NOT NULL DEFAULT nextval('plan_serial'),
+
+-- object: project.plan | type: TABLE --
+-- DROP TABLE IF EXISTS project.plan CASCADE;
+CREATE TABLE project.plan(
+	id bigint NOT NULL,
 	projectid smallint,
 	mainno smallint,
 	subno smallint,
 	version varchar,
-	"createdAt" varchar,
-	"createdBy" timestamp,
-	"updatedAt" varchar,
-	"updatedBy" timestamp,
+	created_at timestamp,
+	created_by varchar,
+	updated_at timestamp,
+	updated_by varchar,
 	CONSTRAINT planid_pri PRIMARY KEY (id)
 
 );
 -- ddl-end --
-ALTER TABLE project."Plan" OWNER TO pythiaservice;
+ALTER TABLE project.plan OWNER TO pythiaservice;
 -- ddl-end --
+
+
 
 -- object: project_index | type: INDEX --
 -- DROP INDEX IF EXISTS project.project_index CASCADE;
-CREATE INDEX project_index ON project."Project"
+CREATE INDEX project_index ON project.project
 	USING btree
 	(
 	  id
@@ -69,7 +72,7 @@ CREATE INDEX project_index ON project."Project"
 
 -- object: plan_id | type: INDEX --
 -- DROP INDEX IF EXISTS project.plan_id CASCADE;
-CREATE INDEX plan_id ON project."Plan"
+CREATE INDEX plan_id ON project.plan
 	USING btree
 	(
 	  id
@@ -78,8 +81,8 @@ CREATE INDEX plan_id ON project."Plan"
 
 -- object: projecid_for | type: CONSTRAINT --
 -- ALTER TABLE project."Plan" DROP CONSTRAINT IF EXISTS projecid_for CASCADE;
-ALTER TABLE project."Plan" ADD CONSTRAINT projecid_for FOREIGN KEY (projectid)
-REFERENCES project."Project" (id) MATCH FULL
+ALTER TABLE project.plan ADD CONSTRAINT projecid_for FOREIGN KEY (projectid)
+REFERENCES project.project (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
 
