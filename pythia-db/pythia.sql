@@ -25,7 +25,7 @@ CREATE SEQUENCE project.plan_serial;
 -- DROP TABLE IF EXISTS project.project CASCADE;
 CREATE TABLE project.project(
 	id bigint NOT NULL,
-	hansuprojectid varchar,
+	hansu_project_id varchar,
 	name varchar,
 	description varchar,
 	created_at timestamp,
@@ -44,7 +44,7 @@ ALTER TABLE project.project OWNER TO pythiaservice;
 -- DROP TABLE IF EXISTS project.plan CASCADE;
 CREATE TABLE project.plan(
 	id bigint NOT NULL,
-	projectid smallint,
+	project_id smallint,
 	mainno smallint,
 	subno smallint,
 	version varchar,
