@@ -5,13 +5,13 @@ import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -31,11 +31,18 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 
 @Configuration
+@EnableConfigurationProperties
 @EnableJpaRepositories(basePackages = "fi.espoo.pythia.backend.repos")
 @EnableTransactionManagement
 public class ApplicationConfig {
-	@Autowired
-	private DataSource dataSource;
+
+	@Bean
+	public DataSource dataSource() {
+
+		DataSource dataSource = DataSourceBuilder.create().build();
+
+		return dataSource;
+	}
 
 	@Bean
 	public JpaVendorAdapter jpaVendorAdapter() {
@@ -51,34 +58,34 @@ public class ApplicationConfig {
 	}
 
 	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, Environment env) {
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(Environment env) {
 
 		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-		entityManagerFactoryBean.setDataSource(dataSource);
+		entityManagerFactoryBean.setDataSource(dataSource());
 		entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter());
-		entityManagerFactoryBean.setPackagesToScan("fi.espoo.pythia.backend.todo");
+		entityManagerFactoryBean.setPackagesToScan("fi.espoo.pythia.backend.repos.entities");
 
 		Properties jpaProperties = new Properties();
 
 		// Configures the used database dialect. This allows Hibernate to create SQL
 		// that is optimized for the used database.
-		jpaProperties.put("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
-
+		jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+ 
 		// Specifies the action that is invoked to the database when the Hibernate
 		// SessionFactory is created or closed.
-		jpaProperties.put("hibernate.hbm2ddl.auto", env.getRequiredProperty("hibernate.hbm2ddl.auto"));
+		jpaProperties.put("hibernate.hbm2ddl.auto", "false");
 
 		// Configures the naming strategy that is used when Hibernate creates
 		// new database objects and schema elements
-		jpaProperties.put("hibernate.ejb.naming_strategy", env.getRequiredProperty("hibernate.ejb.naming_strategy"));
+		jpaProperties.put("hibernate.ejb.naming_strategy", "org.hibernate.cfg.ImprovedNamingStrategy");
 
 		// If the value of this property is true, Hibernate writes all SQL
 		// statements to the console.
-		jpaProperties.put("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
+		jpaProperties.put("hibernate.show_sql", "true");
 
 		// If the value of this property is true, Hibernate will format the SQL
 		// that is written to the console.
-		jpaProperties.put("hibernate.format_sql", env.getRequiredProperty("hibernate.format_sql"));
+		jpaProperties.put("hibernate.format_sql", "true");
 
 		entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
