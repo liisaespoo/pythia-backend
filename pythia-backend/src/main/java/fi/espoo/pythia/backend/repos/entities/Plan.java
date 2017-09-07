@@ -71,13 +71,12 @@ public class Plan implements Serializable {
 	// varchar
 	@Column(name = "updated_by")
 	private String updatedBy;
-	
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((planId == null) ? 0 : planId.hashCode());
 		return result;
 	}
 
@@ -90,12 +89,15 @@ public class Plan implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Plan other = (Plan) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (planId == null) {
+			if (other.planId != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!planId.equals(other.planId))
 			return false;
 		return true;
 	}
+	
+	
+	
 
 }
