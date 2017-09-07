@@ -1,5 +1,6 @@
 /**
  * http://www.service-architecture.com/articles/database/mapping_sql_and_java_data_types.html
+ * http://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#associations-many-to-many
  */
 package fi.espoo.pythia.backend.repos.entities;
 
@@ -76,7 +77,6 @@ public class Plan implements Serializable {
 	// varchar
 	@Column(name = "updated_by")
 	private String updatedBy;
-	
 	
 
 	public Plan(Long planId, Long projectId, short mainNo, short subNo, String version, OffsetDateTime createdAt,
