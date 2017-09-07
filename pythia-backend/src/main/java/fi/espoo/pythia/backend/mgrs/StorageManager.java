@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import fi.espoo.pythia.backend.repos.PlanRepository;
 import fi.espoo.pythia.backend.repos.ProjectRepository;
+import fi.espoo.pythia.backend.repos.entities.Project;
 
 @Component
 @Transactional
@@ -18,10 +19,16 @@ public class StorageManager {
 	@Autowired
 	private ProjectRepository projectRepository;
 
-	public void example() {
-		planRepository.delete(5L);
+	public void createProject(String projectName) {
+		Project project = new Project();
+		project.setCreatedAt(null);
+		
+		Project savedProject = projectRepository.save(project);
+		
+		// planRepository.save(5L);
 
-		projectRepository.delete(5L);
+		//planRepository.
+		
 	}
 
 }
