@@ -1,33 +1,43 @@
 package fi.espoo.pythia.backend.repos.entities;
 
 import java.io.Serializable;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-//t
+
+
+
 @Entity
 @Table(name = "project")
 public class Project implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_generator")
-	@SequenceGenerator(name = "book_generator", sequenceName = "proj_serial", allocationSize = 50)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "proj_generator")
+	@SequenceGenerator(name = "proj_generator", sequenceName = "proj_serial", allocationSize = 50)
+	
+	//ontoeToMany
+	@OneToMany(mappedBy ="manyToOneProjectMapping")
+	private List<Plan> listOfPlans = new ArrayList<Plan>();
 
 	// bigint
-	@Column(name = "id", updatable = false, nullable = false)
-	private Long id;
+	@Column(name = "project_id", updatable = false, nullable = false)
+	private Long projectId;
 
 	// varchar
-	@Column(name = "hansuprojectid")
-	private String hansuprojectid;
+	@Column(name = "hansu_project_id")
+	private String hansuProjectId;
 
 	// varchar
 	@Column(name = "name")
@@ -37,23 +47,26 @@ public class Project implements Serializable {
 	@Column(name = "description")
 	private String description;
 
-	// timestamp
+	// https://jdbc.postgresql.org/documentation/head/java8-date-time.html
+	// timestamp with timezone
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_at")
-	private Date createdAt;
+	private OffsetDateTime createdAt;
 
 	// varchar
 	@Column(name = "created_by")
 	private String createdBy;
 
-	// timestamp
+	// timestamp with timezone timestamptz
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "updated_at")
-	private Date updatedAt;
+	private OffsetDateTime updatedAt;
 
 	// varchar
 	@Column(name = "updated_by")
 	private String updatedBy;
+	
+	
 
 	public Project() {
 
@@ -63,7 +76,7 @@ public class Project implements Serializable {
 			Date updatedAt, String updatedBy) {
 		super();
 		this.id = id;
-		this.hansuprojectid = hansuprojectid;
+		this.hansuProjectId = hansuProjectId;
 		this.name = name;
 		this.description = description;
 		this.createdAt = createdAt;
@@ -81,11 +94,11 @@ public class Project implements Serializable {
 	}
 
 	public String getHansuprojectid() {
-		return hansuprojectid;
+		return hansuProjectId;
 	}
 
-	public void setHansuprojectid(String hansuprojectid) {
-		this.hansuprojectid = hansuprojectid;
+	public void setHansuprojectid(String hansuProjectId) {
+		this.hansuProjectId = hansuProjectId;
 	}
 
 	public String getName() {
@@ -135,5 +148,32 @@ public class Project implements Serializable {
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Project other = (Project) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+	
+	
 
 }
