@@ -31,11 +31,12 @@ public class Plan implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "plan_generator")
 	@SequenceGenerator(name = "plan_generator", sequenceName = "plan_serial", allocationSize = 50)
 	
-	//manytoone 
+	//bidirectional manytoone with Project
+	// project object maps to class Project
 	//project_id is the <<fk>> of table Plan
 	@ManyToOne
-	@JoinColumn(name = "project_id")
-	private Project manyToOneProjectMapping;
+	//@JoinColumn(name = "project_id")
+	private Project project;
 	
 	//bigint
 	@Column(name = "plan_id", updatable = false, nullable = false)
@@ -75,7 +76,104 @@ public class Plan implements Serializable {
 	// varchar
 	@Column(name = "updated_by")
 	private String updatedBy;
+	
+	
 
+	public Plan(Long planId, Long projectId, short mainNo, short subNo, String version, OffsetDateTime createdAt,
+			String createdBy, OffsetDateTime updatedAt, String updatedBy) {
+		super();
+		this.planId = planId;
+		this.projectId = projectId;
+		this.mainNo = mainNo;
+		this.subNo = subNo;
+		this.version = version;
+		this.createdAt = createdAt;
+		this.createdBy = createdBy;
+		this.updatedAt = updatedAt;
+		this.updatedBy = updatedBy;
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
+	public Long getPlanId() {
+		return planId;
+	}
+
+	public void setPlanId(Long planId) {
+		this.planId = planId;
+	}
+
+	public Long getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(Long projectId) {
+		this.projectId = projectId;
+	}
+
+	public short getMainNo() {
+		return mainNo;
+	}
+
+	public void setMainNo(short mainNo) {
+		this.mainNo = mainNo;
+	}
+
+	public short getSubNo() {
+		return subNo;
+	}
+
+	public void setSubNo(short subNo) {
+		this.subNo = subNo;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public OffsetDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(OffsetDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public OffsetDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(OffsetDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -26,10 +28,21 @@ public class Project implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "proj_generator")
 	@SequenceGenerator(name = "proj_generator", sequenceName = "proj_serial", allocationSize = 50)
 	
-	//ontoeToMany
-	@OneToMany(mappedBy ="manyToOneProjectMapping")
+	//Bidirectional oneToMany with Plan
+/**
+ *  public class Plan { ...
+ *  @ManyToOne
+ *	@JoinColumn(name = "project_id")
+ *	private Project project;
+ *	... }
+ */	
+	@OneToMany(mappedBy ="project")
 	private List<Plan> listOfPlans = new ArrayList<Plan>();
 
+	
+	
+	
+	
 	// bigint
 	@Column(name = "project_id", updatable = false, nullable = false)
 	private Long projectId;
@@ -70,9 +83,6 @@ public class Project implements Serializable {
 	public Project() {
 
 	}
-
-	
-
 
 	public Project(List<Plan> listOfPlans, Long projectId, String hansuProjectId, String name, String description,
 			OffsetDateTime createdAt, String createdBy, OffsetDateTime updatedAt, String updatedBy) {
@@ -198,6 +208,16 @@ public class Project implements Serializable {
 	}
 
 
+	 public void addPlan(Plan plan) {
+		 listOfPlans.add( plan );
+	        plan.setProject( this ); 
+	    }
+
+	    public void removePlan(Plan plan) {
+	    	listOfPlans.remove( plan );
+	        plan.setProject( null );
+	    }
+	
 
 
 	@Override
