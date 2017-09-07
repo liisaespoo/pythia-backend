@@ -26,7 +26,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="project"/>
 	<role name="pythiaservice"/>
 	<position x="140" y="100"/>
-	<column name="id" not-null="true">
+	<column name="project_id" not-null="true">
 		<type name="bigint"/>
 	</column>
 	<column name="hansu_project_id">
@@ -51,7 +51,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="varchar"/>
 	</column>
 	<constraint name="projectid_pri" type="pk-constr" table="project.project">
-		<columns names="id" ref-type="src-columns"/>
+		<columns names="project_id" ref-type="src-columns"/>
 	</constraint>
 </table>
 
@@ -59,7 +59,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="project"/>
 	<role name="pythiaservice"/>
 	<position x="520" y="280"/>
-	<column name="id" not-null="true">
+	<column name="plan_id" not-null="true">
 		<type name="bigint"/>
 	</column>
 	<column name="project_id">
@@ -87,7 +87,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="varchar"/>
 	</column>
 	<constraint name="planid_pri" type="pk-constr" table="project.plan">
-		<columns names="id" ref-type="src-columns"/>
+		<columns names="plan_id" ref-type="src-columns"/>
 	</constraint>
 </table>
 
@@ -95,7 +95,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 concurrent="false" unique="false" fast-update="false" buffering="false"
 	 index-type="btree" factor="0">
 		<idxelement use-sorting="false">
-			<column name="id"/>
+			<column name="project_id"/>
 		</idxelement>
 </index>
 
@@ -103,7 +103,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 concurrent="false" unique="false" fast-update="false" buffering="false"
 	 index-type="btree" factor="0">
 		<idxelement use-sorting="false">
-			<column name="id"/>
+			<column name="plan_id"/>
 		</idxelement>
 </index>
 
@@ -126,7 +126,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <constraint name="projecid_for" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="project.project" table="project.plan">
 	<columns names="project_id" ref-type="src-columns"/>
-	<columns names="id" ref-type="dst-columns"/>
+	<columns names="project_id" ref-type="dst-columns"/>
 </constraint>
 
 <relationship name="&quot;rel_Plan_Project&quot;" type="relfk"
