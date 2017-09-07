@@ -72,10 +72,14 @@ public class Project implements Serializable {
 
 	}
 
-	public Project(Long id, String hansuprojectid, String name, String description, Date createdAt, String createdBy,
-			Date updatedAt, String updatedBy) {
+	
+
+
+	public Project(List<Plan> listOfPlans, Long projectId, String hansuProjectId, String name, String description,
+			OffsetDateTime createdAt, String createdBy, OffsetDateTime updatedAt, String updatedBy) {
 		super();
-		this.id = id;
+		this.listOfPlans = listOfPlans;
+		this.projectId = projectId;
 		this.hansuProjectId = hansuProjectId;
 		this.name = name;
 		this.description = description;
@@ -85,77 +89,128 @@ public class Project implements Serializable {
 		this.updatedBy = updatedBy;
 	}
 
-	public Long getId() {
-		return id;
+
+
+
+	public List<Plan> getListOfPlans() {
+		return listOfPlans;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+
+
+	public void setListOfPlans(List<Plan> listOfPlans) {
+		this.listOfPlans = listOfPlans;
 	}
 
-	public String getHansuprojectid() {
+
+
+	public Long getProjectId() {
+		return projectId;
+	}
+
+
+
+	public void setProjectId(Long projectId) {
+		this.projectId = projectId;
+	}
+
+
+
+	public String getHansuProjectId() {
 		return hansuProjectId;
 	}
 
-	public void setHansuprojectid(String hansuProjectId) {
+
+
+	public void setHansuProjectId(String hansuProjectId) {
 		this.hansuProjectId = hansuProjectId;
 	}
+
+
 
 	public String getName() {
 		return name;
 	}
 
+
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
+
 
 	public String getDescription() {
 		return description;
 	}
 
+
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	public Date getCreatedAt() {
+
+
+	public OffsetDateTime getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
+
+
+	public void setCreatedAt(OffsetDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
+
+
 
 	public String getCreatedBy() {
 		return createdBy;
 	}
 
+
+
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
 
-	public Date getUpdatedAt() {
+
+
+	public OffsetDateTime getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
+
+
+	public void setUpdatedAt(OffsetDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+
+
 
 	public String getUpdatedBy() {
 		return updatedBy;
 	}
 
+
+
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
 	}
+
+
+
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((projectId == null) ? 0 : projectId.hashCode());
 		return result;
 	}
+
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -166,14 +221,14 @@ public class Project implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Project other = (Project) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (projectId == null) {
+			if (other.projectId != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!projectId.equals(other.projectId))
 			return false;
 		return true;
 	}
-	
+
 	
 
 }
