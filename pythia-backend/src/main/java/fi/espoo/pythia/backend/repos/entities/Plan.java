@@ -4,7 +4,6 @@
 package fi.espoo.pythia.backend.repos.entities;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.time.OffsetDateTime;
 
 import javax.persistence.Column;
@@ -22,6 +21,11 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "plan")
 public class Plan implements Serializable {	
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "plan_generator")

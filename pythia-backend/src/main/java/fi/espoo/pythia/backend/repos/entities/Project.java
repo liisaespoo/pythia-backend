@@ -3,7 +3,6 @@ package fi.espoo.pythia.backend.repos.entities;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
