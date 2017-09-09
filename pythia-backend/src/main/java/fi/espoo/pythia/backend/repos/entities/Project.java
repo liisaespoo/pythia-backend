@@ -10,14 +10,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 
 
 @Entity
@@ -36,12 +33,10 @@ public class Project implements Serializable {
  *	private Project project;
  *	... }
  */	
+	
 	@OneToMany(mappedBy ="project")
 	private List<Plan> listOfPlans = new ArrayList<Plan>();
 
-	
-	
-	
 	
 	// bigint
 	@Column(name = "project_id", updatable = false, nullable = false)
@@ -77,8 +72,7 @@ public class Project implements Serializable {
 	// varchar
 	@Column(name = "updated_by")
 	private String updatedBy;
-	
-	
+		
 
 	public Project() {
 
@@ -86,7 +80,7 @@ public class Project implements Serializable {
 
 	public Project(List<Plan> listOfPlans, Long projectId, String hansuProjectId, String name, String description,
 			OffsetDateTime createdAt, String createdBy, OffsetDateTime updatedAt, String updatedBy) {
-		super();
+		
 		this.listOfPlans = listOfPlans;
 		this.projectId = projectId;
 		this.hansuProjectId = hansuProjectId;
@@ -97,9 +91,6 @@ public class Project implements Serializable {
 		this.updatedAt = updatedAt;
 		this.updatedBy = updatedBy;
 	}
-
-
-
 
 	public List<Plan> getListOfPlans() {
 		return listOfPlans;
