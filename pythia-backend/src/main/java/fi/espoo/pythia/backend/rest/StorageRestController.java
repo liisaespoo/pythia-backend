@@ -1,38 +1,72 @@
 package fi.espoo.pythia.backend.rest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fi.espoo.pythia.backend.mgrs.StorageManager;
+import fi.espoo.pythia.backend.repos.entities.Project;
+import fi.espoo.pythia.backend.transfer.ProjectValue;
 
 @RestController
-public class StorageRestController {
-
+@RequestMapping("/pythia/v1")
+public class StorageRestController {	
+	
 	@Autowired
 	private StorageManager storageManager;
-	
-	@PostMapping
-	public void createProject(String projectName ) {
 
-		storageManager.createProject(projectName);
+	/**
+	 * return a single project by id if found. Otherwise return null.
+	 */
+	@SuppressWarnings("unchecked")
+	@GetMapping("/projects/{projectId}")
+	@RequestMapping(produces = {"application/json"})
+	public ResponseEntity<Project> getProject(@PathVariable("projectId") Long projectId) {
+		
+		Project project = storageManager.getProject(projectId);
+		if (project == null) {
+			
+			return new ResponseEntity<Project>(HttpStatus.NOT_FOUND);
+		}
+		
+			return new ResponseEntity<Project>(project,HttpStatus.OK);
 		
 	}
+	
 
-	@GetMapping
-	public void getProject() {
-
+	/**
+	 * create a new project to the db and return the whole project
+	 * with all attributes
+	 * @param projectValue
+	 * @return
+	 */
+	@PostMapping("/projects")
+	@RequestMapping(produces = {"application/json"})
+	public ResponseEntity createProject(@RequestBody Project project) {
+	
+		storageManager.createProject(project);
+		return new ResponseEntity(project, HttpStatus.OK);
 	}
 
-	@PutMapping
+	
+	
+	@PutMapping("/projects/{projectId}")
 	public void updateProject() {
 
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/projects/{projectId}")
 	public void deleteProject() {
 
 	}
