@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fi.espoo.pythia.backend.mgrs.StorageManager;
 import fi.espoo.pythia.backend.repos.entities.Project;
+import fi.espoo.pythia.backend.transfer.ProjectValue;
 
 @RestController
 @RequestMapping("/pythia/v1")
@@ -28,19 +29,20 @@ public class StorageRestController {
 	@SuppressWarnings("unchecked")
 	@GetMapping("/projects/{projectId}")
 	@RequestMapping(produces = {"application/json"})
-	public ResponseEntity<Project> getProject(@PathVariable("projectId") Long projectId) {
+	public ResponseEntity<ProjectValue> getProject(@PathVariable("projectId") Long projectId) {
 		
-		Project project = storageManager.getProject(projectId);
+		ProjectValue project = storageManager.getProject(projectId);
 		if (project == null) {
 			
-			return new ResponseEntity<Project>(HttpStatus.NOT_FOUND);
-		}
-		
-			return new ResponseEntity<Project>(project,HttpStatus.OK);
-		
+			return new ResponseEntity<ProjectValue>(HttpStatus.NOT_FOUND);
+		}		
+			return new ResponseEntity<ProjectValue>(project,HttpStatus.OK);		
 	}
 	
 
+	
+	//------------------------ NOT DONE --------------------------
+	
 	/**
 	 * create a new project to the db and return the whole project
 	 * with all attributes
@@ -49,7 +51,7 @@ public class StorageRestController {
 	 */
 	@PostMapping("/projects")
 	@RequestMapping(produces = {"application/json"})
-	public ResponseEntity createProject(@RequestBody Project project) {
+	public ResponseEntity createProject(@RequestBody ProjectValue project) {
 	
 		// Value object mapping
 		storageManager.createProject(project);
