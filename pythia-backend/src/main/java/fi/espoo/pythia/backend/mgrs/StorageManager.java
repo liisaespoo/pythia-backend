@@ -12,8 +12,6 @@ import fi.espoo.pythia.backend.repos.PlanRepository;
 import fi.espoo.pythia.backend.repos.ProjectRepository;
 import fi.espoo.pythia.backend.repos.entities.Project;
 
-import fi.espoo.pythia.backend.transfer.ProjectValue;
-
 @Component
 @Transactional
 public class StorageManager {
