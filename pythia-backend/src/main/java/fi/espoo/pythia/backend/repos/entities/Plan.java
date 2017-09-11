@@ -60,7 +60,7 @@ public class Plan implements Serializable {
 	
 	// https://jdbc.postgresql.org/documentation/head/java8-date-time.html
 	// timestamp with timezone
-	@Temporal(TemporalType.TIMESTAMP)
+	//@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_at")
 	private OffsetDateTime createdAt;
 
@@ -69,7 +69,7 @@ public class Plan implements Serializable {
 	private String createdBy;
 
 	// timestamp with timezone timestamptz
-	@Temporal(TemporalType.TIMESTAMP)
+	//@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "updated_at")
 	private OffsetDateTime updatedAt;
 
