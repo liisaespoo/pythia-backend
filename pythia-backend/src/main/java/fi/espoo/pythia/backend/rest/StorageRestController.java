@@ -51,6 +51,7 @@ public class StorageRestController {
 	@RequestMapping(produces = {"application/json"})
 	public ResponseEntity createProject(@RequestBody Project project) {
 	
+		// Value object mapping
 		storageManager.createProject(project);
 		return new ResponseEntity(project, HttpStatus.OK);
 	}
