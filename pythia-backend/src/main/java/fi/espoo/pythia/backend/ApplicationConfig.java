@@ -38,7 +38,8 @@ public class ApplicationConfig {
 	@Bean
 	public DataSource dataSource() {
 
-		DataSource dataSource = DataSourceBuilder.create().build();
+		DataSource dataSource = DataSourceBuilder.create().url("jdbc:postgresql://127.0.0.1:5432/pythia")
+				.driverClassName("org.postgresql.Driver").username("pythiaservice").password("pythiaservice").build();
 
 		return dataSource;
 	}
@@ -69,7 +70,7 @@ public class ApplicationConfig {
 		// Configures the used database dialect. This allows Hibernate to create SQL
 		// that is optimized for the used database.
 		jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
- 
+
 		// Specifies the action that is invoked to the database when the Hibernate
 		// SessionFactory is created or closed.
 		jpaProperties.put("hibernate.hbm2ddl.auto", "false");
@@ -86,6 +87,10 @@ public class ApplicationConfig {
 		// that is written to the console.
 		jpaProperties.put("hibernate.format_sql", "true");
 
+		// spring.jpa.properties.hibernate.default_schema=project
+
+		jpaProperties.put("hibernate.default_schema", "project");
+		
 		entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
 		return entityManagerFactoryBean;
