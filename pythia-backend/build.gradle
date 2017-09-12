@@ -51,6 +51,10 @@ dependencies {
        
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
     compile group:  'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310'
+    
+    compile group: 'org.hibernate', name: 'hibernate-java8'
+    
+    
 }
 
  

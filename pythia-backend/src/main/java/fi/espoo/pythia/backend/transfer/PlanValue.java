@@ -1,5 +1,7 @@
 package fi.espoo.pythia.backend.transfer;
 
-public class PlanValue {
+import java.io.Serializable;
+
+public class PlanValue  implements Serializable {
 
 }
