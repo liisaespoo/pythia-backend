@@ -19,9 +19,7 @@ node('jdk8') {
 
     stage('Publish') {
         if (env.BRANCH_NAME == 'master') {
-            sh 'make publish-prod'
-        } else {
-            sh 'make publish-dev'
+            sh 'make publish'
         }
     }
 }
