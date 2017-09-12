@@ -12,9 +12,9 @@ import fi.espoo.pythia.backend.mappers.ProjectToProjectValue;
 import fi.espoo.pythia.backend.mappers.ProjectValueToProject;
 import fi.espoo.pythia.backend.repos.PlanRepository;
 import fi.espoo.pythia.backend.repos.ProjectRepository;
-import fi.espoo.pythia.backend.repos.TestRepository;
+
 import fi.espoo.pythia.backend.repos.entities.Project;
-import fi.espoo.pythia.backend.repos.entities.Test;
+
 import fi.espoo.pythia.backend.transfer.ProjectValue;
 
 @Component
