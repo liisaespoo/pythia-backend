@@ -5,26 +5,14 @@ import java.time.OffsetDateTime;
 import fi.espoo.pythia.backend.repos.entities.Project;
 import fi.espoo.pythia.backend.transfer.ProjectValue;
 
-public class ProjectValueToProject {
+public class ProjectValueToProjectMapper {
 	
-	
-	private Project p;
-	
-	
-	public ProjectValueToProject() {
-		
-		p = new Project();
-		
-	}
-	
-	public Project getProject(ProjectValue pv) {
 
-		mapProjectToProjectValue(pv);
-		return this.p;
-
-	}
 	
-	private void mapProjectToProjectValue(ProjectValue pv) {
+	
+	public static Project mapProjectToProjectValue(ProjectValue pv) {
+		
+		Project p = new Project();
 		p.setProjectId(pv.getProjectId());
 		p.setHansuProjectId(pv.getHansuProjectId());
 		p.setName(pv.getName());
@@ -33,6 +21,8 @@ public class ProjectValueToProject {
 		p.setCreatedBy(pv.getCreatedBy());
 //		p.setUpdatedAt(pv.getUpdatedAt());
 		p.setUpdatedBy(pv.getUpdatedBy());
+		
+		return p;
 	}
 	
 

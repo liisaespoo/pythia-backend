@@ -8,8 +8,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import fi.espoo.pythia.backend.mappers.ProjectToProjectValue;
-import fi.espoo.pythia.backend.mappers.ProjectValueToProject;
+import fi.espoo.pythia.backend.mappers.ProjectToProjectValueMapper;
+import fi.espoo.pythia.backend.mappers.ProjectValueToProjectMapper;
 import fi.espoo.pythia.backend.repos.PlanRepository;
 import fi.espoo.pythia.backend.repos.ProjectRepository;
 
@@ -28,27 +28,38 @@ public class StorageManager {
 	private ProjectRepository projectRepository;
 	
 	
+//	private Project projectDummy;
+//	private Project projectDummy2;
+//	private ProjectValue projectDummyValue1;
+//	private ProjectValue projectDummyValue2;
 	
-	/**
-	 * Create new project in database. DONE!!!!
-	 * 
-	 */
-	public ProjectValue createProject(ProjectValue projectV) {
-
-		//map projectV to project
-		ProjectValueToProject pv2pmapping = new ProjectValueToProject();
-		Project prj = pv2pmapping.getProject(projectV);
-		
-		// timestamp with time at db or microservice level
-//		prj.setCreatedAt(null);
-		Project savedProject = projectRepository.save(prj);
-
-		// planRepository.save(5L);
-
-		// planRepository.
-		return projectV;
-
-	}
+	
+	
+//	
+//	public ArrayList<ProjectValue> getProjects() {
+//		
+//		ArrayList<Project> prjList = new ArrayList();
+//		projectDummy = new Project();
+//		
+//		prjList.add(projectDummy);
+//		
+//		ArrayList<ProjectValue> prjValList = new ArrayList();
+//		
+//		// for -loop for prjList
+//		ProjectToProjectValue p2pvmapping = new ProjectToProjectValue();
+//		
+//		for (Project p : prjList) {
+//			
+//			// map each project to projectValue 
+//			ProjectValue pval = p2pvmapping.getProjectValue(p);
+//			prjValList.add(pval);
+//		}
+//		
+//		// return projectValue -ArrayList 
+//		
+//		return prjValList;
+//	}
+	
 	
 	/**
 	 * Returns list of projects from database. DONE!!!
@@ -61,12 +72,12 @@ public class StorageManager {
 		ArrayList<ProjectValue> prjValList = new ArrayList();
 		
 		// for -loop for prjList
-		ProjectToProjectValue p2pvmapping = new ProjectToProjectValue();
+		
 		
 		for (Project p : prjList) {
 			
 			// map each project to projectValue 
-			ProjectValue pval = p2pvmapping.getProjectValue(p);
+			ProjectValue pval = ProjectToProjectValueMapper.projectToProjectValue(p);
 			prjValList.add(pval);
 		}
 		
@@ -77,14 +88,13 @@ public class StorageManager {
 	
 	
 
+	
 	/**
 	 * Return project object for given id from database. If project is not found for
 	 * id, returns null. DONE
 	 */
 	public ProjectValue getProject(Long projectId) {
-		// TODO Auto-generated method stub
-		ProjectToProjectValue p2pvmapping = new ProjectToProjectValue();
-
+		
 		List<ProjectValue> projects = getProjects();
 		for (ProjectValue p : projects) {
 			if (p.getProjectId().equals(projectId)) {				
@@ -116,8 +126,8 @@ public class StorageManager {
 			if (p.getProjectId().equals(projectId)) {
 				
 				// map projectvalue to project
-				ProjectValueToProject pv2pmapping = new ProjectValueToProject();
-				Project prj = pv2pmapping.getProject(projectV);
+				
+				Project prj = ProjectValueToProjectMapper.mapProjectToProjectValue(projectV);
 				
 				// remove current entity with projectId
 				projectRepository.delete(projectId);
@@ -130,6 +140,28 @@ public class StorageManager {
 		}
 
 		return null;
+	}
+	
+
+	
+	/**
+	 * Create new project in database. DONE!!!!
+	 * 
+	 */
+	public ProjectValue createProject(ProjectValue projectV) {
+
+		//map projectV to project
+		Project prj = ProjectValueToProjectMapper.mapProjectToProjectValue(projectV);
+		
+		// timestamp with time at db or microservice level
+//		prj.setCreatedAt(null);
+		Project savedProject = projectRepository.save(prj);
+
+		// planRepository.save(5L);
+
+		// planRepository.
+		return projectV;
+
 	}
 	
 }
