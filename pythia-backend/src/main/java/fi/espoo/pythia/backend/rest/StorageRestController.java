@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fi.espoo.pythia.backend.mgrs.StorageManager;
 import fi.espoo.pythia.backend.repos.entities.Project;
+import fi.espoo.pythia.backend.repos.entities.Test;
 import fi.espoo.pythia.backend.transfer.ProjectValue;
 
 @RestController
-@RequestMapping("/pythia/v1")
+//@RequestMapping("/pythia/v1")
 public class StorageRestController {	
 	
 	@Autowired
@@ -39,6 +40,18 @@ public class StorageRestController {
 			return new ResponseEntity<ProjectValue>(project,HttpStatus.OK);		
 	}
 	
+	
+	@GetMapping("/tests/{testId}")
+	@RequestMapping(produces = {"application/json"})
+	public ResponseEntity<Test> getTest(@PathVariable("projectId") Long id){
+		Test test = storageManager.getTest(id);
+		if (test == null) {
+			
+			return new ResponseEntity<Test>(HttpStatus.NOT_FOUND);
+		}		
+			return new ResponseEntity<Test>(test,HttpStatus.OK);		
+	}
+	
 
 	
 	//------------------------ NOT DONE --------------------------
@@ -58,6 +71,8 @@ public class StorageRestController {
 		return new ResponseEntity(project, HttpStatus.OK);
 	}
 
+
+	
 	
 	
 	@PutMapping("/projects/{projectId}")
