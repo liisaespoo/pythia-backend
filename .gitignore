@@ -1,2 +1,11 @@
 /.project
 bin/
+# Make build metafiles
+version.json
+.built
+# IntelliJ IDEA project definitions
+.idea/
+*.iml
+# Gradle build dirs
+.gradle/
+build/
