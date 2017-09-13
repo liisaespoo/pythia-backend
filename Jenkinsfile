@@ -1,6 +1,5 @@
 #!groovy
-// use agent with label 'jdk8', see https://github.com/jenkinsci/pipeline-plugin/blob/master/TUTORIAL.md#using-agents
-node('jdk8') {
+node {
     stage('Checkout') {
         checkout scm
     }
