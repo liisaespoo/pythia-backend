@@ -42,15 +42,15 @@ public class StorageRestController {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@GetMapping(value = "/test/", produces = "application/json")
-	public ResponseEntity<List> getProject() {
+	@GetMapping(value = "/getprojects/", produces = "application/json")
+	public ResponseEntity<List<ProjectValue>> getProject() {
 		
 		List<ProjectValue> project = storageManager.getProjects();
 		if (project == null) {
 			
-			return new ResponseEntity<List>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<ProjectValue>>(HttpStatus.NOT_FOUND);
 		}		
-			return new ResponseEntity<List>(project,HttpStatus.OK);		
+			return new ResponseEntity<List<ProjectValue>>(project,HttpStatus.OK);		
 	}
 	
 	
@@ -63,11 +63,11 @@ public class StorageRestController {
 	 * @return
 	 */
 	@PostMapping(value = "/projects/", produces = "application/json", consumes = "application/json")
-	public ResponseEntity createProject(@RequestBody ProjectValue project) {
+	public ResponseEntity<ProjectValue> createProject(@RequestBody ProjectValue project) {
 	
 		// Value object mapping
 		storageManager.createProject(project);
-		return new ResponseEntity(project, HttpStatus.OK);
+		return new ResponseEntity<ProjectValue>(project, HttpStatus.OK);
 	}
 
 
