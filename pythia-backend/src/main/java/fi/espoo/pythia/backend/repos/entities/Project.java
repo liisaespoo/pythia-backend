@@ -24,7 +24,7 @@ public class Project implements Serializable {
 	//bigint
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "proj_generator")
-	@SequenceGenerator(name = "proj_generator", sequenceName = "proj_serial", allocationSize = 50)
+	@SequenceGenerator(name = "proj_generator", sequenceName = "proj_serial", allocationSize = 1)
 	@Column(name = "project_id", updatable = false, nullable = false)
 	private Long projectId;
 

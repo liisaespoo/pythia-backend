@@ -30,7 +30,7 @@ public class Plan implements Serializable {
 	//bigint
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "plan_generator")
-	@SequenceGenerator(name = "plan_generator", sequenceName = "plan_serial", allocationSize = 50)
+	@SequenceGenerator(name = "plan_generator", sequenceName = "plan_serial", allocationSize = 1)
 	@Column(name = "plan_id", updatable = false, nullable = false)
 	private Long planId;
 	
