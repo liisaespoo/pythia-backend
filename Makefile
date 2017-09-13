@@ -4,7 +4,7 @@
 # TOPTARGETS define all make commands which can be used in all Makefiles within this repo
 TOPTARGETS := clean build test publish-dev publish-prod
 
-SUBDIRS := $(shell find . -name 'Makefile' -d 2 | xargs dirname)
+SUBDIRS := $(shell find . -name "Makefile" -d 2 | xargs dirname)
 
 .PHONY: $(TOPTARGETS) $(SUBDIRS)
 $(TOPTARGETS): $(SUBDIRS)
