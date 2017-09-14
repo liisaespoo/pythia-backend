@@ -42,7 +42,7 @@ public class StorageRestController {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@GetMapping(value = "/getprojects/", produces = "application/json")
+	@GetMapping(value = "/projects/", produces = "application/json")
 	public ResponseEntity<List<ProjectValue>> getProject() {
 		
 		List<ProjectValue> project = storageManager.getProjects();
@@ -66,8 +66,9 @@ public class StorageRestController {
 	public ResponseEntity<ProjectValue> createProject(@RequestBody ProjectValue project) {
 	
 		// Value object mapping
-		storageManager.createProject(project);
-		return new ResponseEntity<ProjectValue>(project, HttpStatus.OK);
+		ProjectValue savedProject = storageManager.createProject(project);
+		
+		return new ResponseEntity<ProjectValue>(savedProject, HttpStatus.OK);
 	}
 
 

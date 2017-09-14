@@ -157,10 +157,11 @@ public class StorageManager {
 //		prj.setCreatedAt(null);
 		Project savedProject = projectRepository.save(prj);
 
+		ProjectValue savedProjectValue = ProjectToProjectValueMapper.projectToProjectValue(savedProject);
 		// planRepository.save(5L);
 
 		// planRepository.
-		return projectV;
+		return savedProjectValue;
 
 	}
 	
