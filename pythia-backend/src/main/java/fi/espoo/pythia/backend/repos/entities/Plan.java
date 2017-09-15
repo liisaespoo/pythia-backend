@@ -63,18 +63,18 @@ public class Plan implements Serializable {
 //	@Column(name = "created_at")
 //	private OffsetDateTime createdAt;
 
-	// varchar
-	@Column(name = "created_by")
-	private String createdBy;
+//	// varchar
+//	@Column(name = "created_by")
+//	private String createdBy;
 
 //	// timestamp with timezone timestamptz
 //	//@Temporal(TemporalType.TIMESTAMP)
 //	@Column(name = "updated_at")
 //	private OffsetDateTime updatedAt;
 
-	// varchar
-	@Column(name = "updated_by")
-	private String updatedBy;
+//	// varchar
+//	@Column(name = "updated_by")
+//	private String updatedBy;
 	
 
 	public Plan(Long planId, Long projectId, short mainNo, short subNo, String version, 
@@ -86,9 +86,9 @@ public class Plan implements Serializable {
 		this.subNo = subNo;
 		this.version = version;
 //		this.createdAt = createdAt;
-		this.createdBy = createdBy;
+//		this.createdBy = createdBy;
 //		this.updatedAt = updatedAt;
-		this.updatedBy = updatedBy;
+//		this.updatedBy = updatedBy;
 	}
 
 	public Project getProject() {
@@ -146,14 +146,14 @@ public class Plan implements Serializable {
 //	public void setCreatedAt(OffsetDateTime createdAt) {
 //		this.createdAt = createdAt;
 //	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
+//
+//	public String getCreatedBy() {
+//		return createdBy;
+//	}
+//
+//	public void setCreatedBy(String createdBy) {
+//		this.createdBy = createdBy;
+//	}
 
 //	public OffsetDateTime getUpdatedAt() {
 //		return updatedAt;
@@ -163,13 +163,13 @@ public class Plan implements Serializable {
 //		this.updatedAt = updatedAt;
 //	}
 
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
+//	public String getUpdatedBy() {
+//		return updatedBy;
+//	}
+//
+//	public void setUpdatedBy(String updatedBy) {
+//		this.updatedBy = updatedBy;
+//	}
 
 	
 	@Override
