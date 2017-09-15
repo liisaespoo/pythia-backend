@@ -18,11 +18,12 @@ public class ProjectValue implements Serializable {
 	private Long projectId;
 	private String hansuProjectId;
 	private String name;
+	private short mainNo;
 	private String description;
 //	private OffsetDateTime createdAt;
-	private String createdBy;
+//	private String createdBy;
 //	private OffsetDateTime updatedAt;
-	private String updatedBy;
+//	private String updatedBy;
 	
 	public ProjectValue() {}
 	
@@ -32,27 +33,29 @@ public class ProjectValue implements Serializable {
 	
 	
 	
-	public ProjectValue(Long projectId, String hansuProjectId, String name, String description, String createdBy,
+	public ProjectValue(Long projectId, String hansuProjectId, short mainNo, String name, String description, String createdBy,
 			String updatedBy) {
 	
 		this.projectId = projectId;
 		this.hansuProjectId = hansuProjectId;
 		this.name = name;
+		this.mainNo = mainNo;
 		this.description = description;
-		this.createdBy = createdBy;
-		this.updatedBy = updatedBy;
+//		this.createdBy = createdBy;
+//		this.updatedBy = updatedBy;
 	}
 
 	// create the class with a Project Entity
 	public ProjectValue(Project project) {
 		this.projectId = project.getProjectId();
 		this.hansuProjectId = project.getHansuProjectId();
+		this.mainNo = project.getMainNo();
 		this.name = project.getName();
 		this.description = project.getDescription();
 //		this.createdAt = project.getCreatedAt();
-		this.createdBy = project.getCreatedBy();
+//		this.createdBy = project.getCreatedBy();
 //		this.updatedAt = project.getUpdatedAt();
-		this.updatedBy = project.getUpdatedBy();
+//		this.updatedBy = project.getUpdatedBy();
 	}
 
 	public Long getProjectId() {
@@ -69,6 +72,15 @@ public class ProjectValue implements Serializable {
 
 	public void setHansuProjectId(String hansuProjectId) {
 		this.hansuProjectId = hansuProjectId;
+	}
+	
+
+	public short getMainNo() {
+		return mainNo;
+	}
+
+	public void setMainNo(short mainNo) {
+		this.mainNo = mainNo;
 	}
 
 	public String getName() {
@@ -87,21 +99,21 @@ public class ProjectValue implements Serializable {
 		this.description = description;
 	}
 
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
+//	public String getCreatedBy() {
+//		return createdBy;
+//	}
+//
+//	public void setCreatedBy(String createdBy) {
+//		this.createdBy = createdBy;
+//	}
+//
+//	public String getUpdatedBy() {
+//		return updatedBy;
+//	}
+//
+//	public void setUpdatedBy(String updatedBy) {
+//		this.updatedBy = updatedBy;
+//	}
 
 	
 	

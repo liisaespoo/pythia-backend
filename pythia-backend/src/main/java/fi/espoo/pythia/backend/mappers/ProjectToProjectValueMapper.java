@@ -13,12 +13,13 @@ public class ProjectToProjectValueMapper {
 		ProjectValue pv = new ProjectValue();
 		pv.setProjectId(p.getProjectId());
 		pv.setHansuProjectId(p.getHansuProjectId());
+		pv.setMainNo(p.getMainNo());
 		pv.setName(p.getName());
 		pv.setDescription(p.getDescription());
 //		pv.setCreatedAt(p.getCreatedAt());
-		pv.setCreatedBy(p.getCreatedBy());
+//		pv.setCreatedBy(p.getCreatedBy());
 //		pv.setUpdatedAt(p.getUpdatedAt());
-		pv.setUpdatedBy(p.getUpdatedBy());
+//		pv.setUpdatedBy(p.getUpdatedBy());
 		
 		return pv;
 	}
