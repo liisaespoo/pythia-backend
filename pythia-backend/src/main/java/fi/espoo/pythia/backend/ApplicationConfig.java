@@ -29,6 +29,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  *
  */
 
+/**
+ * 
+ * @author saara
+ *
+ */
 @Configuration
 @EnableConfigurationProperties
 @EnableJpaRepositories(basePackages = "fi.espoo.pythia.backend.repos")
@@ -38,7 +43,7 @@ public class ApplicationConfig {
 	@Bean
 	public DataSource dataSource() {
 
-		DataSource dataSource = DataSourceBuilder.create().url("jdbc:postgresql://127.0.0.1:5432/pythia")
+		DataSource dataSource = DataSourceBuilder.create().url("jdbc:postgresql://bb1w1g6xo4mi3ad.c1gsadouzuf9.eu-west-1.rds.amazonaws.com:5432/pythia")
 				.driverClassName("org.postgresql.Driver").username("Pythia").password("ApollonTemppeli").build();
 
 		return dataSource;
