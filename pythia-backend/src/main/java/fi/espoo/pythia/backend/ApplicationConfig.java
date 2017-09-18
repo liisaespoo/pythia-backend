@@ -39,7 +39,7 @@ public class ApplicationConfig {
 	public DataSource dataSource() {
 
 		DataSource dataSource = DataSourceBuilder.create().url("jdbc:postgresql://127.0.0.1:5432/pythia")
-				.driverClassName("org.postgresql.Driver").username("pythiaservice").password("pythiaservice").build();
+				.driverClassName("org.postgresql.Driver").username("Pythia").password("ApollonTemppeli").build();
 
 		return dataSource;
 	}
