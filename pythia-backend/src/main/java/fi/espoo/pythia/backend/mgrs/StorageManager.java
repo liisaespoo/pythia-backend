@@ -127,7 +127,7 @@ public class StorageManager {
 				
 				// map projectvalue to project
 				
-				Project prj = ProjectValueToProjectMapper.mapProjectToProjectValue(projectV);
+				Project prj = ProjectValueToProjectMapper.projectValueToProject(projectV);
 				
 				// remove current entity with projectId
 				projectRepository.delete(projectId);
@@ -151,7 +151,7 @@ public class StorageManager {
 	public ProjectValue createProject(ProjectValue projectV) {
 
 		//map projectV to project
-		Project prj = ProjectValueToProjectMapper.mapProjectToProjectValue(projectV);
+		Project prj = ProjectValueToProjectMapper.projectValueToProject(projectV);
 		
 		// timestamp with time at db or microservice level
 //		prj.setCreatedAt(null);

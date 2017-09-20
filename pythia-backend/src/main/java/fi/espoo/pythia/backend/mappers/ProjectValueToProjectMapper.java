@@ -8,7 +8,7 @@ import fi.espoo.pythia.backend.transfer.ProjectValue;
 public class ProjectValueToProjectMapper {
 	
 	
-	public static Project mapProjectToProjectValue(ProjectValue pv) {
+	public static Project projectValueToProject(ProjectValue pv) {
 		
 		Project p = new Project();
 		p.setProjectId(pv.getProjectId());
