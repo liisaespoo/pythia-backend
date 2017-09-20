@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -37,8 +38,9 @@ public class Plan implements Serializable {
 	//bidirectional manytoone with Project
 	// project object maps to class Project
 	//project_id is the <<fk>> of table Plan
-	//@JoinColumn(name = "project_id")
+	
 	@ManyToOne	
+	//@JoinColumn(name = "project_id")
 	private Project project;
 	
 //	//bigint
