@@ -16,6 +16,12 @@ public class ProjectValueToProjectMapper {
 		p.setMainNo(pv.getMainNo());
 		p.setName(pv.getName());
 		p.setDescription(pv.getDescription());
+
+	// not working	
+	//	p.setListOfPlans(pv.getListOfPlans());
+		if(!pv.getListOfPlans().isEmpty()) {
+			p.setListOfPlans(pv.getListOfPlans());
+		}
 //		p.setCreatedAt(pv.getCreatedAt());
 //		p.setCreatedBy(pv.getCreatedBy());
 //		p.setUpdatedAt(pv.getUpdatedAt());

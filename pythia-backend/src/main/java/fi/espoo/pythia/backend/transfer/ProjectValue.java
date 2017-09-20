@@ -23,7 +23,8 @@ public class ProjectValue implements Serializable {
 	private String name;
 	private short mainNo;
 	private String description;
-	private List<Plan> listOfPlans = new ArrayList<Plan>();
+	//removed ArrayList definition
+	private List<Plan> listOfPlans;
 //	private OffsetDateTime createdAt;
 //	private String createdBy;
 //	private OffsetDateTime updatedAt;

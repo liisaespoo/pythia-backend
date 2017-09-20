@@ -36,8 +36,9 @@ public class Project implements Serializable {
 	 * @JoinColumn(name = "project_id") private Project project; ... }
 	 */
 
+	//removed ArrayList definition
 	@OneToMany(mappedBy = "project")
-	private List<Plan> listOfPlans = new ArrayList<Plan>();
+	private List<Plan> listOfPlans;
 
 	// varchar
 	@Column(name = "hansu_project_id")
