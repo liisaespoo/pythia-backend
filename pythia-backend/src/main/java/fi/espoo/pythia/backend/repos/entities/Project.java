@@ -78,20 +78,7 @@ public class Project implements Serializable {
 
 	}
 
-	public Project(List<Plan> listOfPlans, Long projectId, String hansuProjectId, short mainNo, String name, String description,
-			 String createdBy, String updatedBy) {
 
-		this.listOfPlans = listOfPlans;
-		this.projectId = projectId;
-		this.mainNo = mainNo;
-		this.hansuProjectId = hansuProjectId;
-		this.name = name;
-		this.description = description;
-//		this.createdAt = createdAt;
-//		this.createdBy = createdBy;
-//		this.updatedAt = updatedAt;
-//		this.updatedBy = updatedBy;
-	}
 
 	public List<Plan> getListOfPlans() {
 		return listOfPlans;
