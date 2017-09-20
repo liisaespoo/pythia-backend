@@ -19,84 +19,77 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "plan")
-public class Plan implements Serializable {	
+public class Plan implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	//bigint
+	// bigint
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "plan_generator")
 	@SequenceGenerator(name = "plan_generator", sequenceName = "plan_serial", allocationSize = 1)
 	@Column(name = "plan_id", updatable = false, nullable = false)
 	private Long planId;
-	
-	//bidirectional manytoone with Project
+
+	// bidirectional manytoone with Project
 	// project object maps to class Project
-	//project_id is the <<fk>> of table Plan
-	
-	@ManyToOne	
-	//@JoinColumn(name = "project_id")
+	// project_id is the <<fk>> of table Plan
+
+	@ManyToOne
+	@JoinColumn(name = "project_id",nullable=false)
 	private Project project;
-	
-//	//bigint
-//	@Column(name = "project_id")
-//	private Long projectId;
-	
-	//smallint
+
+	// //bigint
+	// @Column(name = "project_id")
+	// private Long projectId;
+
+	// smallint
 	@Column(name = "main_no")
 	private short mainNo;
-	
-	//smallint
+
+	// smallint
 	@Column(name = "sub_no")
 	private short subNo;
-	
-	//varchar
+
+	// varchar
 	@Column(name = "version")
 	private String version;
-	
-//	// https://jdbc.postgresql.org/documentation/head/java8-date-time.html
-//	// timestamp with timezone
-//	//@Temporal(TemporalType.TIMESTAMP)
-//	@Column(name = "created_at")
-//	private OffsetDateTime createdAt;
 
-//	// varchar
-//	@Column(name = "created_by")
-//	private String createdBy;
+	// // https://jdbc.postgresql.org/documentation/head/java8-date-time.html
+	// // timestamp with timezone
+	// //@Temporal(TemporalType.TIMESTAMP)
+	// @Column(name = "created_at")
+	// private OffsetDateTime createdAt;
 
-//	// timestamp with timezone timestamptz
-//	//@Temporal(TemporalType.TIMESTAMP)
-//	@Column(name = "updated_at")
-//	private OffsetDateTime updatedAt;
+	// // varchar
+	// @Column(name = "created_by")
+	// private String createdBy;
 
-//	// varchar
-//	@Column(name = "updated_by")
-//	private String updatedBy;
-	
+	// // timestamp with timezone timestamptz
+	// //@Temporal(TemporalType.TIMESTAMP)
+	// @Column(name = "updated_at")
+	// private OffsetDateTime updatedAt;
 
-	public Plan(Long planId, Long projectId, short mainNo, short subNo, String version, 
-			String createdBy,  String updatedBy) {
-		super();
-		this.planId = planId;
-//		this.projectId = projectId;
-		this.mainNo = mainNo;
-		this.subNo = subNo;
-		this.version = version;
-//		this.createdAt = createdAt;
-//		this.createdBy = createdBy;
-//		this.updatedAt = updatedAt;
-//		this.updatedBy = updatedBy;
+	// // varchar
+	// @Column(name = "updated_by")
+	// private String updatedBy;
+
+	public Plan() {
+
 	}
 
+	@JsonIgnore
 	public Project getProject() {
 		return project;
 	}
 
+	@JsonIgnore
 	public void setProject(Project project) {
 		this.project = project;
 	}
@@ -109,13 +102,13 @@ public class Plan implements Serializable {
 		this.planId = planId;
 	}
 
-//	public Long getProjectId() {
-//		return projectId;
-//	}
+	// public Long getProjectId() {
+	// return projectId;
+	// }
 
-//	public void setProjectId(Long projectId) {
-//		this.projectId = projectId;
-//	}
+	// public void setProjectId(Long projectId) {
+	// this.projectId = projectId;
+	// }
 
 	public short getMainNo() {
 		return mainNo;
@@ -141,39 +134,38 @@ public class Plan implements Serializable {
 		this.version = version;
 	}
 
-//	public OffsetDateTime getCreatedAt() {
-//		return createdAt;
-//	}
-//
-//	public void setCreatedAt(OffsetDateTime createdAt) {
-//		this.createdAt = createdAt;
-//	}
-//
-//	public String getCreatedBy() {
-//		return createdBy;
-//	}
-//
-//	public void setCreatedBy(String createdBy) {
-//		this.createdBy = createdBy;
-//	}
+	// public OffsetDateTime getCreatedAt() {
+	// return createdAt;
+	// }
+	//
+	// public void setCreatedAt(OffsetDateTime createdAt) {
+	// this.createdAt = createdAt;
+	// }
+	//
+	// public String getCreatedBy() {
+	// return createdBy;
+	// }
+	//
+	// public void setCreatedBy(String createdBy) {
+	// this.createdBy = createdBy;
+	// }
 
-//	public OffsetDateTime getUpdatedAt() {
-//		return updatedAt;
-//	}
-//
-//	public void setUpdatedAt(OffsetDateTime updatedAt) {
-//		this.updatedAt = updatedAt;
-//	}
+	// public OffsetDateTime getUpdatedAt() {
+	// return updatedAt;
+	// }
+	//
+	// public void setUpdatedAt(OffsetDateTime updatedAt) {
+	// this.updatedAt = updatedAt;
+	// }
 
-//	public String getUpdatedBy() {
-//		return updatedBy;
-//	}
-//
-//	public void setUpdatedBy(String updatedBy) {
-//		this.updatedBy = updatedBy;
-//	}
+	// public String getUpdatedBy() {
+	// return updatedBy;
+	// }
+	//
+	// public void setUpdatedBy(String updatedBy) {
+	// this.updatedBy = updatedBy;
+	// }
 
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -198,8 +190,5 @@ public class Plan implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
-	
 
 }

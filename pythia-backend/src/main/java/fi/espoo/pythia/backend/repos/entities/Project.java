@@ -20,8 +20,7 @@ import javax.persistence.TemporalType;
 @Table(name = "project")
 public class Project implements Serializable {
 
-	
-	//bigint
+	// bigint
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "proj_generator")
 	@SequenceGenerator(name = "proj_generator", sequenceName = "proj_serial", allocationSize = 1)
@@ -36,17 +35,18 @@ public class Project implements Serializable {
 	 * @JoinColumn(name = "project_id") private Project project; ... }
 	 */
 
+	// removed ArrayList definition
 	@OneToMany(mappedBy = "project")
-	private List<Plan> listOfPlans = new ArrayList<Plan>();
+	private List<Plan> plans;
 
 	// varchar
 	@Column(name = "hansu_project_id")
 	private String hansuProjectId;
 
-	//smallint
+	// smallint
 	@Column(name = "main_no")
 	private short mainNo;
-	
+
 	// varchar
 	@Column(name = "name")
 	private String name;
@@ -55,50 +55,35 @@ public class Project implements Serializable {
 	@Column(name = "description")
 	private String description;
 
-//	// https://jdbc.postgresql.org/documentation/head/java8-date-time.html
-//	// timestamp with timezone
-//	// @Temporal(TemporalType.TIMESTAMP)
-//	@Column(name = "created_at")
-//	private OffsetDateTime createdAt;
+	// // https://jdbc.postgresql.org/documentation/head/java8-date-time.html
+	// // timestamp with timezone
+	// // @Temporal(TemporalType.TIMESTAMP)
+	// @Column(name = "created_at")
+	// private OffsetDateTime createdAt;
 
-//	// varchar
-//	@Column(name = "created_by")
-//	private String createdBy;
+	// // varchar
+	// @Column(name = "created_by")
+	// private String createdBy;
 
-//	// timestamp with timezone timestamptz
-//	// @Temporal(TemporalType.TIMESTAMP)
-//	@Column(name = "updated_at")
-//	private OffsetDateTime updatedAt;
+	// // timestamp with timezone timestamptz
+	// // @Temporal(TemporalType.TIMESTAMP)
+	// @Column(name = "updated_at")
+	// private OffsetDateTime updatedAt;
 
-//	// varchar
-//	@Column(name = "updated_by")
-//	private String updatedBy;
+	// // varchar
+	// @Column(name = "updated_by")
+	// private String updatedBy;
 
 	public Project() {
 
 	}
 
-	public Project(List<Plan> listOfPlans, Long projectId, String hansuProjectId, short mainNo, String name, String description,
-			 String createdBy, String updatedBy) {
-
-		this.listOfPlans = listOfPlans;
-		this.projectId = projectId;
-		this.mainNo = mainNo;
-		this.hansuProjectId = hansuProjectId;
-		this.name = name;
-		this.description = description;
-//		this.createdAt = createdAt;
-//		this.createdBy = createdBy;
-//		this.updatedAt = updatedAt;
-//		this.updatedBy = updatedBy;
+	public List<Plan> getPlans() {
+		return plans;
 	}
 
-	public List<Plan> getListOfPlans() {
-		return listOfPlans;
-	}
-
-	public void setListOfPlans(List<Plan> listOfPlans) {
-		this.listOfPlans = listOfPlans;
+	public void setPlans(List<Plan> plans) {
+		this.plans = plans;
 	}
 
 	public Long getProjectId() {
@@ -116,7 +101,6 @@ public class Project implements Serializable {
 	public void setHansuProjectId(String hansuProjectId) {
 		this.hansuProjectId = hansuProjectId;
 	}
-	
 
 	public short getMainNo() {
 		return mainNo;
@@ -142,46 +126,45 @@ public class Project implements Serializable {
 		this.description = description;
 	}
 
-	
-//	public OffsetDateTime getCreatedAt() {
-//		return createdAt;
-//	}
-//
-//	public void setCreatedAt(OffsetDateTime createdAt) {
-//		this.createdAt = createdAt;
-//	}
+	// public OffsetDateTime getCreatedAt() {
+	// return createdAt;
+	// }
+	//
+	// public void setCreatedAt(OffsetDateTime createdAt) {
+	// this.createdAt = createdAt;
+	// }
 
-//	public String getCreatedBy() {
-//		return createdBy;
-//	}
-//
-//	public void setCreatedBy(String createdBy) {
-//		this.createdBy = createdBy;
-//	}
+	// public String getCreatedBy() {
+	// return createdBy;
+	// }
+	//
+	// public void setCreatedBy(String createdBy) {
+	// this.createdBy = createdBy;
+	// }
 
-//	public OffsetDateTime getUpdatedAt() {
-//		return updatedAt;
-//	}
-//
-//	public void setUpdatedAt(OffsetDateTime updatedAt) {
-//		this.updatedAt = updatedAt;
-//	}
+	// public OffsetDateTime getUpdatedAt() {
+	// return updatedAt;
+	// }
+	//
+	// public void setUpdatedAt(OffsetDateTime updatedAt) {
+	// this.updatedAt = updatedAt;
+	// }
 
-//	public String getUpdatedBy() {
-//		return updatedBy;
-//	}
-//
-//	public void setUpdatedBy(String updatedBy) {
-//		this.updatedBy = updatedBy;
-//	}
+	// public String getUpdatedBy() {
+	// return updatedBy;
+	// }
+	//
+	// public void setUpdatedBy(String updatedBy) {
+	// this.updatedBy = updatedBy;
+	// }
 
 	public void addPlan(Plan plan) {
-		listOfPlans.add(plan);
+		plans.add(plan);
 		plan.setProject(this);
 	}
 
 	public void removePlan(Plan plan) {
-		listOfPlans.remove(plan);
+		plans.remove(plan);
 		plan.setProject(null);
 	}
 
@@ -209,7 +192,5 @@ public class Project implements Serializable {
 			return false;
 		return true;
 	}
-
-
 
 }
