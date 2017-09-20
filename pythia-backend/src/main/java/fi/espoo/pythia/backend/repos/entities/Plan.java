@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "plan")
 public class Plan implements Serializable {
@@ -82,10 +84,12 @@ public class Plan implements Serializable {
 
 	}
 
+	@JsonIgnore
 	public Project getProject() {
 		return project;
 	}
 
+	@JsonIgnore
 	public void setProject(Project project) {
 		this.project = project;
 	}

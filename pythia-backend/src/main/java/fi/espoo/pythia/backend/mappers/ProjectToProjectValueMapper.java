@@ -18,8 +18,8 @@ public class ProjectToProjectValueMapper {
 		pv.setDescription(p.getDescription());
 		
 		// not working	
-		if(!p.getListOfPlans().isEmpty()) {
-			pv.setListOfPlans(p.getListOfPlans());
+		if(!p.getPlans().isEmpty()) {
+			pv.setPlans(p.getPlans());
 		}
 //		pv.setListOfPlans(p.getListOfPlans());
 //		pv.setCreatedAt(p.getCreatedAt());
@@ -30,5 +30,4 @@ public class ProjectToProjectValueMapper {
 		return pv;
 	}
 	
-
 }

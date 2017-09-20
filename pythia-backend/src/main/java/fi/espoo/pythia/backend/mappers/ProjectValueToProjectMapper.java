@@ -19,8 +19,8 @@ public class ProjectValueToProjectMapper {
 
 	// not working	
 	//	p.setListOfPlans(pv.getListOfPlans());
-		if(!pv.getListOfPlans().isEmpty()) {
-			p.setListOfPlans(pv.getListOfPlans());
+		if(!pv.getPlans().isEmpty()) {
+			p.setPlans(pv.getPlans());
 		}
 //		p.setCreatedAt(pv.getCreatedAt());
 //		p.setCreatedBy(pv.getCreatedBy());
