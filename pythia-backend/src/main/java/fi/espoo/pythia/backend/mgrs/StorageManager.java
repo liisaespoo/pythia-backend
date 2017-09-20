@@ -28,38 +28,6 @@ public class StorageManager {
 	private ProjectRepository projectRepository;
 	
 	
-//	private Project projectDummy;
-//	private Project projectDummy2;
-//	private ProjectValue projectDummyValue1;
-//	private ProjectValue projectDummyValue2;
-	
-	
-	
-//	
-//	public ArrayList<ProjectValue> getProjects() {
-//		
-//		ArrayList<Project> prjList = new ArrayList();
-//		projectDummy = new Project();
-//		
-//		prjList.add(projectDummy);
-//		
-//		ArrayList<ProjectValue> prjValList = new ArrayList();
-//		
-//		// for -loop for prjList
-//		ProjectToProjectValue p2pvmapping = new ProjectToProjectValue();
-//		
-//		for (Project p : prjList) {
-//			
-//			// map each project to projectValue 
-//			ProjectValue pval = p2pvmapping.getProjectValue(p);
-//			prjValList.add(pval);
-//		}
-//		
-//		// return projectValue -ArrayList 
-//		
-//		return prjValList;
-//	}
-	
 	
 	/**
 	 * Returns list of projects from database. DONE!!!
