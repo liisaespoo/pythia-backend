@@ -26,8 +26,7 @@ public class StorageRestController {
 	@Autowired
 	private StorageManager storageManager;
 
-	
-	//-------------------------GET-------------------------------
+	// -------------------------GET-------------------------------
 	/**
 	 * return a single project by id if found. Otherwise return null.
 	 */
@@ -43,6 +42,12 @@ public class StorageRestController {
 		return new ResponseEntity<ProjectValue>(project, HttpStatus.OK);
 	}
 
+	/**
+	 * 
+	 * return all plans by projectId
+	 * @param projectId
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	@GetMapping(value = "/plans/projectId/{projectId}", produces = "application/json")
 	public ResponseEntity<List<PlanValue>> getPlan(@PathVariable("projectId") Long projectId) {
@@ -55,6 +60,10 @@ public class StorageRestController {
 		return new ResponseEntity<List<PlanValue>>(plan, HttpStatus.OK);
 	}
 
+	/**
+	 * return all projects
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	@GetMapping(value = "/projects/", produces = "application/json")
 	public ResponseEntity<List<ProjectValue>> getProject() {
@@ -66,9 +75,8 @@ public class StorageRestController {
 		}
 		return new ResponseEntity<List<ProjectValue>>(project, HttpStatus.OK);
 	}
-	
-	
-	//--------------------------POST-------------------------------------
+
+	// --------------------------POST-------------------------------------
 
 	/**
 	 * create a new plan to the db and return the whole project with all attributes
@@ -102,9 +110,8 @@ public class StorageRestController {
 
 		return new ResponseEntity<ProjectValue>(savedProject, HttpStatus.OK);
 	}
-	
-	
-	//---------------------------PUT--------------------------------
+
+	// ---------------------------PUT--------------------------------
 
 	/**
 	 * 
@@ -112,15 +119,13 @@ public class StorageRestController {
 	@SuppressWarnings("unchecked")
 	@PutMapping(value = "/plans/", produces = "application/json", consumes = "application/json")
 	public ResponseEntity<PlanValue> updatePlan(@RequestBody PlanValue planV) {
-		
+
 		PlanValue updatedPlan = storageManager.updatePlan(planV);
 		return new ResponseEntity<PlanValue>(updatedPlan, HttpStatus.OK);
-		
+
 	}
-	
+
 	// ------------------------ NOT DONE --------------------------
-
-
 
 	@PutMapping("/projects/{projectId}")
 	public void updateProject() {
