@@ -9,5 +9,5 @@ import fi.espoo.pythia.backend.repos.entities.Project;
 
 public interface PlanRepository extends JpaRepository<Plan, Long> {
 
-	List<Plan> findByProject(Project project);
+	Plan findByPlanId(Long id);
 }
