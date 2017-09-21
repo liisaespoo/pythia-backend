@@ -29,6 +29,8 @@ public class StorageManager {
 	@Autowired
 	private ProjectRepository projectRepository;
 
+	// ---------------------GET------------------------------------
+
 	/**
 	 * Returns list of projects from database. DONE!!!
 	 * 
@@ -60,49 +62,48 @@ public class StorageManager {
 		ProjectValue pval = ProjectToProjectValueMapper.projectToProjectValue(project);
 		return pval;
 
-		// List<ProjectValue> projects = getProjects();
-		// for (ProjectValue p : projects) {
-		// if (p.getProjectId().equals(projectId)) {
-		// return p;
-		// }
-		// }
-		// return null;
 	}
 
 	/**
 	 * 
-	 * Update the project object for given id in database. If project does not
-	 * exists, return null DONE!!!
-	 * 
-	 * @param projectId
-	 * @param project
+	 * @param hansuId
 	 * @return
 	 */
-	public ProjectValue update(Long projectId, ProjectValue projectV) {
-
-		List<ProjectValue> projects = getProjects();
-
-		// find projectvalue object with id
-		for (ProjectValue p : projects) {
-
-			if (p.getProjectId().equals(projectId)) {
-
-				// map projectvalue to project
-
-				Project prj = ProjectValueToProjectMapper.projectValueToProject(projectV);
-
-				// remove current entity with projectId
-				projectRepository.delete(projectId);
-
-				// add new entity
-				projectRepository.save(prj);
-
-				return projectV;
+	public ProjectValue getProjectByHansuId(String hansuId) {
+		List<Project> prjList = projectRepository.findAll();
+		for (Project p : prjList) {
+			if (p.getHansuProjectId().equals(hansuId)) {
+				ProjectValue pval = ProjectToProjectValueMapper.projectToProjectValue(p);
+				return pval;
 			}
 		}
 
 		return null;
 	}
+
+	
+	/**
+	 * get all plans by projectId
+	 * @param projectId
+	 * @return
+	 */
+	public List<PlanValue> getPlans(Long projectId) {
+
+		Project project = projectRepository.findByProjectId(projectId);
+		ProjectValue pval = ProjectToProjectValueMapper.projectToProjectValue(project);
+
+		List<PlanValue> planValues = new ArrayList();
+
+		for (Plan plan : pval.getPlans()) {
+			// map each plan to planValue
+			PlanValue planValue = PlanToPlanValueMapper.planToPlanValue(plan, project);
+			planValues.add(planValue);
+		}
+		return planValues;
+
+	}
+
+	// ---------------------POST-----------------------------------
 
 	/**
 	 * Create new project in database. DONE!!!!
@@ -143,21 +144,28 @@ public class StorageManager {
 		return savedPlanValue;
 	}
 
-	public List<PlanValue> getPlans(Long projectId) {
+	// ---------------------PUT------------------------------------
 
-		Project project = projectRepository.findByProjectId(projectId);
-		ProjectValue pval = ProjectToProjectValueMapper.projectToProjectValue(project);
+	/**
+	 * 
+	 * @param projectV
+	 * @return
+	 */
+	public ProjectValue updateProject(ProjectValue projectV) {
 
-		List<PlanValue> planValues = new ArrayList();
+		Project project = ProjectValueToProjectMapper.projectValueToProject(projectV);
+		Project updatedProject = projectRepository.save(project);
 
-		for (Plan plan : pval.getPlans()) {
-			// map each plan to planValue
-			PlanValue planValue = PlanToPlanValueMapper.planToPlanValue(plan, project);
-			planValues.add(planValue);
-		}
-		return planValues;
+		ProjectValue updatedProjectValue = ProjectToProjectValueMapper.projectToProjectValue(updatedProject);
+		return updatedProjectValue;
 
 	}
+
+	/**
+	 * 
+	 * @param planV
+	 * @return
+	 */
 
 	public PlanValue updatePlan(PlanValue planV) {
 
@@ -169,7 +177,42 @@ public class StorageManager {
 
 		PlanValue updatedPlanValue = PlanToPlanValueMapper.planToPlanValue(updatedPlan, project);
 		return updatedPlanValue;
-		
+
 	}
+	//
+	// /**
+	// *
+	// * Update the project object for given id in database. If project does not
+	// * exists, return null DONE!!!
+	// *
+	// * @param projectId
+	// * @param project
+	// * @return
+	// */
+	// public ProjectValue update(Long projectId, ProjectValue projectV) {
+	//
+	// List<ProjectValue> projects = getProjects();
+	//
+	// // find projectvalue object with id
+	// for (ProjectValue p : projects) {
+	//
+	// if (p.getProjectId().equals(projectId)) {
+	//
+	// // map projectvalue to project
+	//
+	// Project prj = ProjectValueToProjectMapper.projectValueToProject(projectV);
+	//
+	// // remove current entity with projectId
+	// projectRepository.delete(projectId);
+	//
+	// // add new entity
+	// projectRepository.save(prj);
+	//
+	// return projectV;
+	// }
+	// }
+	//
+	// return null;
+	// }
 
 }
