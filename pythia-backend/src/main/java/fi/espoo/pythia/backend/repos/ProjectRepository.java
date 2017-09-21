@@ -14,6 +14,7 @@ import fi.espoo.pythia.backend.repos.entities.Project;
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
 	Project findByProjectId(Long id);
+	
 	//List<Project> findByProjectId(Long id);
 	
 	

@@ -27,6 +27,24 @@ public class StorageRestController {
 	private StorageManager storageManager;
 
 	// -------------------------GET-------------------------------
+	
+	
+	/**
+	 * return all projects
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	@GetMapping(value = "/projects/", produces = "application/json")
+	public ResponseEntity<List<ProjectValue>> getProject() {
+
+		List<ProjectValue> project = storageManager.getProjects();
+		if (project == null) {
+
+			return new ResponseEntity<List<ProjectValue>>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<ProjectValue>>(project, HttpStatus.OK);
+	}
+	
 	/**
 	 * return a single project by id if found. Otherwise return null.
 	 */
@@ -41,6 +59,22 @@ public class StorageRestController {
 		}
 		return new ResponseEntity<ProjectValue>(project, HttpStatus.OK);
 	}
+	
+	/**
+	 * return a single project by hansuprojectid if found. Otherwise return null.
+	 */
+	@SuppressWarnings("unchecked")
+	@GetMapping(value = "/projects/hansuprojectid/{hansuProjectId}", produces = "application/json")
+	public ResponseEntity<ProjectValue> getHansuProject(@PathVariable("hansuProjectId") String hansuId) {
+
+		ProjectValue project = storageManager.getProjectByHansuId(hansuId);
+		if (project == null) {
+
+			return new ResponseEntity<ProjectValue>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<ProjectValue>(project, HttpStatus.OK);
+	}
+
 
 	/**
 	 * 
@@ -60,21 +94,10 @@ public class StorageRestController {
 		return new ResponseEntity<List<PlanValue>>(plan, HttpStatus.OK);
 	}
 
-	/**
-	 * return all projects
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	@GetMapping(value = "/projects/", produces = "application/json")
-	public ResponseEntity<List<ProjectValue>> getProject() {
 
-		List<ProjectValue> project = storageManager.getProjects();
-		if (project == null) {
-
-			return new ResponseEntity<List<ProjectValue>>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<List<ProjectValue>>(project, HttpStatus.OK);
-	}
+	
+	
+	
 
 	// --------------------------POST-------------------------------------
 
