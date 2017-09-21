@@ -8,12 +8,10 @@ import fi.espoo.pythia.backend.transfer.PlanValue;
 public class PlanValueToPlanMapper {
 
 	
-	public static Plan planValueToPlan(PlanValue pv, ProjectRepository pr) {
+	public static Plan planValueToPlan(PlanValue pv, Project project) {
 		
 		//get project_id 
-		Long projectId = pv.getProjectId();
-		//get project by projectid
-		Project project = pr.findByProjectId(projectId);
+		
 
 		Plan p = new Plan();
 		
