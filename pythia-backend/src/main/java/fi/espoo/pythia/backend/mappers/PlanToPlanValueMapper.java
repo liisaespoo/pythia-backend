@@ -13,16 +13,16 @@ public class PlanToPlanValueMapper {
 
 		PlanValue pv = new PlanValue();
 		
-		pv.setPlanId(pv.getPlanId());
+		pv.setPlanId(p.getPlanId());
 		pv.setProjectId(project.getProjectId());
-		pv.setMainNo(pv.getMainNo());
-		pv.setSubNo(pv.getSubNo());
-		pv.setVersion(pv.getVersion());
+		pv.setMainNo(p.getMainNo());
+		pv.setSubNo(p.getSubNo());
+		pv.setVersion(p.getVersion());
 				
-//		p.setCreatedAt(pv.getCreatedAt());
-//		p.setCreatedBy(pv.getCreatedBy());
-//		p.setUpdatedAt(pv.getUpdatedAt());
-//		p.setUpdatedBy(pv.getUpdatedBy());
+//		pv.setCreatedAt(p.getCreatedAt());
+//		pv.setCreatedBy(p.getCreatedBy());
+//		pv.setUpdatedAt(p.getUpdatedAt());
+//		pv.setUpdatedBy(p.getUpdatedBy());
 		
 		return pv;
 	}

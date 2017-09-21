@@ -21,8 +21,8 @@ import fi.espoo.pythia.backend.transfer.ProjectValue;
 
 @RestController
 @RequestMapping("/pythia/v1")
-public class StorageRestController {	
-	
+public class StorageRestController {
+
 	@Autowired
 	private StorageManager storageManager;
 
@@ -32,65 +32,72 @@ public class StorageRestController {
 	@SuppressWarnings("unchecked")
 	@GetMapping(value = "/projects/{projectId}", produces = "application/json")
 	public ResponseEntity<ProjectValue> getProject(@PathVariable("projectId") Long projectId) {
-		
+
 		ProjectValue project = storageManager.getProject(projectId);
 		if (project == null) {
-			
+
 			return new ResponseEntity<ProjectValue>(HttpStatus.NOT_FOUND);
-		}		
-			return new ResponseEntity<ProjectValue>(project,HttpStatus.OK);		
+		}
+		return new ResponseEntity<ProjectValue>(project, HttpStatus.OK);
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	@GetMapping(value = "/plans/projectId/{projectId}", produces = "application/json")
+	public ResponseEntity<List<PlanValue>> getPlan(@PathVariable("projectId") Long projectId) {
+
+		List<PlanValue> plan = storageManager.getPlans(projectId);
+		if (plan == null) {
+
+			return new ResponseEntity<List<PlanValue>>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<List<PlanValue>>(plan, HttpStatus.OK);
+	}
+
 	@SuppressWarnings("unchecked")
 	@GetMapping(value = "/projects/", produces = "application/json")
 	public ResponseEntity<List<ProjectValue>> getProject() {
-		
+
 		List<ProjectValue> project = storageManager.getProjects();
 		if (project == null) {
-			
+
 			return new ResponseEntity<List<ProjectValue>>(HttpStatus.NOT_FOUND);
-		}		
-			return new ResponseEntity<List<ProjectValue>>(project,HttpStatus.OK);		
+		}
+		return new ResponseEntity<List<ProjectValue>>(project, HttpStatus.OK);
 	}
-	
-	
+
 	/**
-	 * create a new plan to the db and return the whole project
-	 * with all attributes
+	 * create a new plan to the db and return the whole project with all attributes
+	 * 
 	 * @param projectValue
 	 * @return
 	 */
 	@PostMapping(value = "/plans/", produces = "application/json", consumes = "application/json")
-	public ResponseEntity<ProjectValue> createProject(@RequestBody PlanValue planV) {
-	
+	public ResponseEntity<PlanValue> createPlan(@RequestBody PlanValue planV) {
+
 		// Value object mapping
-		ProjectValue savedProject = storageManager.createPlan(planV);
-		
-		return new ResponseEntity<ProjectValue>(savedProject, HttpStatus.OK);
+		PlanValue savedPlan = storageManager.createPlan(planV);
+
+		return new ResponseEntity<PlanValue>(savedPlan, HttpStatus.OK);
 	}
 
-	
-	//------------------------ NOT DONE --------------------------
-	
+	// ------------------------ NOT DONE --------------------------
+
 	/**
-	 * create a new project to the db and return the whole project
-	 * with all attributes
+	 * create a new project to the db and return the whole project with all
+	 * attributes
+	 * 
 	 * @param projectValue
 	 * @return
 	 */
 	@PostMapping(value = "/projects/", produces = "application/json", consumes = "application/json")
 	public ResponseEntity<ProjectValue> createProject(@RequestBody ProjectValue project) {
-	
+
 		// Value object mapping
 		ProjectValue savedProject = storageManager.createProject(project);
-		
+
 		return new ResponseEntity<ProjectValue>(savedProject, HttpStatus.OK);
 	}
 
-
-	
-	
-	
 	@PutMapping("/projects/{projectId}")
 	public void updateProject() {
 
