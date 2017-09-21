@@ -159,4 +159,17 @@ public class StorageManager {
 
 	}
 
+	public PlanValue updatePlan(PlanValue planV) {
+
+		Long id = planV.getProjectId();
+		Project project = projectRepository.findByProjectId(id);
+		Plan plan = PlanValueToPlanMapper.planValueToPlan(planV, project);
+
+		Plan updatedPlan = planRepository.save(plan);
+
+		PlanValue updatedPlanValue = PlanToPlanValueMapper.planToPlanValue(updatedPlan, project);
+		return updatedPlanValue;
+		
+	}
+
 }

@@ -26,6 +26,8 @@ public class StorageRestController {
 	@Autowired
 	private StorageManager storageManager;
 
+	
+	//-------------------------GET-------------------------------
 	/**
 	 * return a single project by id if found. Otherwise return null.
 	 */
@@ -64,6 +66,9 @@ public class StorageRestController {
 		}
 		return new ResponseEntity<List<ProjectValue>>(project, HttpStatus.OK);
 	}
+	
+	
+	//--------------------------POST-------------------------------------
 
 	/**
 	 * create a new plan to the db and return the whole project with all attributes
@@ -71,6 +76,7 @@ public class StorageRestController {
 	 * @param projectValue
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@PostMapping(value = "/plans/", produces = "application/json", consumes = "application/json")
 	public ResponseEntity<PlanValue> createPlan(@RequestBody PlanValue planV) {
 
@@ -80,8 +86,6 @@ public class StorageRestController {
 		return new ResponseEntity<PlanValue>(savedPlan, HttpStatus.OK);
 	}
 
-	// ------------------------ NOT DONE --------------------------
-
 	/**
 	 * create a new project to the db and return the whole project with all
 	 * attributes
@@ -89,6 +93,7 @@ public class StorageRestController {
 	 * @param projectValue
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@PostMapping(value = "/projects/", produces = "application/json", consumes = "application/json")
 	public ResponseEntity<ProjectValue> createProject(@RequestBody ProjectValue project) {
 
@@ -97,6 +102,25 @@ public class StorageRestController {
 
 		return new ResponseEntity<ProjectValue>(savedProject, HttpStatus.OK);
 	}
+	
+	
+	//---------------------------PUT--------------------------------
+
+	/**
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	@PutMapping(value = "/plans/", produces = "application/json", consumes = "application/json")
+	public ResponseEntity<PlanValue> updatePlan(@RequestBody PlanValue planV) {
+		
+		PlanValue updatedPlan = storageManager.updatePlan(planV);
+		return new ResponseEntity<PlanValue>(updatedPlan, HttpStatus.OK);
+		
+	}
+	
+	// ------------------------ NOT DONE --------------------------
+
+
 
 	@PutMapping("/projects/{projectId}")
 	public void updateProject() {
