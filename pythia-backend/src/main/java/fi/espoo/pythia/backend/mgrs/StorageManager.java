@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import fi.espoo.pythia.backend.mappers.PlanToPlanValueMapper;
 import fi.espoo.pythia.backend.mappers.PlanValueToPlanMapper;
 import fi.espoo.pythia.backend.mappers.ProjectToProjectValueMapper;
 import fi.espoo.pythia.backend.mappers.ProjectValueToProjectMapper;
@@ -58,14 +59,14 @@ public class StorageManager {
 		Project project = projectRepository.findByProjectId(projectId);
 		ProjectValue pval = ProjectToProjectValueMapper.projectToProjectValue(project);
 		return pval;
-		
-//		List<ProjectValue> projects = getProjects();
-//		for (ProjectValue p : projects) {
-//			if (p.getProjectId().equals(projectId)) {
-//				return p;
-//			}
-//		}
-//		return null;
+
+		// List<ProjectValue> projects = getProjects();
+		// for (ProjectValue p : projects) {
+		// if (p.getProjectId().equals(projectId)) {
+		// return p;
+		// }
+		// }
+		// return null;
 	}
 
 	/**
@@ -127,7 +128,7 @@ public class StorageManager {
 	 * 
 	 * @return ProjectValue that the plan was added to
 	 */
-	public ProjectValue createPlan(PlanValue planV) {
+	public PlanValue createPlan(PlanValue planV) {
 
 		Long projectId = planV.getProjectId();
 		// get project by projectid
@@ -135,13 +136,27 @@ public class StorageManager {
 
 		// map planV to plan
 		Plan plan = PlanValueToPlanMapper.planValueToPlan(planV, project);
-		planRepository.save(plan);
+		Plan savedPlan = planRepository.save(plan);
 
-		Project savedProject = projectRepository.findByProjectId(projectId);
-		ProjectValue savedProjectValue = ProjectToProjectValueMapper.projectToProjectValue(savedProject);
-
+		PlanValue savedPlanValue = PlanToPlanValueMapper.planToPlanValue(savedPlan, project);
 		// finally
-		return savedProjectValue;
+		return savedPlanValue;
+	}
+
+	public List<PlanValue> getPlans(Long projectId) {
+
+		Project project = projectRepository.findByProjectId(projectId);
+		ProjectValue pval = ProjectToProjectValueMapper.projectToProjectValue(project);
+
+		List<PlanValue> planValues = new ArrayList();
+
+		for (Plan plan : pval.getPlans()) {
+			// map each plan to planValue
+			PlanValue planValue = PlanToPlanValueMapper.planToPlanValue(plan, project);
+			planValues.add(planValue);
+		}
+		return planValues;
+
 	}
 
 }
