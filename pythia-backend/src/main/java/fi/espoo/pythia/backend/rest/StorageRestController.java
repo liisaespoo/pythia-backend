@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fi.espoo.pythia.backend.mgrs.StorageManager;
 import fi.espoo.pythia.backend.repos.entities.Project;
-
+import fi.espoo.pythia.backend.transfer.PlanValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue;
 
 @RestController
@@ -53,6 +53,22 @@ public class StorageRestController {
 			return new ResponseEntity<List<ProjectValue>>(project,HttpStatus.OK);		
 	}
 	
+	
+	/**
+	 * create a new plan to the db and return the whole project
+	 * with all attributes
+	 * @param projectValue
+	 * @return
+	 */
+	@PostMapping(value = "/plans/", produces = "application/json", consumes = "application/json")
+	public ResponseEntity<ProjectValue> createProject(@RequestBody PlanValue planV) {
+	
+		// Value object mapping
+		ProjectValue savedProject = storageManager.createPlan(planV);
+		
+		return new ResponseEntity<ProjectValue>(savedProject, HttpStatus.OK);
+	}
+
 	
 	//------------------------ NOT DONE --------------------------
 	
