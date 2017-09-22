@@ -1,3 +1,9 @@
+/**
+ * TODO
+ * Denial of service. Send notifications (e-mail )+ DB -inserts no more that x times per minute
+ * Connection pool configuration
+ */
+
 package fi.espoo.pythia.backend;
 
 import java.util.Properties;
@@ -25,14 +31,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  *         See also
  *         http://www.baeldung.com/the-persistence-layer-with-spring-and-jpa and
  *         http://www.baeldung.com/spring-data-jpa-multiple-databases
- * 
- *
  */
 
-/**
- * 
+/** 
  * @author saara
- *
  */
 @Configuration
 @EnableConfigurationProperties
@@ -46,7 +48,7 @@ public class ApplicationConfig {
 	public DataSource dataSource() {
 
 		DataSource dataSource = DataSourceBuilder.create()
-				.url("jdbc:postgresql://localhost:5432/pythia")
+				.url("jdbc:postgresql://bb1w1g6xo4mi3ad.c1gsadouzuf9.eu-west-1.rds.amazonaws.com:5432/pythia")
 				.driverClassName("org.postgresql.Driver").username("pythiaservice").password("pythiaservice").build();
 
 		return dataSource;
@@ -98,6 +100,8 @@ public class ApplicationConfig {
 		// spring.jpa.properties.hibernate.default_schema=project
 
 		jpaProperties.put("hibernate.default_schema", "project");
+		
+		
 
 		entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
