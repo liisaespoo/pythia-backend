@@ -1,6 +1,5 @@
 package fi.espoo.pythia.backend.repos;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,23 +28,20 @@ import fi.espoo.pythia.backend.transfer.ProjectValue;
 @WebMvcTest(value = StorageRestController.class, secure = false)
 public class StorageRestControllerTest {
 
-	
 	@Autowired
 	private MockMvc mockMvc;
-	
+
 	@MockBean
 	private StorageManager storageManager;
 
-	Long projectId = 14L; 
-	String hansuProjectId = "E3456"; 
-	String name = "testproject"; 
-	short mainNo = 2345; 
+	Long projectId = 14L;
+	String hansuProjectId = "E3456";
+	String name = "testproject";
+	short mainNo = 2345;
 	String description = "some desc";
 	List<Plan> plans = new ArrayList();
-	
-	ProjectValue mockProject = new ProjectValue(projectId, hansuProjectId, name, mainNo, description,
-			plans);
-	
+
+	ProjectValue mockProject = new ProjectValue(projectId, hansuProjectId, name, mainNo, description, plans);
 
 	String exampleProjectJson = "{\"projectId\": 14,\"hansuProjectId\": \"E3456\",\"name\": \"testproject\",\"mainNo\": 2345,\"description\": \"some desc\",\"plans\": []}";
 
@@ -54,25 +50,13 @@ public class StorageRestControllerTest {
 
 		Mockito.when(storageManager.getProject(Mockito.anyLong())).thenReturn(mockProject);
 
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
-				"/pythia/v1/projects/14").accept(
-				MediaType.APPLICATION_JSON);
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/pythia/v1/projects/14")
+				.accept(MediaType.APPLICATION_JSON);
 
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
 		System.out.println(result.getResponse());
-		String expected = "{projectId: 1,hansuProjectId: B3456,name: testproject,mainNo: 2345}";
-
-		//String expected = exampleProjectJson;
-		// {"id":"Course1","name":"Spring","description":"10 Steps, 25 Examples and 10K Students","steps":["Learn Maven","Import Project","First Example","Second Example"]}
-
-		//{"projectId": 14,"hansuProjectId": "E3456","name": "Testi1","mainNo": 2345,"description": null,"plans": []}
-		JSONAssert.assertEquals(exampleProjectJson, result.getResponse()
-				.getContentAsString(), false);
+		JSONAssert.assertEquals(exampleProjectJson, result.getResponse().getContentAsString(), false);
 	}
 
 }
-
-
-
-
