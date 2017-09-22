@@ -7,6 +7,8 @@
 package fi.espoo.pythia.backend;
 
 import java.util.Properties;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -47,8 +49,19 @@ public class ApplicationConfig {
 	@Bean
 	public DataSource dataSource() {
 
+		String computerName = null;
+		try {
+			computerName = InetAddress.getLocalHost().getHostName();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String url = "jdbc:postgresql://bb1w1g6xo4mi3ad.c1gsadouzuf9.eu-west-1.rds.amazonaws.com";
+		if(computerName.contains("saara")) {
+			url = "jdbc:postgresql://localhost";
+		}
 		DataSource dataSource = DataSourceBuilder.create()
-				.url("jdbc:postgresql://bb1w1g6xo4mi3ad.c1gsadouzuf9.eu-west-1.rds.amazonaws.com:5432/pythia")
+				.url(url+":5432/pythia")
 				.driverClassName("org.postgresql.Driver").username("pythiaservice").password("pythiaservice").build();
 
 		return dataSource;

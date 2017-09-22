@@ -6,6 +6,10 @@
  * suunnitelma on muutettu
  * 
  * 
+ * 
+ * http://www.springboottutorial.com/unit-testing-for-spring-boot-rest-services
+ * 
+ * 
  */
 
 package fi.espoo.pythia.backend.rest;
@@ -93,7 +97,7 @@ public class StorageRestController {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	@GetMapping(value = "/plans/projectId/{projectId}", produces = "application/json")
+	@GetMapping(value = "/projects/{projectId}/plans/", produces = "application/json")
 	public ResponseEntity<List<PlanValue>> getPlan(@PathVariable("projectId") Long projectId) {
 
 		List<PlanValue> plan = storageManager.getPlans(projectId);
@@ -118,7 +122,7 @@ public class StorageRestController {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	@PostMapping(value = "/plans/", produces = "application/json", consumes = "application/json")
+	@PostMapping(value = "/projects/{projectId}/plans/", produces = "application/json", consumes = "application/json")
 	public ResponseEntity<PlanValue> createPlan(@RequestBody PlanValue planV) {
 
 		// Value object mapping
@@ -147,19 +151,16 @@ public class StorageRestController {
 	// ---------------------------PUT--------------------------------
 
 	/**
-	 * 
+	 * update a plan of a project
 	 */
 	@SuppressWarnings("unchecked")
-	@PutMapping(value = "/plans/{planId}", produces = "application/json", consumes = "application/json")
-	public ResponseEntity<PlanValue> updatePlan(@PathVariable("planId") Long planId, @RequestBody PlanValue planV) {
+	@PutMapping(value = "/projects/{projectId}/plans/{planId}", produces = "application/json", consumes = "application/json")
+	public ResponseEntity<PlanValue> updatePlan(@RequestBody PlanValue planV) {
 
-		if(planId.equals(planV.getPlanId())) {
+		
 			PlanValue updatedPlan = storageManager.updatePlan(planV);
 			return new ResponseEntity<PlanValue>(updatedPlan, HttpStatus.OK);
-		}
-		else {
-			return new ResponseEntity<PlanValue>(planV, HttpStatus.CONFLICT);
-		}
+	
 		
 
 	}
