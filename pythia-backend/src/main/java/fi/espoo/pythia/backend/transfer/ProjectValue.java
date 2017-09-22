@@ -33,37 +33,19 @@ public class ProjectValue implements Serializable {
 	public ProjectValue() {
 	}
 
-	// public ProjectValue(String jsonValue) {
-	// // TODO json to objects
-	// }
-	//
-	//
-	//
-	// public ProjectValue(Long projectId, String hansuProjectId, short mainNo,
-	// String name, String description, String createdBy,
-	// String updatedBy) {
-	//
-	// this.projectId = projectId;
-	// this.hansuProjectId = hansuProjectId;
-	// this.name = name;
-	// this.mainNo = mainNo;
-	// this.description = description;
-	//// this.createdBy = createdBy;
-	//// this.updatedBy = updatedBy;
-	// }
-	//
-	// // create the class with a Project Entity
-	// public ProjectValue(Project project) {
-	// this.projectId = project.getProjectId();
-	// this.hansuProjectId = project.getHansuProjectId();
-	// this.mainNo = project.getMainNo();
-	// this.name = project.getName();
-	// this.description = project.getDescription();
-	//// this.createdAt = project.getCreatedAt();
-	//// this.createdBy = project.getCreatedBy();
-	//// this.updatedAt = project.getUpdatedAt();
-	//// this.updatedBy = project.getUpdatedBy();
-	// }
+
+
+	public ProjectValue(Long projectId, String hansuProjectId, String name, short mainNo, String description,
+			List<Plan> plans) {
+		this.projectId = projectId;
+		this.hansuProjectId = hansuProjectId;
+		this.name = name;
+		this.mainNo = mainNo;
+		this.description = description;
+		this.plans = plans;
+	}
+
+
 
 	public Long getProjectId() {
 		return projectId;
