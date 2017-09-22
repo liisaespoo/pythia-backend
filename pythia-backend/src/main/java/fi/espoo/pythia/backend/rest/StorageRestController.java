@@ -1,3 +1,13 @@
+/**
+ * input validation (kantaan ei saa mennä kuin valvottuja arvoja)
+ * 
+ * päätös on tehty
+ * suunnitelma on hyväksytty
+ * suunnitelma on muutettu
+ * 
+ * 
+ */
+
 package fi.espoo.pythia.backend.rest;
 
 import java.util.List;
@@ -140,11 +150,17 @@ public class StorageRestController {
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	@PutMapping(value = "/plans/", produces = "application/json", consumes = "application/json")
-	public ResponseEntity<PlanValue> updatePlan(@RequestBody PlanValue planV) {
+	@PutMapping(value = "/plans/{planId}", produces = "application/json", consumes = "application/json")
+	public ResponseEntity<PlanValue> updatePlan(@PathVariable("planId") Long planId, @RequestBody PlanValue planV) {
 
-		PlanValue updatedPlan = storageManager.updatePlan(planV);
-		return new ResponseEntity<PlanValue>(updatedPlan, HttpStatus.OK);
+		if(planId.equals(planV.getPlanId())) {
+			PlanValue updatedPlan = storageManager.updatePlan(planV);
+			return new ResponseEntity<PlanValue>(updatedPlan, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<PlanValue>(planV, HttpStatus.CONFLICT);
+		}
+		
 
 	}
 
