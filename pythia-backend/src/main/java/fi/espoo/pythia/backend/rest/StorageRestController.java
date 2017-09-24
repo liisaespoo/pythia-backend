@@ -41,24 +41,25 @@ public class StorageRestController {
 	private StorageManager storageManager;
 
 	// -------------------------GET-------------------------------
-	
-	
+
 	/**
 	 * return all projects
+	 * 
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	@GetMapping(value = "/projects/", produces = "application/json")
 	public ResponseEntity<List<ProjectValue>> getProject() {
 
-		List<ProjectValue> project = storageManager.getProjects();
-		if (project == null) {
-
+		try {
+			List<ProjectValue> project = storageManager.getProjects();
+			return new ResponseEntity<List<ProjectValue>>(project, HttpStatus.OK);
+		} catch (java.lang.NullPointerException e) {
 			return new ResponseEntity<List<ProjectValue>>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<List<ProjectValue>>(project, HttpStatus.OK);
+
 	}
-	
+
 	/**
 	 * return a single project by id if found. Otherwise return null.
 	 */
@@ -66,14 +67,15 @@ public class StorageRestController {
 	@GetMapping(value = "/projects/{projectId}", produces = "application/json")
 	public ResponseEntity<ProjectValue> getProject(@PathVariable("projectId") Long projectId) {
 
-		ProjectValue project = storageManager.getProject(projectId);
-		if (project == null) {
-
-			return new ResponseEntity<ProjectValue>(HttpStatus.NOT_FOUND);
+		try {
+			ProjectValue project = storageManager.getProject(projectId);
+			return new ResponseEntity<ProjectValue>(project, HttpStatus.OK);
+		} catch (java.lang.NullPointerException e) {
+			return new ResponseEntity<ProjectValue>(new ProjectValue(), HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<ProjectValue>(project, HttpStatus.OK);
+
 	}
-	
+
 	/**
 	 * return a single project by hansuprojectid if found. Otherwise return null.
 	 */
@@ -81,18 +83,19 @@ public class StorageRestController {
 	@GetMapping(value = "/projects/hansuprojectid/{hansuProjectId}", produces = "application/json")
 	public ResponseEntity<ProjectValue> getHansuProject(@PathVariable("hansuProjectId") String hansuId) {
 
-		ProjectValue project = storageManager.getProjectByHansuId(hansuId);
-		if (project == null) {
-
-			return new ResponseEntity<ProjectValue>(HttpStatus.NOT_FOUND);
+		try {
+			ProjectValue project = storageManager.getProjectByHansuId(hansuId);
+			return new ResponseEntity<ProjectValue>(project, HttpStatus.OK);
+		} catch (java.lang.NullPointerException e) {
+			return new ResponseEntity<ProjectValue>(new ProjectValue(), HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<ProjectValue>(project, HttpStatus.OK);
-	}
 
+	}
 
 	/**
 	 * 
 	 * return all plans by projectId
+	 * 
 	 * @param projectId
 	 * @return
 	 */
@@ -100,18 +103,14 @@ public class StorageRestController {
 	@GetMapping(value = "/projects/{projectId}/plans/", produces = "application/json")
 	public ResponseEntity<List<PlanValue>> getPlan(@PathVariable("projectId") Long projectId) {
 
-		List<PlanValue> plan = storageManager.getPlans(projectId);
-		if (plan == null) {
-
+		try {
+			List<PlanValue> plan = storageManager.getPlans(projectId);
+			return new ResponseEntity<List<PlanValue>>(plan, HttpStatus.OK);
+		} catch (java.lang.NullPointerException e) {
 			return new ResponseEntity<List<PlanValue>>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<List<PlanValue>>(plan, HttpStatus.OK);
+
 	}
-
-
-	
-	
-	
 
 	// --------------------------POST-------------------------------------
 
@@ -157,11 +156,8 @@ public class StorageRestController {
 	@PutMapping(value = "/projects/{projectId}/plans/{planId}", produces = "application/json", consumes = "application/json")
 	public ResponseEntity<PlanValue> updatePlan(@RequestBody PlanValue planV) {
 
-		
-			PlanValue updatedPlan = storageManager.updatePlan(planV);
-			return new ResponseEntity<PlanValue>(updatedPlan, HttpStatus.OK);
-	
-		
+		PlanValue updatedPlan = storageManager.updatePlan(planV);
+		return new ResponseEntity<PlanValue>(updatedPlan, HttpStatus.OK);
 
 	}
 

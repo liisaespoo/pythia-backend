@@ -1,4 +1,14 @@
-package fi.espoo.pythia.backend.repos;
+/**
+ * http://www.springboottutorial.com/unit-testing-for-spring-boot-rest-services
+ */
+
+package fi.espoo.pythia.backend.rest;
+
+import static org.junit.Assert.*;
+
+/**
+ * @author saara
+ */
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +21,10 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -43,7 +56,8 @@ public class StorageRestControllerTest {
 
 	ProjectValue mockProject = new ProjectValue(projectId, hansuProjectId, name, mainNo, description, plans);
 
-	String exampleProjectJson = "{\"projectId\": 14,\"hansuProjectId\": \"E3456\",\"name\": \"testproject\",\"mainNo\": 2345,\"description\": \"some desc\",\"plans\": []}";
+	String exampleProjectGetJson = "{\"projectId\": 14,\"hansuProjectId\": \"E3456\",\"name\": \"testproject\",\"mainNo\": 2345,\"description\": \"some desc\",\"plans\": []}";
+	String exampleProjectPostJson = "{\"hansuProjectId\": \"E3456\",\"name\": \"testproject\",\"mainNo\": 2345,\"description\": \"some desc\",\"plans\": []}";
 
 	@Test
 	public void retrieveDetailsForProject() throws Exception {
@@ -56,7 +70,46 @@ public class StorageRestControllerTest {
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
 		System.out.println(result.getResponse());
-		JSONAssert.assertEquals(exampleProjectJson, result.getResponse().getContentAsString(), false);
+		JSONAssert.assertEquals(exampleProjectGetJson, result.getResponse().getContentAsString(), false);
 	}
+	
+	
+	
+	@Test
+	public void createStudentCourse() throws Exception {
+		
+		// studentService.addCourse to respond back with mockCourse
+		Mockito.when(
+				storageManager.createProject(Mockito.any(ProjectValue.class))).thenReturn(mockProject);
+
+		
+		
+		// Send course as body to /students/Student1/courses
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+				.post("/pythia/v1/projects/")
+				.accept(MediaType.APPLICATION_JSON).content(exampleProjectPostJson)
+				.contentType(MediaType.APPLICATION_JSON);
+
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+
+		MockHttpServletResponse response = result.getResponse();
+
+		System.out.println("Response:"+response);
+		System.out.println("Response status:"+response.getStatus());
+		System.out.println("Response header:"+response.getHeader(HttpHeaders.LOCATION));
+		
+		assertEquals(HttpStatus.CREATED.value(), response.getStatus());
+
+		assertEquals("http://localhost/pythia/v1/projects/14",
+				response.getHeader(HttpHeaders.LOCATION));
+
+	}
+
+	
+	
+	
+	
+	
+	
 
 }
