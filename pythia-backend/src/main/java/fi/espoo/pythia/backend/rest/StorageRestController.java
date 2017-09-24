@@ -124,10 +124,16 @@ public class StorageRestController {
 	@PostMapping(value = "/projects/{projectId}/plans/", produces = "application/json", consumes = "application/json")
 	public ResponseEntity<PlanValue> createPlan(@RequestBody PlanValue planV) {
 
+		// catch exception database connection
+		//
 		// Value object mapping
-		PlanValue savedPlan = storageManager.createPlan(planV);
+		try {
+			PlanValue savedPlan = storageManager.createPlan(planV);
+			return new ResponseEntity<PlanValue>(savedPlan, HttpStatus.OK);
+		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
+			return new ResponseEntity<PlanValue>(HttpStatus.FORBIDDEN);
+		}
 
-		return new ResponseEntity<PlanValue>(savedPlan, HttpStatus.OK);
 	}
 
 	/**
@@ -142,9 +148,13 @@ public class StorageRestController {
 	public ResponseEntity<ProjectValue> createProject(@RequestBody ProjectValue project) {
 
 		// Value object mapping
-		ProjectValue savedProject = storageManager.createProject(project);
+		try {
+			ProjectValue savedProject = storageManager.createProject(project);
+			return new ResponseEntity<ProjectValue>(savedProject, HttpStatus.OK);
+		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
+			return new ResponseEntity<ProjectValue>(HttpStatus.FORBIDDEN);
+		}
 
-		return new ResponseEntity<ProjectValue>(savedProject, HttpStatus.OK);
 	}
 
 	// ---------------------------PUT--------------------------------
@@ -156,8 +166,12 @@ public class StorageRestController {
 	@PutMapping(value = "/projects/{projectId}/plans/{planId}", produces = "application/json", consumes = "application/json")
 	public ResponseEntity<PlanValue> updatePlan(@RequestBody PlanValue planV) {
 
-		PlanValue updatedPlan = storageManager.updatePlan(planV);
-		return new ResponseEntity<PlanValue>(updatedPlan, HttpStatus.OK);
+		try {
+			PlanValue updatedPlan = storageManager.updatePlan(planV);
+			return new ResponseEntity<PlanValue>(updatedPlan, HttpStatus.OK);
+		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
+			return new ResponseEntity<PlanValue>(HttpStatus.FORBIDDEN);
+		}
 
 	}
 
