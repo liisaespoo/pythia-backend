@@ -56,6 +56,8 @@ public class StorageRestController {
 			return new ResponseEntity<List<ProjectValue>>(project, HttpStatus.OK);
 		} catch (java.lang.NullPointerException e) {
 			return new ResponseEntity<List<ProjectValue>>(HttpStatus.NOT_FOUND);
+		}catch (org.springframework.transaction.CannotCreateTransactionException e){
+			return new ResponseEntity<List<ProjectValue>>(HttpStatus.FORBIDDEN);
 		}
 
 	}
@@ -72,6 +74,8 @@ public class StorageRestController {
 			return new ResponseEntity<ProjectValue>(project, HttpStatus.OK);
 		} catch (java.lang.NullPointerException e) {
 			return new ResponseEntity<ProjectValue>(new ProjectValue(), HttpStatus.NOT_FOUND);
+		}catch (org.springframework.transaction.CannotCreateTransactionException e){
+			return new ResponseEntity<ProjectValue>(HttpStatus.FORBIDDEN);
 		}
 
 	}
@@ -88,6 +92,8 @@ public class StorageRestController {
 			return new ResponseEntity<ProjectValue>(project, HttpStatus.OK);
 		} catch (java.lang.NullPointerException e) {
 			return new ResponseEntity<ProjectValue>(new ProjectValue(), HttpStatus.NOT_FOUND);
+		}catch (org.springframework.transaction.CannotCreateTransactionException e){
+			return new ResponseEntity<ProjectValue>(HttpStatus.FORBIDDEN);
 		}
 
 	}
@@ -108,6 +114,8 @@ public class StorageRestController {
 			return new ResponseEntity<List<PlanValue>>(plan, HttpStatus.OK);
 		} catch (java.lang.NullPointerException e) {
 			return new ResponseEntity<List<PlanValue>>(HttpStatus.NOT_FOUND);
+		}catch (org.springframework.transaction.CannotCreateTransactionException e){
+			return new ResponseEntity<List<PlanValue>>(HttpStatus.FORBIDDEN);
 		}
 
 	}
@@ -181,7 +189,7 @@ public class StorageRestController {
 	 * update a project
 	 */
 	@SuppressWarnings("unchecked")
-	@PutMapping(value = "/projects/{projectId}/", produces = "application/json", consumes = "application/json")
+	@PutMapping(value = "/projects/{projectId}", produces = "application/json", consumes = "application/json")
 	public ResponseEntity<ProjectValue> updateProject(@RequestBody ProjectValue projectV) {
 
 		try {
@@ -195,10 +203,6 @@ public class StorageRestController {
 	
 	// ------------------------ NOT DONE --------------------------
 
-	@PutMapping("/projects/{projectId}")
-	public void updateProject() {
-
-	}
 
 	@DeleteMapping("/projects/{projectId}")
 	public void deleteProject() {

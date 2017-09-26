@@ -35,6 +35,7 @@ import fi.espoo.pythia.backend.mgrs.StorageManager;
 import fi.espoo.pythia.backend.repos.entities.Plan;
 import fi.espoo.pythia.backend.repos.entities.Project;
 import fi.espoo.pythia.backend.rest.StorageRestController;
+import fi.espoo.pythia.backend.transfer.PlanValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue;
 
 @RunWith(SpringRunner.class)
@@ -52,7 +53,7 @@ public class StorageRestControllerTest {
 	String name = "testproject";
 	short mainNo = 2345;
 	String description = "some desc";
-	List<Plan> plans = new ArrayList();
+	List<PlanValue> plans = new ArrayList();
 
 	ProjectValue mockProject = new ProjectValue(projectId, hansuProjectId, name, mainNo, description, plans);
 

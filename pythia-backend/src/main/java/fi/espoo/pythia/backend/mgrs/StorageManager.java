@@ -94,12 +94,12 @@ public class StorageManager {
 
 		List<PlanValue> planValues = new ArrayList();
 
-		for (Plan plan : pval.getPlans()) {
-			// map each plan to planValue
-			PlanValue planValue = PlanToPlanValueMapper.planToPlanValue(plan, project);
-			planValues.add(planValue);
-		}
-		return planValues;
+//		for (Plan plan : pval.getPlans()) {
+//			// map each plan to planValue
+//			PlanValue planValue = PlanToPlanValueMapper.planToPlanValue(plan, project);
+//			planValues.add(planValue);
+//		}
+		return pval.getPlans();
 
 	}
 
@@ -153,7 +153,7 @@ public class StorageManager {
 	 */
 	public ProjectValue updateProject(ProjectValue projectV) {
 
-		Project project = ProjectValueToProjectMapper.projectValueToProject(projectV);
+		Project project = ProjectValueToProjectMapper.projectValueToProjectUpdate(projectV);
 		Project updatedProject = projectRepository.save(project);
 
 		ProjectValue updatedProjectValue = ProjectToProjectValueMapper.projectToProjectValue(updatedProject);

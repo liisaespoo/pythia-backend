@@ -35,8 +35,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  *         http://www.baeldung.com/spring-data-jpa-multiple-databases
  */
 
-/** 
+/**
  * @author saara
+ * 
+ * SELECT usename,valuntil FROM pg_user;
+ * ALTER USER pythiaservice VALID UNTIL 'infinity';
+ * 
  */
 @Configuration
 @EnableConfigurationProperties
@@ -44,8 +48,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class ApplicationConfig {
 
-
-//bb1w1g6xo4mi3ad.c1gsadouzuf9.eu-west-1.rds.amazonaws.com
+	// bb1w1g6xo4mi3ad.c1gsadouzuf9.eu-west-1.rds.amazonaws.com
 	@Bean
 	public DataSource dataSource() {
 
@@ -57,11 +60,14 @@ public class ApplicationConfig {
 			e.printStackTrace();
 		}
 		String url = "jdbc:postgresql://bb1w1g6xo4mi3ad.c1gsadouzuf9.eu-west-1.rds.amazonaws.com";
-		if(computerName.contains("saara")) {
+		String port = "5432";
+		if (computerName.contains("saara")) {
 			url = "jdbc:postgresql://localhost";
+		} else if (computerName.contains("LTH")) {
+			url = "jdbc:postgresql://localhost";
+			port = "5666";
 		}
-		DataSource dataSource = DataSourceBuilder.create()
-				.url(url+":5432/pythia")
+		DataSource dataSource = DataSourceBuilder.create().url(url + ":"+port+"/pythia")
 				.driverClassName("org.postgresql.Driver").username("pythiaservice").password("pythiaservice").build();
 
 		return dataSource;
@@ -90,11 +96,13 @@ public class ApplicationConfig {
 
 		Properties jpaProperties = new Properties();
 
-		// Configures the used database dialect. This allows Hibernate to create SQL
+		// Configures the used database dialect. This allows Hibernate to create
+		// SQL
 		// that is optimized for the used database.
 		jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
 
-		// Specifies the action that is invoked to the database when the Hibernate
+		// Specifies the action that is invoked to the database when the
+		// Hibernate
 		// SessionFactory is created or closed.
 		jpaProperties.put("hibernate.hbm2ddl.auto", "false");
 
@@ -113,8 +121,6 @@ public class ApplicationConfig {
 		// spring.jpa.properties.hibernate.default_schema=project
 
 		jpaProperties.put("hibernate.default_schema", "project");
-		
-		
 
 		entityManagerFactoryBean.setJpaProperties(jpaProperties);
 

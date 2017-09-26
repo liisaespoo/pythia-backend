@@ -24,7 +24,7 @@ public class ProjectValue implements Serializable {
 	private short mainNo;
 	private String description;
 	// removed ArrayList definition
-	private List<Plan> plans;
+	private List<PlanValue> plans;
 	// private OffsetDateTime createdAt;
 	// private String createdBy;
 	// private OffsetDateTime updatedAt;
@@ -33,10 +33,8 @@ public class ProjectValue implements Serializable {
 	public ProjectValue() {
 	}
 
-
-
 	public ProjectValue(Long projectId, String hansuProjectId, String name, short mainNo, String description,
-			List<Plan> plans) {
+			List<PlanValue> plans) {
 		this.projectId = projectId;
 		this.hansuProjectId = hansuProjectId;
 		this.name = name;
@@ -44,8 +42,6 @@ public class ProjectValue implements Serializable {
 		this.description = description;
 		this.plans = plans;
 	}
-
-
 
 	public Long getProjectId() {
 		return projectId;
@@ -87,11 +83,11 @@ public class ProjectValue implements Serializable {
 		this.description = description;
 	}
 
-	public List<Plan> getPlans() {
+	public List<PlanValue> getPlans() {
 		return plans;
 	}
 
-	public void setPlans(List<Plan> plans) {
+	public void setPlans(List<PlanValue> plans) {
 		this.plans = plans;
 	}
 
