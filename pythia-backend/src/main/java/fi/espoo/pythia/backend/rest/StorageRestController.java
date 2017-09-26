@@ -175,6 +175,24 @@ public class StorageRestController {
 
 	}
 
+	
+
+	/**
+	 * update a project
+	 */
+	@SuppressWarnings("unchecked")
+	@PutMapping(value = "/projects/{projectId}/", produces = "application/json", consumes = "application/json")
+	public ResponseEntity<ProjectValue> updateProject(@RequestBody ProjectValue projectV) {
+
+		try {
+			ProjectValue updatedProject = storageManager.updateProject(projectV);
+			return new ResponseEntity<ProjectValue>(updatedProject, HttpStatus.OK);
+		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
+			return new ResponseEntity<ProjectValue>(HttpStatus.FORBIDDEN);
+		}
+
+	}
+	
 	// ------------------------ NOT DONE --------------------------
 
 	@PutMapping("/projects/{projectId}")
