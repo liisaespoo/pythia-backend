@@ -71,6 +71,7 @@ public class StorageRestController {
 
 		try {
 			ProjectValue project = storageManager.getProject(projectId);
+			
 			return new ResponseEntity<ProjectValue>(project, HttpStatus.OK);
 		} catch (java.lang.NullPointerException e) {
 			return new ResponseEntity<ProjectValue>(new ProjectValue(), HttpStatus.NOT_FOUND);
@@ -89,13 +90,17 @@ public class StorageRestController {
 
 		try {
 			ProjectValue project = storageManager.getProjectByHansuId(hansuId);
+			System.out.println("project:"+project);
+			if(project == null){
+				return new ResponseEntity<ProjectValue>(project, HttpStatus.NOT_FOUND);
+			}
 			return new ResponseEntity<ProjectValue>(project, HttpStatus.OK);
 		} catch (java.lang.NullPointerException e) {
 			return new ResponseEntity<ProjectValue>(new ProjectValue(), HttpStatus.NOT_FOUND);
 		}catch (org.springframework.transaction.CannotCreateTransactionException e){
 			return new ResponseEntity<ProjectValue>(HttpStatus.FORBIDDEN);
 		}
-
+	
 	}
 
 	/**
@@ -204,6 +209,9 @@ public class StorageRestController {
 	// ------------------------ NOT DONE --------------------------
 
 
+	/**
+	 * not done
+	 */
 	@DeleteMapping("/projects/{projectId}")
 	public void deleteProject() {
 
