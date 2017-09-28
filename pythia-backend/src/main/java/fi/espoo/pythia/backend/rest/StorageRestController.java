@@ -14,6 +14,7 @@
 
 package fi.espoo.pythia.backend.rest;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import fi.espoo.pythia.backend.mgrs.S3Manager;
 import fi.espoo.pythia.backend.mgrs.StorageManager;
 import fi.espoo.pythia.backend.repos.entities.Project;
 import fi.espoo.pythia.backend.transfer.PlanValue;
@@ -39,6 +43,9 @@ public class StorageRestController {
 
 	@Autowired
 	private StorageManager storageManager;
+	
+	@Autowired
+	private S3Manager s3Manager;
 
 	// -------------------------GET-------------------------------
 
@@ -56,10 +63,9 @@ public class StorageRestController {
 			return new ResponseEntity<List<ProjectValue>>(project, HttpStatus.OK);
 		} catch (java.lang.NullPointerException e) {
 			return new ResponseEntity<List<ProjectValue>>(HttpStatus.NOT_FOUND);
-		}catch (org.springframework.transaction.CannotCreateTransactionException e){
+		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
 			return new ResponseEntity<List<ProjectValue>>(HttpStatus.FORBIDDEN);
 		}
-
 	}
 
 	/**
@@ -71,18 +77,18 @@ public class StorageRestController {
 
 		try {
 			ProjectValue project = storageManager.getProject(projectId);
-			
+
 			return new ResponseEntity<ProjectValue>(project, HttpStatus.OK);
 		} catch (java.lang.NullPointerException e) {
 			return new ResponseEntity<ProjectValue>(new ProjectValue(), HttpStatus.NOT_FOUND);
-		}catch (org.springframework.transaction.CannotCreateTransactionException e){
+		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
 			return new ResponseEntity<ProjectValue>(HttpStatus.FORBIDDEN);
 		}
-
 	}
 
 	/**
-	 * return a single project by hansuprojectid if found. Otherwise return null.
+	 * return a single project by hansuprojectid if found. Otherwise return
+	 * null.
 	 */
 	@SuppressWarnings("unchecked")
 	@GetMapping(value = "/projects/hansuprojectid/{hansuProjectId}", produces = "application/json")
@@ -90,17 +96,16 @@ public class StorageRestController {
 
 		try {
 			ProjectValue project = storageManager.getProjectByHansuId(hansuId);
-			System.out.println("project:"+project);
-			if(project == null){
+			System.out.println("project:" + project);
+			if (project == null) {
 				return new ResponseEntity<ProjectValue>(project, HttpStatus.NOT_FOUND);
 			}
 			return new ResponseEntity<ProjectValue>(project, HttpStatus.OK);
 		} catch (java.lang.NullPointerException e) {
 			return new ResponseEntity<ProjectValue>(new ProjectValue(), HttpStatus.NOT_FOUND);
-		}catch (org.springframework.transaction.CannotCreateTransactionException e){
+		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
 			return new ResponseEntity<ProjectValue>(HttpStatus.FORBIDDEN);
 		}
-	
 	}
 
 	/**
@@ -119,7 +124,7 @@ public class StorageRestController {
 			return new ResponseEntity<List<PlanValue>>(plan, HttpStatus.OK);
 		} catch (java.lang.NullPointerException e) {
 			return new ResponseEntity<List<PlanValue>>(HttpStatus.NOT_FOUND);
-		}catch (org.springframework.transaction.CannotCreateTransactionException e){
+		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
 			return new ResponseEntity<List<PlanValue>>(HttpStatus.FORBIDDEN);
 		}
 
@@ -128,7 +133,8 @@ public class StorageRestController {
 	// --------------------------POST-------------------------------------
 
 	/**
-	 * create a new plan to the db and return the whole project with all attributes
+	 * create a new plan to the db and return the whole project with all
+	 * attributes
 	 * 
 	 * @param projectValue
 	 * @return
@@ -169,6 +175,58 @@ public class StorageRestController {
 		}
 
 	}
+	
+	
+//	@SuppressWarnings("unchecked")
+//	@PostMapping(value = "/projects/{projectId}/plans/{planId}/files/", produces = "application/json", consumes = "application/json")
+//	public ResponseEntity<String> createPlanFile(@RequestBody FileValue base64) {
+//
+//		System.out.println(base64);
+//		
+//		// Value object mapping
+//		try {
+//			String savedImage = s3Manager.createPlanFileBase64("1test", "kirapythia-example-bucket", base64);
+//			if (savedImage.isEmpty() || savedImage == null) {
+//				return new ResponseEntity<String>("",HttpStatus.NOT_FOUND);
+//			}
+//			return new ResponseEntity<String>(savedImage, HttpStatus.OK);
+//		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
+//			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			return new ResponseEntity<String>(HttpStatus.I_AM_A_TEAPOT);
+//		}
+//
+//	}
+	
+	
+	//, produces = "application/json", consumes = "file"
+	
+	@SuppressWarnings("unchecked")
+	@PostMapping(value = "/projects/{projectId}/plans/{planId}/files/")
+	public ResponseEntity<String> createPlanFile(@RequestParam("mfile") MultipartFile mfile,   @PathVariable("planId") long id) {
+		
+		System.out.println("id:"+id);
+		// Value object mapping
+		try {
+			String savedImage = s3Manager.createPlanMultipartFile("1test", "kirapythia-example-bucket", mfile);
+			if (savedImage.isEmpty() || savedImage == null) {
+				return new ResponseEntity<String>("",HttpStatus.NOT_FOUND);
+			}
+			return new ResponseEntity<String>(savedImage, HttpStatus.OK);
+		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
+			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<String>(HttpStatus.I_AM_A_TEAPOT);
+		}
+
+	}
+	
+	
+	
 
 	// ---------------------------PUT--------------------------------
 
@@ -188,8 +246,6 @@ public class StorageRestController {
 
 	}
 
-	
-
 	/**
 	 * update a project
 	 */
@@ -205,9 +261,8 @@ public class StorageRestController {
 		}
 
 	}
-	
-	// ------------------------ NOT DONE --------------------------
 
+	// ------------------------ NOT DONE --------------------------
 
 	/**
 	 * not done
