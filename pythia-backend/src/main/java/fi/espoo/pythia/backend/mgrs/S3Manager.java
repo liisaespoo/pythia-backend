@@ -22,7 +22,6 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 
 import fi.espoo.pythia.backend.converters.FileConverter;
-import fi.espoo.pythia.backend.encoders.EncoderBase64;
 
 @Component
 public class S3Manager {
@@ -96,7 +95,7 @@ public class S3Manager {
 		return s3client;
 	}
 
-	// ------------------------ AMAZON S3 METHODS
+	// --------------------AMAZON S3 METHODS
 	// ----------------------------------
 
 	/**
