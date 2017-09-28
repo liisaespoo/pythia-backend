@@ -71,10 +71,10 @@ public class S3Manager {
 			Map.Entry pair = (Map.Entry) it.next();
 			if (pair.getKey().equals("s3public")) {
 				publicKey = (String) pair.getValue();
-				System.out.println(pair.getKey() + " = " + pair.getValue());
+				//System.out.println(pair.getKey() + " = " + pair.getValue());
 			} else if (pair.getKey().equals("s3private")) {
 				privateKey = (String) pair.getValue();
-				System.out.println(pair.getKey() + " = " + pair.getValue());
+				//System.out.println(pair.getKey() + " = " + pair.getValue());
 			}
 			System.out.println(pair.getKey() + " = " + pair.getValue());
 			// it.remove(); // avoids a ConcurrentModificationException
