@@ -210,11 +210,25 @@ public class StorageRestController {
 		System.out.println("id:"+id);
 		// Value object mapping
 		try {
-			String savedImage = s3Manager.createPlanMultipartFile("1test", "kirapythia-example-bucket", mfile);
-			if (savedImage.isEmpty() || savedImage == null) {
+			
+			
+			PlanValue planV = storageManager.getPlan(id);
+			
+			if(planV == null){
 				return new ResponseEntity<String>("",HttpStatus.NOT_FOUND);
 			}
-			return new ResponseEntity<String>(savedImage, HttpStatus.OK);
+			
+			String savedImageUrl = s3Manager.createPlanMultipartFile("1test", "kirapythia-example-bucket", mfile);
+			
+			// set PlanValue url 
+			planV.setUrl(savedImageUrl);
+			//update Plan with url
+			storageManager.updatePlan(planV);
+	
+			if (savedImageUrl.isEmpty() || savedImageUrl == null) {
+				return new ResponseEntity<String>("",HttpStatus.NOT_FOUND);
+			}
+			return new ResponseEntity<String>(savedImageUrl, HttpStatus.OK);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
 			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
 		} catch (IOException e) {

@@ -18,6 +18,7 @@ public class PlanToPlanValueMapper {
 		pv.setMainNo(p.getMainNo());
 		pv.setSubNo(p.getSubNo());
 		pv.setVersion(p.getVersion());
+		pv.setUrl(p.getUrl());
 				
 //		pv.setCreatedAt(p.getCreatedAt());
 //		pv.setCreatedBy(p.getCreatedBy());

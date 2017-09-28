@@ -60,6 +60,10 @@ public class Plan implements Serializable {
 	// varchar
 	@Column(name = "version")
 	private String version;
+	
+	//varchar
+	@Column(name = "url")
+	private String url;
 
 	// // https://jdbc.postgresql.org/documentation/head/java8-date-time.html
 	// // timestamp with timezone
@@ -133,6 +137,8 @@ public class Plan implements Serializable {
 	public void setVersion(String version) {
 		this.version = version;
 	}
+	
+	
 
 	// public OffsetDateTime getCreatedAt() {
 	// return createdAt;
@@ -165,6 +171,14 @@ public class Plan implements Serializable {
 	// public void setUpdatedBy(String updatedBy) {
 	// this.updatedBy = updatedBy;
 	// }
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 	@Override
 	public int hashCode() {

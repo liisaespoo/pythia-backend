@@ -68,8 +68,8 @@ public class StorageManager {
 	}
 
 	/**
-	 * Return project object for given id from database. If project is not found for
-	 * id, returns null. DONE
+	 * Return project object for given id from database. If project is not found
+	 * for id, returns null. DONE
 	 */
 	public ProjectValue getProject(Long projectId) {
 
@@ -96,9 +96,9 @@ public class StorageManager {
 		return null;
 	}
 
-	
 	/**
 	 * get all plans by projectId
+	 * 
 	 * @param projectId
 	 * @return
 	 */
@@ -109,13 +109,23 @@ public class StorageManager {
 
 		List<PlanValue> planValues = new ArrayList();
 
-//		for (Plan plan : pval.getPlans()) {
-//			// map each plan to planValue
-//			PlanValue planValue = PlanToPlanValueMapper.planToPlanValue(plan, project);
-//			planValues.add(planValue);
-//		}
+		// for (Plan plan : pval.getPlans()) {
+		// // map each plan to planValue
+		// PlanValue planValue = PlanToPlanValueMapper.planToPlanValue(plan,
+		// project);
+		// planValues.add(planValue);
+		// }
 		return pval.getPlans();
 
+	}
+
+	public PlanValue getPlan(Long planId) {
+
+		Plan plan = planRepository.findByPlanId(planId);
+		Project project = plan.getProject();
+		PlanValue pVal = PlanToPlanValueMapper.planToPlanValue(plan, project);
+
+		return pVal;
 	}
 
 	// ---------------------POST-----------------------------------
@@ -195,8 +205,6 @@ public class StorageManager {
 
 	}
 
-	
-	
 	public String createPlanFile(String key, String bucketName, String json64base) throws IOException {
 
 		// tarkista ettei ole null
@@ -206,15 +214,15 @@ public class StorageManager {
 
 		AmazonS3 s3client = authenticate();
 		// encode base64 to InputStream
-		S3ObjectInputStream imageStream = EncoderBase64.base64String2InputStream(json64base);		
+		S3ObjectInputStream imageStream = EncoderBase64.base64String2InputStream(json64base);
 
 		File file = FileConverter.inputStreamToVirtualFile(imageStream);
-		
+
 		String url = uploadObject(s3client, file, key, bucketName);
 		return url;
-		
+
 	}
-	
+
 	private AmazonS3 authenticate() {
 		String publicKey = "";
 		String privateKey = "";
@@ -258,7 +266,7 @@ public class StorageManager {
 	 * @return
 	 */
 	private String uploadObject(AmazonS3 s3client, File file, String key, String bucketName) {
-		
+
 		s3client.putObject(bucketName, key, file);
 		URL url = s3client.getUrl(bucketName, key);
 		return url.toString();
