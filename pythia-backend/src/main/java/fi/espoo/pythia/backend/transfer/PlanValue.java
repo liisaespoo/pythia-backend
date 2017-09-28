@@ -24,6 +24,7 @@ public class PlanValue  implements Serializable {
 
 	private String version;
 
+	private String url;
 
 	public Long getPlanId() {
 		return planId;
@@ -72,6 +73,16 @@ public class PlanValue  implements Serializable {
 
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+
+	public String getUrl() {
+		return url;
+	}
+
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	
 	
