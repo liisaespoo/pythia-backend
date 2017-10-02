@@ -38,7 +38,7 @@ public class Project implements Serializable {
 	// removed ArrayList definition
 	@OneToMany(mappedBy = "project")
 	private List<Plan> plans;
-
+	
 	// varchar
 	@Column(name = "hansu_project_id")
 	private String hansuProjectId;
