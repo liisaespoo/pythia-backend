@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import fi.espoo.pythia.backend.repos.entities.Plan;
 import fi.espoo.pythia.backend.repos.entities.Project;
+import fi.espoo.pythia.backend.repos.entities.ProjectMapping;
 
 public class ProjectValue implements Serializable {
 
@@ -25,6 +26,7 @@ public class ProjectValue implements Serializable {
 	private String description;
 	// removed ArrayList definition
 	private List<PlanValue> plans;
+	private List<ProjectMappingValue> sisterProjects;
 	// private OffsetDateTime createdAt;
 	// private String createdBy;
 	// private OffsetDateTime updatedAt;
@@ -91,6 +93,15 @@ public class ProjectValue implements Serializable {
 		this.plans = plans;
 	}
 
+	public List<ProjectMappingValue> getSisterProjects() {
+		return sisterProjects;
+	}
+
+	public void setSisterProjects(List<ProjectMappingValue> sisterProjects) {
+		this.sisterProjects = sisterProjects;
+	}
+
+	
 	// public String getCreatedBy() {
 	// return createdBy;
 	// }

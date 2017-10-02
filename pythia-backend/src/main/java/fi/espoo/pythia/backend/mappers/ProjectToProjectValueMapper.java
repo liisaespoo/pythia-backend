@@ -6,7 +6,9 @@ import java.util.List;
 
 import fi.espoo.pythia.backend.repos.entities.Plan;
 import fi.espoo.pythia.backend.repos.entities.Project;
+import fi.espoo.pythia.backend.repos.entities.ProjectMapping;
 import fi.espoo.pythia.backend.transfer.PlanValue;
+import fi.espoo.pythia.backend.transfer.ProjectMappingValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue;
 
 public class ProjectToProjectValueMapper {
@@ -21,13 +23,22 @@ public class ProjectToProjectValueMapper {
 		pv.setName(p.getName());
 		pv.setDescription(p.getDescription());
 		
-		// not working	
+		
+		//
 		List<PlanValue> planvs = new ArrayList();
 		for(Plan pp : p.getPlans()){
 			System.out.println("Planid:"+pp.getPlanId());
 			planvs.add(PlanToPlanValueMapper.planToPlanValue(pp, p));
 		}
 			pv.setPlans(planvs);
+		
+		
+		List<ProjectMappingValue> sisterProjects = new ArrayList();	
+		for(ProjectMapping pm : p.getSisterProjects()){
+			sisterProjects.add(new ProjectMappingValue(pm.getMappingId(),pm.getProject().getProjectId(),pm.getSisterProjectId()));
+		}
+		
+		pv.setSisterProjects(sisterProjects);
 		
 //		pv.setCreatedAt(p.getCreatedAt());
 //		pv.setCreatedBy(p.getCreatedBy());

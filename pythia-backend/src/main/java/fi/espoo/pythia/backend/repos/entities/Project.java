@@ -20,6 +20,11 @@ import javax.persistence.TemporalType;
 @Table(name = "project")
 public class Project implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	// bigint
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "proj_generator")
@@ -38,6 +43,9 @@ public class Project implements Serializable {
 	// removed ArrayList definition
 	@OneToMany(mappedBy = "project")
 	private List<Plan> plans;
+	
+	@OneToMany(mappedBy = "project")
+	private List<ProjectMapping> sisterProjects;
 	
 	// varchar
 	@Column(name = "hansu_project_id")
@@ -84,6 +92,14 @@ public class Project implements Serializable {
 
 	public void setPlans(List<Plan> plans) {
 		this.plans = plans;
+	}
+
+	public List<ProjectMapping> getSisterProjects() {
+		return sisterProjects;
+	}
+
+	public void setSisterProjects(List<ProjectMapping> sisterProjects) {
+		this.sisterProjects = sisterProjects;
 	}
 
 	public Long getProjectId() {
@@ -167,6 +183,8 @@ public class Project implements Serializable {
 		plans.remove(plan);
 		plan.setProject(null);
 	}
+	
+	
 
 	@Override
 	public int hashCode() {

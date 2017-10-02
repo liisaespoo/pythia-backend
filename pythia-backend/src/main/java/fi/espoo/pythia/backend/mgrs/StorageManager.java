@@ -137,7 +137,8 @@ public class StorageManager {
 	public ProjectValue createProject(ProjectValue projectV) {
 
 		// map projectV to project
-		Project prj = ProjectValueToProjectMapper.projectValueToProject(projectV);
+		Project project = projectRepository.findByProjectId(projectV.getProjectId());
+		Project prj = ProjectValueToProjectMapper.projectValueToProject(projectV,project);
 
 		// timestamp with time at db or microservice level
 		// prj.setCreatedAt(null);
@@ -178,7 +179,8 @@ public class StorageManager {
 	 */
 	public ProjectValue updateProject(ProjectValue projectV) {
 
-		Project project = ProjectValueToProjectMapper.projectValueToProjectUpdate(projectV);
+		Project projectTemp = projectRepository.findByProjectId(projectV.getProjectId());
+		Project project = ProjectValueToProjectMapper.projectValueToProjectUpdate(projectV,projectTemp);
 		Project updatedProject = projectRepository.save(project);
 
 		ProjectValue updatedProjectValue = ProjectToProjectValueMapper.projectToProjectValue(updatedProject);
