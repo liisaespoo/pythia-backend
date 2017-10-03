@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "sister_project")
 public class SisterProject implements Serializable {
@@ -57,10 +59,12 @@ public class SisterProject implements Serializable {
 		this.sisterProjectId = sisterProjectId;
 	}
 
+	 @JsonIgnore
 	public Project getProject() {
 		return project;
 	}
 
+	 @JsonIgnore
 	public void setProject(Project project) {
 		this.project = project;
 	}
