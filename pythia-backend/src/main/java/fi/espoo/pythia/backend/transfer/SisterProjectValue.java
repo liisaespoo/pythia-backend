@@ -6,31 +6,21 @@ import javax.persistence.ManyToOne;
 
 import fi.espoo.pythia.backend.repos.entities.Project;
 
-public class ProjectMappingValue {
+public class SisterProjectValue {
 
-	private Long mappingId;
+	private Long id;
 
 	private Long projectId;
 
 	private Long sisterProjectId;
 
-	
-	public ProjectMappingValue() {
-		
+
+	public Long getId() {
+		return id;
 	}
 
-	public ProjectMappingValue(Long mappingId, Long projectId, Long sisterProjectId) {
-		this.mappingId = mappingId;
-		this.projectId = projectId;
-		this.sisterProjectId = sisterProjectId;
-	}
-
-	public Long getMappingId() {
-		return mappingId;
-	}
-
-	public void setMappingId(Long mappingId) {
-		this.mappingId = mappingId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Long getProjectId() {
