@@ -6,10 +6,10 @@ import java.util.List;
 
 import fi.espoo.pythia.backend.repos.entities.Plan;
 import fi.espoo.pythia.backend.repos.entities.Project;
-import fi.espoo.pythia.backend.repos.entities.ProjectMapping;
+import fi.espoo.pythia.backend.repos.entities.SisterProject;
 import fi.espoo.pythia.backend.transfer.PlanValue;
-import fi.espoo.pythia.backend.transfer.ProjectMappingValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue;
+import fi.espoo.pythia.backend.transfer.SisterProjectValue;
 
 public class ProjectValueToProjectMapper {
 
@@ -23,16 +23,7 @@ public class ProjectValueToProjectMapper {
 		p.setName(pv.getName());
 		p.setDescription(pv.getDescription());
 		p.setPlans(new ArrayList<Plan>());
-
-		List<ProjectMapping> sisterids = new ArrayList();
-		for (ProjectMappingValue pmv : pv.getSisterProjects()) {
-			ProjectMapping pm = new ProjectMapping();
-			pm.setMappingId(pmv.getMappingId());
-			pm.setProject(project);
-			pm.setSisterProjectId(pmv.getSisterProjectId());
-			sisterids.add(pm);
-		}
-		p.setSisterProjects(sisterids);
+		p.setSisterProjects(new ArrayList<SisterProject>());
 
 		// p.setCreatedAt(pv.getCreatedAt());
 		// p.setCreatedBy(pv.getCreatedBy());
@@ -57,15 +48,17 @@ public class ProjectValueToProjectMapper {
 		}
 		p.setPlans(plans);
 
-		List<ProjectMapping> sisterids = new ArrayList();
-		for (ProjectMappingValue pmv : pv.getSisterProjects()) {
-			ProjectMapping pm = new ProjectMapping();
-			pm.setMappingId(pmv.getMappingId());
-			pm.setProject(project);
-			pm.setSisterProjectId(pmv.getSisterProjectId());
-			sisterids.add(pm);
+		
+	
+		List<SisterProject> sprojects = new ArrayList(); 
+		
+		System.out.println("ProjectValue sister project values :"+pv.getSisterProjects());
+		
+		for (SisterProjectValue spv : pv.getSisterProjects()){
+			sprojects.add(SisterProjectValueToSisterProjectMapper.SisterProjectValueToSisterProject(spv,p));
 		}
-		p.setSisterProjects(sisterids);
+
+		p.setSisterProjects(sprojects);
 
 		// p.setCreatedAt(pv.getCreatedAt());
 		// p.setCreatedBy(pv.getCreatedBy());

@@ -45,7 +45,7 @@ public class Project implements Serializable {
 	private List<Plan> plans;
 	
 	@OneToMany(mappedBy = "project")
-	private List<ProjectMapping> sisterProjects;
+	private List<SisterProject> sisterProjects;
 	
 	// varchar
 	@Column(name = "hansu_project_id")
@@ -94,11 +94,11 @@ public class Project implements Serializable {
 		this.plans = plans;
 	}
 
-	public List<ProjectMapping> getSisterProjects() {
+	public List<SisterProject> getSisterProjects() {
 		return sisterProjects;
 	}
 
-	public void setSisterProjects(List<ProjectMapping> sisterProjects) {
+	public void setSisterProjects(List<SisterProject> sisterProjects) {
 		this.sisterProjects = sisterProjects;
 	}
 

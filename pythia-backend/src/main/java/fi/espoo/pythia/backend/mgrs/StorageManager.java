@@ -27,12 +27,17 @@ import fi.espoo.pythia.backend.mappers.PlanToPlanValueMapper;
 import fi.espoo.pythia.backend.mappers.PlanValueToPlanMapper;
 import fi.espoo.pythia.backend.mappers.ProjectToProjectValueMapper;
 import fi.espoo.pythia.backend.mappers.ProjectValueToProjectMapper;
+import fi.espoo.pythia.backend.mappers.SisterProjectToSisterProjectValueMapper;
+import fi.espoo.pythia.backend.mappers.SisterProjectValueToSisterProjectMapper;
 import fi.espoo.pythia.backend.repos.PlanRepository;
 import fi.espoo.pythia.backend.repos.ProjectRepository;
+import fi.espoo.pythia.backend.repos.SisterProjectRepository;
 import fi.espoo.pythia.backend.repos.entities.Plan;
 import fi.espoo.pythia.backend.repos.entities.Project;
+import fi.espoo.pythia.backend.repos.entities.SisterProject;
 import fi.espoo.pythia.backend.transfer.PlanValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue;
+import fi.espoo.pythia.backend.transfer.SisterProjectValue;
 
 @Component
 @Transactional
@@ -44,6 +49,8 @@ public class StorageManager {
 	@Autowired
 	private ProjectRepository projectRepository;
 
+	@Autowired
+	private SisterProjectRepository sisterProjectRepository;
 	// ---------------------GET------------------------------------
 
 	/**
@@ -138,7 +145,7 @@ public class StorageManager {
 
 		// map projectV to project
 		Project project = projectRepository.findByProjectId(projectV.getProjectId());
-		Project prj = ProjectValueToProjectMapper.projectValueToProject(projectV,project);
+		Project prj = ProjectValueToProjectMapper.projectValueToProject(projectV, project);
 
 		// timestamp with time at db or microservice level
 		// prj.setCreatedAt(null);
@@ -180,7 +187,7 @@ public class StorageManager {
 	public ProjectValue updateProject(ProjectValue projectV) {
 
 		Project projectTemp = projectRepository.findByProjectId(projectV.getProjectId());
-		Project project = ProjectValueToProjectMapper.projectValueToProjectUpdate(projectV,projectTemp);
+		Project project = ProjectValueToProjectMapper.projectValueToProjectUpdate(projectV, projectTemp);
 		Project updatedProject = projectRepository.save(project);
 
 		ProjectValue updatedProjectValue = ProjectToProjectValueMapper.projectToProjectValue(updatedProject);
@@ -205,6 +212,22 @@ public class StorageManager {
 		PlanValue updatedPlanValue = PlanToPlanValueMapper.planToPlanValue(updatedPlan, project);
 		return updatedPlanValue;
 
+	}
+
+	public void updateSisterProjects(List<SisterProjectValue> spvl) {
+
+		//
+		for(SisterProjectValue spv : spvl){
+			Long id = spv.getProjectId();
+			Project project = projectRepository.findByProjectId(id);
+			SisterProject sProject = SisterProjectValueToSisterProjectMapper.SisterProjectValueToSisterProject(spv, project);
+			
+			SisterProject updatedSp = sisterProjectRepository.save(sProject);
+			
+			SisterProjectValue updatedSpv = SisterProjectToSisterProjectValueMapper.sisterProjectToSisterProjectValue(updatedSp, project);
+		}
+		
+		
 	}
 
 	public String createPlanFile(String key, String bucketName, String json64base) throws IOException {

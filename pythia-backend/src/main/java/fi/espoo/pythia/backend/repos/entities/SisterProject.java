@@ -13,8 +13,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "project_mapping")
-public class ProjectMapping implements Serializable {
+@Table(name = "sister_project")
+public class SisterProject implements Serializable {
 
 	/**
 	 * 
@@ -24,8 +24,8 @@ public class ProjectMapping implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "map_generator")
 	@SequenceGenerator(name = "map_generator", sequenceName = "pmap_serial", allocationSize = 1)
-	@Column(name = "mapping_id", updatable = false, nullable = false)
-	private Long mappingId;
+	@Column(name = "id", updatable = false, nullable = false)
+	private Long id;
 
 	// @Column(name = "project_id")
 	// private Long projectId;
@@ -37,17 +37,16 @@ public class ProjectMapping implements Serializable {
 	@Column(name = "sister_project_id")
 	private Long sisterProjectId;
 
+	public SisterProject() {
 
-	public ProjectMapping() {
-		
 	}
 
-	public Long getMappingId() {
-		return mappingId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setMappingId(Long mappingId) {
-		this.mappingId = mappingId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Long getSisterProjectId() {

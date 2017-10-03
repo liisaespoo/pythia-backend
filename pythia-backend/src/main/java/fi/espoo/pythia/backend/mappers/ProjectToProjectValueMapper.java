@@ -6,10 +6,10 @@ import java.util.List;
 
 import fi.espoo.pythia.backend.repos.entities.Plan;
 import fi.espoo.pythia.backend.repos.entities.Project;
-import fi.espoo.pythia.backend.repos.entities.ProjectMapping;
+import fi.espoo.pythia.backend.repos.entities.SisterProject;
 import fi.espoo.pythia.backend.transfer.PlanValue;
-import fi.espoo.pythia.backend.transfer.ProjectMappingValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue;
+import fi.espoo.pythia.backend.transfer.SisterProjectValue;
 
 public class ProjectToProjectValueMapper {
 
@@ -32,10 +32,13 @@ public class ProjectToProjectValueMapper {
 		}
 			pv.setPlans(planvs);
 		
+			
+		List<SisterProjectValue> sisterProjects = new ArrayList();	
 		
-		List<ProjectMappingValue> sisterProjects = new ArrayList();	
-		for(ProjectMapping pm : p.getSisterProjects()){
-			sisterProjects.add(new ProjectMappingValue(pm.getMappingId(),pm.getProject().getProjectId(),pm.getSisterProjectId()));
+		System.out.println("get sister projects:" + p.getSisterProjects());
+		
+		for(SisterProject pm : p.getSisterProjects()){
+			sisterProjects.add(SisterProjectToSisterProjectValueMapper.sisterProjectToSisterProjectValue(pm,p));
 		}
 		
 		pv.setSisterProjects(sisterProjects);

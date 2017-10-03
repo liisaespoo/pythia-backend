@@ -36,6 +36,7 @@ import fi.espoo.pythia.backend.mgrs.StorageManager;
 import fi.espoo.pythia.backend.repos.entities.Project;
 import fi.espoo.pythia.backend.transfer.PlanValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue;
+import fi.espoo.pythia.backend.transfer.SisterProjectValue;
 
 @RestController
 @RequestMapping("/pythia/v1")
@@ -268,7 +269,10 @@ public class StorageRestController {
 	public ResponseEntity<ProjectValue> updateProject(@RequestBody ProjectValue projectV) {
 
 		try {
+			List<SisterProjectValue> spv = projectV.getSisterProjects();
+			storageManager.updateSisterProjects(spv);
 			ProjectValue updatedProject = storageManager.updateProject(projectV);
+			
 			return new ResponseEntity<ProjectValue>(updatedProject, HttpStatus.OK);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
 			return new ResponseEntity<ProjectValue>(HttpStatus.FORBIDDEN);
