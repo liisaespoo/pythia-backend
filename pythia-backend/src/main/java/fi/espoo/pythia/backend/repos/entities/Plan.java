@@ -6,6 +6,7 @@ package fi.espoo.pythia.backend.repos.entities;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -44,6 +46,10 @@ public class Plan implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "project_id",nullable=false)
 	private Project project;
+	
+	
+	@OneToMany (mappedBy = "plan")
+	private List<Comment> comments;
 
 	// //bigint
 	// @Column(name = "project_id")
@@ -171,6 +177,14 @@ public class Plan implements Serializable {
 	// public void setUpdatedBy(String updatedBy) {
 	// this.updatedBy = updatedBy;
 	// }
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
 
 	public String getUrl() {
 		return url;
