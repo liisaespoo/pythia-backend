@@ -25,6 +25,8 @@ import fi.espoo.pythia.backend.converters.FileConverter;
 import fi.espoo.pythia.backend.encoders.EncoderBase64;
 import fi.espoo.pythia.backend.mappers.PlanToPlanValueMapper;
 import fi.espoo.pythia.backend.mappers.PlanValueToPlanMapper;
+import fi.espoo.pythia.backend.mappers.PrjToPrjVal2;
+import fi.espoo.pythia.backend.mappers.PrjVal2ToPrj;
 import fi.espoo.pythia.backend.mappers.ProjectToProjectValueMapper;
 import fi.espoo.pythia.backend.mappers.ProjectValueToProjectMapper;
 import fi.espoo.pythia.backend.mappers.SisterProjectToSisterProjectValueMapper;
@@ -37,6 +39,7 @@ import fi.espoo.pythia.backend.repos.entities.Project;
 import fi.espoo.pythia.backend.repos.entities.SisterProject;
 import fi.espoo.pythia.backend.transfer.PlanValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue;
+import fi.espoo.pythia.backend.transfer.ProjectValue2;
 import fi.espoo.pythia.backend.transfer.SisterProjectValue;
 
 @Component
@@ -194,6 +197,16 @@ public class StorageManager {
 		return updatedProjectValue;
 
 	}
+	
+	public ProjectValue2 updateProject2(ProjectValue2 projectV) {
+		
+		Project projectTemp = projectRepository.findByProjectId(projectV.getProjectId());
+		Project project = PrjVal2ToPrj.projectValue2ToProject(projectV, projectTemp);
+		Project updatedProject = projectRepository.save(project);
+		ProjectValue2 updatedProjectValue2 = PrjToPrjVal2.ProjectToProjectValue2(updatedProject);
+		return updatedProjectValue2;
+
+	}
 
 	/**
 	 * 
@@ -296,5 +309,7 @@ public class StorageManager {
 		URL url = s3client.getUrl(bucketName, key);
 		return url.toString();
 	}
+
+
 
 }

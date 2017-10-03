@@ -31,11 +31,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import fi.espoo.pythia.backend.mappers.PrjVal2ToPrj;
 import fi.espoo.pythia.backend.mgrs.S3Manager;
 import fi.espoo.pythia.backend.mgrs.StorageManager;
 import fi.espoo.pythia.backend.repos.entities.Project;
 import fi.espoo.pythia.backend.transfer.PlanValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue;
+import fi.espoo.pythia.backend.transfer.ProjectValue2;
 import fi.espoo.pythia.backend.transfer.SisterProjectValue;
 
 @RestController
@@ -276,6 +278,23 @@ public class StorageRestController {
 			return new ResponseEntity<ProjectValue>(updatedProject, HttpStatus.OK);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
 			return new ResponseEntity<ProjectValue>(HttpStatus.FORBIDDEN);
+		}
+
+	}
+	
+	
+	/**
+	 * update a project with List<Long> sisterProjectIds
+	 */
+	@SuppressWarnings("unchecked")
+	@PutMapping(value = "/projects/{projectId}/sis/", produces = "application/json", consumes = "application/json")
+	public ResponseEntity<ProjectValue2> updateProject2(@RequestBody ProjectValue2 projectV) {
+
+		try {
+			ProjectValue2 updatedProject = storageManager.updateProject2(projectV);
+			return new ResponseEntity<ProjectValue2>(updatedProject, HttpStatus.OK);
+		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
+			return new ResponseEntity<ProjectValue2>(HttpStatus.FORBIDDEN);
 		}
 
 	}
