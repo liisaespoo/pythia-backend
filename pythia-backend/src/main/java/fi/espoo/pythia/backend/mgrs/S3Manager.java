@@ -1,8 +1,10 @@
 package fi.espoo.pythia.backend.mgrs;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +47,10 @@ public class S3Manager {
 //		File file = FileConverter.inputStreamToVirtualFile(imageStream);
 		
 		String url = uploadObject(s3client, file, key, bucketName);
+		
+		//UI should not allow but pdf or dwg filetypes. 
+		//If you want to add more filetypes modify the method getFileList(String dirPath)
+		clearFiles();
 		return url;
 		
 	}
@@ -152,6 +158,42 @@ public class S3Manager {
 
 	}
 
+	
+	/**
+	 * clear temp files pdf and dwg
+	 * @param path
+	 */
+	private void clearFiles(){
+		
+		String dirPath = System.getProperty("user.dir");
+		System.out.println(dirPath);
+
+		File[] files = getFileList(dirPath);
+
+		for (File f : files) {
+			System.out.println(f.getName());
+			 try {
+				Files.deleteIfExists(f.toPath());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+//		
+//		   
+		
+	}
+	
+	private static File[] getFileList(String dirPath) {
+		File dir = new File(dirPath);
+
+		File[] fileList = dir.listFiles(new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				return name.endsWith(".pdf") || name.endsWith(".dwg");
+			}
+		});
+		return fileList;
+	}
 	// -----------------------ENCODING ----------------------------------
 
 

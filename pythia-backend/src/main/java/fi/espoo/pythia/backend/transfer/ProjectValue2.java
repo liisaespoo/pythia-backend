@@ -1,15 +1,8 @@
 package fi.espoo.pythia.backend.transfer;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonView;
-
-import fi.espoo.pythia.backend.repos.entities.Plan;
-import fi.espoo.pythia.backend.repos.entities.Project;
-import fi.espoo.pythia.backend.repos.entities.SisterProject;
 
 public class ProjectValue2 implements Serializable {
 
@@ -28,7 +21,7 @@ public class ProjectValue2 implements Serializable {
 	// removed ArrayList definition
 	private List<PlanValue> plans;
 	private List<Long> sisterProjects;
-	private OffsetDateTime createdAt;
+	private Date createdAt;
 	// private String createdBy;
 	// private OffsetDateTime updatedAt;
 	// private String updatedBy;
@@ -113,13 +106,14 @@ public class ProjectValue2 implements Serializable {
 		this.sisterProjects = sisterProjects;
 	}
 
-	public OffsetDateTime getCreatedAt() {
+	public Date getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(OffsetDateTime createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
+
 
 	// public String getCreatedBy() {
 	// return createdBy;

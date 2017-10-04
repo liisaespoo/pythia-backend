@@ -3,6 +3,7 @@ package fi.espoo.pythia.backend.repos.entities;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -68,10 +69,14 @@ public class Project implements Serializable {
 
 	// // https://jdbc.postgresql.org/documentation/head/java8-date-time.html
 	// // timestamp with timezone
-	 @Temporal(TemporalType.TIMESTAMP)
-	 @Column(name = "created_at")
-	 private OffsetDateTime createdAt;
+	// @Temporal(TemporalType.TIMESTAMP)
+//	 @Column(name = "created_at")
+//	 private OffsetDateTime createdAt;
 
+	 
+	 @Temporal(TemporalType.TIMESTAMP)
+	    @Column(name = "created_at")
+	    private Date createdAt;
 	// // varchar
 	// @Column(name = "created_by")
 	// private String createdBy;
@@ -154,13 +159,14 @@ public class Project implements Serializable {
 	}
 	
 
-	 public OffsetDateTime getCreatedAt() {
-	 return createdAt;
-	 }
-	
-	 public void setCreatedAt(OffsetDateTime createdAt) {
-	 this.createdAt = createdAt;
-	 }
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
 
 	// public String getCreatedBy() {
 	// return createdBy;
@@ -185,6 +191,7 @@ public class Project implements Serializable {
 	// public void setUpdatedBy(String updatedBy) {
 	// this.updatedBy = updatedBy;
 	// }
+
 
 
 

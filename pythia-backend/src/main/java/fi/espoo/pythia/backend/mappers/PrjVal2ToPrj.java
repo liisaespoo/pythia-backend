@@ -1,6 +1,7 @@
 package fi.espoo.pythia.backend.mappers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import fi.espoo.pythia.backend.repos.entities.Plan;
@@ -23,7 +24,7 @@ public class PrjVal2ToPrj {
 		p.setName(pv.getName());
 		p.setDescription(pv.getDescription());
 		p.setCompleted(pv.isCompleted());
-		p.setCreatedAt(pv.getCreatedAt());
+		p.setCreatedAt(new Date());
 
 		try {
 			List<Plan> plans = new ArrayList();
@@ -34,25 +35,28 @@ public class PrjVal2ToPrj {
 		} catch (java.lang.NullPointerException e) {
 			p.setPlans(new ArrayList<Plan>());
 		}
-		
-		
-		
-		p.setSisterProjects(project.getSisterProjects());
-		
 
-//		try {
-//			List<SisterProject> sProjects = project.getSisterProjects();
-//
-//			for (int i = 0; i < pv.getSisterProjects().size(); i++) {
-//				System.out.println("pvgetsisterprojectid" + pv.getSisterProjects().get(i));
-//				sProjects.get(i).setSisterProjectId(pv.getSisterProjects().get(i));
-//			}
-//			p.setSisterProjects(sProjects);
-//		} catch (java.lang.NullPointerException e) {
-//			p.setSisterProjects(project.getSisterProjects());
-//		} catch (java.lang.IndexOutOfBoundsException e) {
-//			p.setSisterProjects(project.getSisterProjects());
-//		}
+		try {
+			p.setSisterProjects(project.getSisterProjects());
+
+		} catch (java.lang.NullPointerException e) {
+			p.setSisterProjects(new ArrayList());
+
+		}
+		// try {
+		// List<SisterProject> sProjects = project.getSisterProjects();
+		//
+		// for (int i = 0; i < pv.getSisterProjects().size(); i++) {
+		// System.out.println("pvgetsisterprojectid" +
+		// pv.getSisterProjects().get(i));
+		// sProjects.get(i).setSisterProjectId(pv.getSisterProjects().get(i));
+		// }
+		// p.setSisterProjects(sProjects);
+		// } catch (java.lang.NullPointerException e) {
+		// p.setSisterProjects(project.getSisterProjects());
+		// } catch (java.lang.IndexOutOfBoundsException e) {
+		// p.setSisterProjects(project.getSisterProjects());
+		// }
 
 		// p.setCreatedAt(pv.getCreatedAt());
 		// p.setCreatedBy(pv.getCreatedBy());
