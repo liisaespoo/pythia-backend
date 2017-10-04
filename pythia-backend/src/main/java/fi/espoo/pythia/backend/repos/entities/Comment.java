@@ -68,13 +68,15 @@ public class Comment implements Serializable {
 	public void setText(String text) {
 		this.text = text;
 	}
-	
-	public boolean getApproved() {
-		return this.approved;
+
+	public boolean isApproved() {
+		return approved;
 	}
-	
+
 	public void setApproved(boolean approved) {
 		this.approved = approved;
 	}
+	
+	
 }
 
