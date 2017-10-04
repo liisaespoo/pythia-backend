@@ -37,6 +37,7 @@ public class PrjToPrjVal2 {
 		
 		for(SisterProject pm : p.getSisterProjects()){
 			sisterProjectIds.add(pm.getSisterProjectId());
+			System.out.println("id:"+pm.getSisterProjectId());
 		}
 		
 		pv.setSisterProjects(sisterProjectIds);

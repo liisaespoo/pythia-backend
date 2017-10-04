@@ -56,39 +56,59 @@ public class StorageManager {
 	private SisterProjectRepository sisterProjectRepository;
 	// ---------------------GET------------------------------------
 
+
 	/**
-	 * Returns list of projects from database. DONE!!!
+	 * NEW
 	 * 
 	 * @return list of projects
 	 */
-	public ArrayList<ProjectValue> getProjects() {
+	public ArrayList<ProjectValue2> getProjects2() {
 
 		ArrayList<Project> prjList = (ArrayList<Project>) projectRepository.findAll();
-		ArrayList<ProjectValue> prjValList = new ArrayList();
+		ArrayList<ProjectValue2> prjValList = new ArrayList();
 
 		// for -loop for prjList
 
 		for (Project p : prjList) {
 			// map each project to projectValue
-			ProjectValue pval = ProjectToProjectValueMapper.projectToProjectValue(p);
+			ProjectValue2 pval = PrjToPrjVal2.ProjectToProjectValue2(p);
 			prjValList.add(pval);
 		}
 		// return projectValue -ArrayList
 		return prjValList;
 	}
-
+	
 	/**
 	 * Return project object for given id from database. If project is not found
 	 * for id, returns null. DONE
 	 */
-	public ProjectValue getProject(Long projectId) {
+	public ProjectValue2 getProject2(Long projectId) {
 
 		Project project = projectRepository.findByProjectId(projectId);
-		ProjectValue pval = ProjectToProjectValueMapper.projectToProjectValue(project);
+		ProjectValue2 pval = PrjToPrjVal2.ProjectToProjectValue2(project);
 		return pval;
 
 	}
+	
+	
+	/**
+	 * 
+	 * @param hansuId
+	 * @return
+	 */
+	public ProjectValue2 getProjectByHansuId2(String hansuId) {
+		List<Project> prjList = projectRepository.findAll();
+		for (Project p : prjList) {
+			if (p.getHansuProjectId().equals(hansuId)) {
+				ProjectValue2 pval = PrjToPrjVal2.ProjectToProjectValue2(p);
+				return pval;
+			}
+		}
 
+		return null;
+	}
+	
+	
 	/**
 	 * 
 	 * @param hansuId
@@ -137,6 +157,43 @@ public class StorageManager {
 
 		return pVal;
 	}
+	
+	//-------------------OLD GET-----------------------------
+	
+	/**
+	 * Returns list of projects from database. DONE!!!
+	 * 
+	 * @return list of projects
+	 */
+	public ArrayList<ProjectValue> getProjects() {
+
+		ArrayList<Project> prjList = (ArrayList<Project>) projectRepository.findAll();
+		ArrayList<ProjectValue> prjValList = new ArrayList();
+
+		// for -loop for prjList
+
+		for (Project p : prjList) {
+			// map each project to projectValue
+			ProjectValue pval = ProjectToProjectValueMapper.projectToProjectValue(p);
+			prjValList.add(pval);
+		}
+		// return projectValue -ArrayList
+		return prjValList;
+	}
+
+	
+	/**
+	 * Return project object for given id from database. If project is not found
+	 * for id, returns null. DONE
+	 */
+	public ProjectValue getProject(Long projectId) {
+
+		Project project = projectRepository.findByProjectId(projectId);
+		ProjectValue pval = ProjectToProjectValueMapper.projectToProjectValue(project);
+		return pval;
+
+	}
+	
 
 	// ---------------------POST-----------------------------------
 
@@ -159,6 +216,16 @@ public class StorageManager {
 
 		// planRepository.
 		return savedProjectValue;
+	}
+
+	public ProjectValue2 createProject2(ProjectValue2 projectV) {
+
+		Project projectTemp = projectRepository.findByProjectId(projectV.getProjectId());
+		Project project = PrjVal2ToPrj.projectValue2ToProject(projectV, projectTemp);
+		Project updatedProject = projectRepository.save(project);
+		ProjectValue2 updatedProjectValue2 = PrjToPrjVal2.ProjectToProjectValue2(updatedProject);
+		return updatedProjectValue2;
+
 	}
 
 	/**
@@ -197,15 +264,40 @@ public class StorageManager {
 		return updatedProjectValue;
 
 	}
-	
-	public ProjectValue2 updateProject2(ProjectValue2 projectV) {
-		
+
+	public void updateProject2(ProjectValue2 projectV) {
+
 		Project projectTemp = projectRepository.findByProjectId(projectV.getProjectId());
 		Project project = PrjVal2ToPrj.projectValue2ToProject(projectV, projectTemp);
-		Project updatedProject = projectRepository.save(project);
-		ProjectValue2 updatedProjectValue2 = PrjToPrjVal2.ProjectToProjectValue2(updatedProject);
-		return updatedProjectValue2;
+		// update basic project table
+		projectRepository.save(project);
 
+		// update sisterProjects table
+		updateSisterProjects(projectV, project);
+
+//		ProjectValue2 updatedProjectValue2 = PrjToPrjVal2
+//				.ProjectToProjectValue2(projectRepository.findByProjectId(projectV.getProjectId()));
+//		return updatedProjectValue2;
+	}
+
+	public void updateSisterProjects(ProjectValue2 pv, Project project) {
+
+		// get latest by repo id
+		Project p = projectRepository.findByProjectId(pv.getProjectId());
+		// create empty sisterprojects list
+		List<SisterProject> sProjects = new ArrayList<SisterProject>();
+
+		// first delete all rows with this project
+		sisterProjectRepository.deleteByProject(project);
+		Long j = 1L;
+		// add sisterprojects to the db
+		for (Long id : pv.getSisterProjects()) {
+			System.out.println("updatesisterProjectId:"+id);
+			SisterProject sProject = (new SisterProject(j, project, id));
+
+			sisterProjectRepository.save(sProject);
+			j++;
+		}
 	}
 
 	/**
@@ -225,22 +317,6 @@ public class StorageManager {
 		PlanValue updatedPlanValue = PlanToPlanValueMapper.planToPlanValue(updatedPlan, project);
 		return updatedPlanValue;
 
-	}
-
-	public void updateSisterProjects(List<SisterProjectValue> spvl) {
-
-		//
-		for(SisterProjectValue spv : spvl){
-			Long id = spv.getProjectId();
-			Project project = projectRepository.findByProjectId(id);
-			SisterProject sProject = SisterProjectValueToSisterProjectMapper.SisterProjectValueToSisterProject(spv, project);
-			
-			SisterProject updatedSp = sisterProjectRepository.save(sProject);
-			
-			SisterProjectValue updatedSpv = SisterProjectToSisterProjectValueMapper.sisterProjectToSisterProjectValue(updatedSp, project);
-		}
-		
-		
 	}
 
 	public String createPlanFile(String key, String bucketName, String json64base) throws IOException {
@@ -309,7 +385,5 @@ public class StorageManager {
 		URL url = s3client.getUrl(bucketName, key);
 		return url.toString();
 	}
-
-
 
 }
