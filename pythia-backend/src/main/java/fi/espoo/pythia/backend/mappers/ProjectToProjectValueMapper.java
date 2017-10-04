@@ -22,7 +22,7 @@ public class ProjectToProjectValueMapper {
 		pv.setMainNo(p.getMainNo());
 		pv.setName(p.getName());
 		pv.setDescription(p.getDescription());
-		
+		pv.setCompleted(p.getCompleted());
 		
 		//
 		List<PlanValue> planvs = new ArrayList();
