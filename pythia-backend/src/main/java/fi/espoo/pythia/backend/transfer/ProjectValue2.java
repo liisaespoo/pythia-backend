@@ -24,10 +24,11 @@ public class ProjectValue2 implements Serializable {
 	private String name;
 	private short mainNo;
 	private String description;
+	private boolean completed;
 	// removed ArrayList definition
 	private List<PlanValue> plans;
 	private List<Long> sisterProjects;
-	// private OffsetDateTime createdAt;
+	private OffsetDateTime createdAt;
 	// private String createdBy;
 	// private OffsetDateTime updatedAt;
 	// private String updatedBy;
@@ -36,13 +37,24 @@ public class ProjectValue2 implements Serializable {
 	}
 
 	public ProjectValue2(Long projectId, String hansuProjectId, String name, short mainNo, String description,
-			List<PlanValue> plans) {
+			boolean completed, List<PlanValue> plans, List<Long> sisterProjects) {
+
 		this.projectId = projectId;
 		this.hansuProjectId = hansuProjectId;
 		this.name = name;
 		this.mainNo = mainNo;
 		this.description = description;
+		this.completed = completed;
 		this.plans = plans;
+		this.sisterProjects = sisterProjects;
+	}
+
+	public boolean isCompleted() {
+		return completed;
+	}
+
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
 	}
 
 	public Long getProjectId() {
@@ -101,11 +113,14 @@ public class ProjectValue2 implements Serializable {
 		this.sisterProjects = sisterProjects;
 	}
 
-	
+	public OffsetDateTime getCreatedAt() {
+		return createdAt;
+	}
 
+	public void setCreatedAt(OffsetDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
 
-
-	
 	// public String getCreatedBy() {
 	// return createdBy;
 	// }

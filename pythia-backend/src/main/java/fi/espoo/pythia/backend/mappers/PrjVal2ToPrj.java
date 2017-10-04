@@ -22,6 +22,8 @@ public class PrjVal2ToPrj {
 		p.setMainNo(pv.getMainNo());
 		p.setName(pv.getName());
 		p.setDescription(pv.getDescription());
+		p.setCompleted(pv.isCompleted());
+		p.setCreatedAt(pv.getCreatedAt());
 
 		try {
 			List<Plan> plans = new ArrayList();
