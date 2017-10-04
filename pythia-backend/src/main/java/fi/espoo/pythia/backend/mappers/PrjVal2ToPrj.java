@@ -32,18 +32,25 @@ public class PrjVal2ToPrj {
 		} catch (java.lang.NullPointerException e) {
 			p.setPlans(new ArrayList<Plan>());
 		}
+		
+		
+		
+		p.setSisterProjects(project.getSisterProjects());
+		
 
-		try {
-			List<SisterProject> sProjects = project.getSisterProjects();
-
-			for (int i = 0; i < pv.getSisterProjects().size(); i++) {
-				System.out.println("pvgetsisterprojectid"+pv.getSisterProjects().get(i));
-				sProjects.get(i).setSisterProjectId(pv.getSisterProjects().get(i));
-			}
-			p.setSisterProjects(sProjects);
-		} catch (java.lang.NullPointerException e) {
-			p.setSisterProjects(new ArrayList<SisterProject>());
-		}
+//		try {
+//			List<SisterProject> sProjects = project.getSisterProjects();
+//
+//			for (int i = 0; i < pv.getSisterProjects().size(); i++) {
+//				System.out.println("pvgetsisterprojectid" + pv.getSisterProjects().get(i));
+//				sProjects.get(i).setSisterProjectId(pv.getSisterProjects().get(i));
+//			}
+//			p.setSisterProjects(sProjects);
+//		} catch (java.lang.NullPointerException e) {
+//			p.setSisterProjects(project.getSisterProjects());
+//		} catch (java.lang.IndexOutOfBoundsException e) {
+//			p.setSisterProjects(project.getSisterProjects());
+//		}
 
 		// p.setCreatedAt(pv.getCreatedAt());
 		// p.setCreatedBy(pv.getCreatedBy());
