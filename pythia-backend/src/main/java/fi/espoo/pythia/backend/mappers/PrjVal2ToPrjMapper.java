@@ -1,20 +1,22 @@
 package fi.espoo.pythia.backend.mappers;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import fi.espoo.pythia.backend.repos.entities.Plan;
 import fi.espoo.pythia.backend.repos.entities.Project;
-import fi.espoo.pythia.backend.repos.entities.SisterProject;
 import fi.espoo.pythia.backend.transfer.PlanValue;
-import fi.espoo.pythia.backend.transfer.ProjectValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue2;
 
-public class PrjVal2ToPrj {
+public class PrjVal2ToPrjMapper {
 
 	public static Project projectValue2ToProject(ProjectValue2 pv, Project project) {
 
+		// LocalDateTime ZoneOffset
+		
+		
 		// current data
 		Project p = new Project();
 
@@ -24,7 +26,7 @@ public class PrjVal2ToPrj {
 		p.setName(pv.getName());
 		p.setDescription(pv.getDescription());
 		p.setCompleted(pv.isCompleted());
-		p.setCreatedAt(new Date());
+		p.setCreatedAt(OffsetDateTime.now());
 
 		try {
 			List<Plan> plans = new ArrayList();

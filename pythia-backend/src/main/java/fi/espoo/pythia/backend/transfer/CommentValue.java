@@ -12,6 +12,18 @@ public class CommentValue implements Serializable {
 
 	private boolean approved;
 
+	public CommentValue(Long commentId, Long planId, String text, boolean approved) {
+		
+		this.commentId = commentId;
+		this.planId = planId;
+		this.text = text;
+		this.approved = approved;
+	}
+
+	public CommentValue() {
+		
+	}
+
 	public Long getCommentId() {
 		return commentId;
 	}
@@ -20,21 +32,31 @@ public class CommentValue implements Serializable {
 		this.commentId = commentId;
 	}
 
-	public String getText() {
-		return this.text;
+	public Long getPlanId() {
+		return planId;
+	}
 
+	public void setPlanId(Long planId) {
+		this.planId = planId;
+	}
+
+	public String getText() {
+		return text;
 	}
 
 	public void setText(String text) {
 		this.text = text;
 	}
 
-	public boolean getApproved() {
-		return this.approved;
+	public boolean isApproved() {
+		return approved;
 	}
 
 	public void setApproved(boolean approved) {
 		this.approved = approved;
 	}
+
+	
+	
 
 }

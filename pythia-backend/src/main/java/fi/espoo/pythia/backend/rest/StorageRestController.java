@@ -31,15 +31,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import fi.espoo.pythia.backend.mappers.PrjVal2ToPrj;
 import fi.espoo.pythia.backend.mgrs.S3Manager;
 import fi.espoo.pythia.backend.mgrs.StorageManager;
-import fi.espoo.pythia.backend.repos.entities.Project;
 import fi.espoo.pythia.backend.transfer.CommentValue;
 import fi.espoo.pythia.backend.transfer.PlanValue;
-import fi.espoo.pythia.backend.transfer.ProjectValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue2;
-import fi.espoo.pythia.backend.transfer.SisterProjectValue;
 
 @RestController
 @RequestMapping("/pythia/v1")
@@ -80,7 +76,7 @@ public class StorageRestController {
 	 */
 	@SuppressWarnings("unchecked")
 	@GetMapping(value = "/projects/", produces = "application/json")
-	public ResponseEntity<List<ProjectValue2>> getProject() {
+	public ResponseEntity<List<ProjectValue2>> getProjects() {
 
 		try {
 			List<ProjectValue2> project = storageManager.getProjects2();
@@ -191,7 +187,7 @@ public class StorageRestController {
 	 */
 	@SuppressWarnings("unchecked")
 	@GetMapping(value = "/projects/{projectId}/plans/", produces = "application/json")
-	public ResponseEntity<List<PlanValue>> getPlan(@PathVariable("projectId") Long projectId) {
+	public ResponseEntity<List<PlanValue>> getPlans(@PathVariable("projectId") Long projectId) {
 
 		try {
 			List<PlanValue> plan = storageManager.getPlans(projectId);
@@ -203,6 +199,30 @@ public class StorageRestController {
 		}
 
 	}
+	
+	
+	/**
+	 * 
+	 * return all comments by planId
+	 * 
+	 * @param projectId
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	@GetMapping(value = "/projects/{projectId}/plans/{planId}/comments/", produces = "application/json")
+	public ResponseEntity<List<CommentValue>> getComments(@PathVariable("planId") Long planId) {
+
+		try {
+			List<CommentValue> commList = storageManager.getComments(planId);
+			return new ResponseEntity<List<CommentValue>>(commList, HttpStatus.OK);
+		} catch (java.lang.NullPointerException e) {
+			return new ResponseEntity<List<CommentValue>>(HttpStatus.NOT_FOUND);
+		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
+			return new ResponseEntity<List<CommentValue>>(HttpStatus.FORBIDDEN);
+		}
+
+	}
+	
 
 	// --------------------------POST-------------------------------------
 
@@ -238,12 +258,15 @@ public class StorageRestController {
 	 */
 	@SuppressWarnings("unchecked")
 	@PostMapping(value = "/projects/{projectId}/plans/{planId}/comments/", produces = "application/json", consumes = "application/json")
-	public ResponseEntity<PlanValue> createComment(@RequestBody CommentValue commV) {
+	public ResponseEntity<CommentValue> createComment(@RequestBody CommentValue commV, @PathVariable("planId") long id) {
 
-		// catch exception database connection
-		//
-		// Value object mapping
-	return null;
+		try {
+			CommentValue savedComm = storageManager.createComment(commV, id);
+			return new ResponseEntity<CommentValue>(savedComm, HttpStatus.OK);
+		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
+			return new ResponseEntity<CommentValue>(HttpStatus.FORBIDDEN);
+		}
+	
 
 	}
 

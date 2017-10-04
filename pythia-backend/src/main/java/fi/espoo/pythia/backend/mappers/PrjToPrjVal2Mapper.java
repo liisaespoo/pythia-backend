@@ -7,11 +7,9 @@ import fi.espoo.pythia.backend.repos.entities.Plan;
 import fi.espoo.pythia.backend.repos.entities.Project;
 import fi.espoo.pythia.backend.repos.entities.SisterProject;
 import fi.espoo.pythia.backend.transfer.PlanValue;
-import fi.espoo.pythia.backend.transfer.ProjectValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue2;
-import fi.espoo.pythia.backend.transfer.SisterProjectValue;
 
-public class PrjToPrjVal2 {
+public class PrjToPrjVal2Mapper {
 
 	public static ProjectValue2 ProjectToProjectValue2(Project p) {
 
