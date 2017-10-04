@@ -62,6 +62,9 @@ public class Project implements Serializable {
 	// varchar
 	@Column(name = "description")
 	private String description;
+	
+	@Column(name = "completed")
+	private boolean completed;
 
 	// // https://jdbc.postgresql.org/documentation/head/java8-date-time.html
 	// // timestamp with timezone
@@ -140,6 +143,15 @@ public class Project implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	
+	public boolean getCompleted() {
+		return completed;
+	}
+	
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
 	}
 
 	// public OffsetDateTime getCreatedAt() {

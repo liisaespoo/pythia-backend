@@ -70,6 +70,11 @@ public class Plan implements Serializable {
 	//varchar
 	@Column(name = "url")
 	private String url;
+	
+	// Is it like this??? JPA expects the database data type to be integer, 
+	// where value of "1" means true, and value of "0" means false. 
+	@Column(name = "approved")
+	private boolean approved;
 
 	// // https://jdbc.postgresql.org/documentation/head/java8-date-time.html
 	// // timestamp with timezone
@@ -194,6 +199,14 @@ public class Plan implements Serializable {
 		this.url = url;
 	}
 
+	public boolean getApproved() {
+		return approved;
+	}
+	
+	public void setApproved(Boolean approved) {
+		this.approved = approved;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

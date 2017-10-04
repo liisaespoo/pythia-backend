@@ -24,8 +24,13 @@ public class PlanValue  implements Serializable {
 
 	private String version;
 
+	
 	private String url;
+	
+	
+	private boolean approved;
 
+	
 	public Long getPlanId() {
 		return planId;
 	}
@@ -85,6 +90,11 @@ public class PlanValue  implements Serializable {
 		this.url = url;
 	}
 	
+	public boolean getApproved() {
+		return approved;
+	}
 	
-	
+	public void setApproved(boolean approved) {
+		this.approved = approved;
+	}
 }

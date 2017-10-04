@@ -24,6 +24,7 @@ public class ProjectValue implements Serializable {
 	private String name;
 	private short mainNo;
 	private String description;
+	private boolean completed;
 	// removed ArrayList definition
 	private List<PlanValue> plans;
 	private List<SisterProjectValue> sisterProjects;
@@ -35,13 +36,14 @@ public class ProjectValue implements Serializable {
 	public ProjectValue() {
 	}
 
-	public ProjectValue(Long projectId, String hansuProjectId, String name, short mainNo, String description,
+	public ProjectValue(Long projectId, String hansuProjectId, String name, short mainNo, String description, boolean completed, 
 			List<PlanValue> plans) {
 		this.projectId = projectId;
 		this.hansuProjectId = hansuProjectId;
 		this.name = name;
 		this.mainNo = mainNo;
 		this.description = description;
+		this.completed = completed;
 		this.plans = plans;
 	}
 
@@ -83,6 +85,14 @@ public class ProjectValue implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public boolean getCompleted() {
+		return completed;
+	}
+	
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
 	}
 
 	public List<PlanValue> getPlans() {

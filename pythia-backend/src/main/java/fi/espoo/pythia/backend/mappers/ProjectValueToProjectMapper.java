@@ -22,6 +22,7 @@ public class ProjectValueToProjectMapper {
 		p.setMainNo(pv.getMainNo());
 		p.setName(pv.getName());
 		p.setDescription(pv.getDescription());
+		p.setCompleted(pv.getCompleted());
 		p.setPlans(new ArrayList<Plan>());
 		p.setSisterProjects(new ArrayList<SisterProject>());
 
@@ -41,6 +42,7 @@ public class ProjectValueToProjectMapper {
 		p.setMainNo(pv.getMainNo());
 		p.setName(pv.getName());
 		p.setDescription(pv.getDescription());
+		p.setCompleted(pv.getCompleted());
 
 		List<Plan> plans = new ArrayList();
 		for (PlanValue pp : pv.getPlans()) {

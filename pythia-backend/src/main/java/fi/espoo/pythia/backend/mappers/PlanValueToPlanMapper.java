@@ -21,6 +21,7 @@ public class PlanValueToPlanMapper {
 		p.setSubNo(pv.getSubNo());
 		p.setVersion(pv.getVersion());
 		p.setUrl(pv.getUrl());
+		p.setApproved(pv.getApproved());
 				
 //		p.setCreatedAt(pv.getCreatedAt());
 //		p.setCreatedBy(pv.getCreatedBy());
