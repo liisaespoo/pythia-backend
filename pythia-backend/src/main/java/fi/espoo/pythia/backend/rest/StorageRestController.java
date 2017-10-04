@@ -80,7 +80,7 @@ public class StorageRestController {
 	 */
 	@SuppressWarnings("unchecked")
 	@GetMapping(value = "/projects/", produces = "application/json")
-	public ResponseEntity<List<ProjectValue2>> getProject2() {
+	public ResponseEntity<List<ProjectValue2>> getProject() {
 
 		try {
 			List<ProjectValue2> project = storageManager.getProjects2();
@@ -237,7 +237,7 @@ public class StorageRestController {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	@PostMapping(value = "/projects/{projectId}/plans/", produces = "application/json", consumes = "application/json")
+	@PostMapping(value = "/projects/{projectId}/plans/{planId}/comments/", produces = "application/json", consumes = "application/json")
 	public ResponseEntity<PlanValue> createComment(@RequestBody CommentValue commV) {
 
 		// catch exception database connection

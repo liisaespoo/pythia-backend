@@ -27,10 +27,6 @@ import fi.espoo.pythia.backend.mappers.PlanToPlanValueMapper;
 import fi.espoo.pythia.backend.mappers.PlanValueToPlanMapper;
 import fi.espoo.pythia.backend.mappers.PrjToPrjVal2;
 import fi.espoo.pythia.backend.mappers.PrjVal2ToPrj;
-import fi.espoo.pythia.backend.mappers.ProjectToProjectValueMapper;
-import fi.espoo.pythia.backend.mappers.ProjectValueToProjectMapper;
-import fi.espoo.pythia.backend.mappers.SisterProjectToSisterProjectValueMapper;
-import fi.espoo.pythia.backend.mappers.SisterProjectValueToSisterProjectMapper;
 import fi.espoo.pythia.backend.repos.PlanRepository;
 import fi.espoo.pythia.backend.repos.ProjectRepository;
 import fi.espoo.pythia.backend.repos.SisterProjectRepository;
@@ -40,7 +36,6 @@ import fi.espoo.pythia.backend.repos.entities.SisterProject;
 import fi.espoo.pythia.backend.transfer.PlanValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue2;
-import fi.espoo.pythia.backend.transfer.SisterProjectValue;
 
 @Component
 @Transactional
@@ -109,22 +104,22 @@ public class StorageManager {
 	}
 	
 	
-	/**
-	 * 
-	 * @param hansuId
-	 * @return
-	 */
-	public ProjectValue getProjectByHansuId(String hansuId) {
-		List<Project> prjList = projectRepository.findAll();
-		for (Project p : prjList) {
-			if (p.getHansuProjectId().equals(hansuId)) {
-				ProjectValue pval = ProjectToProjectValueMapper.projectToProjectValue(p);
-				return pval;
-			}
-		}
-
-		return null;
-	}
+//	/**
+//	 * 
+//	 * @param hansuId
+//	 * @return
+//	 */
+//	public ProjectValue getProjectByHansuId(String hansuId) {
+//		List<Project> prjList = projectRepository.findAll();
+//		for (Project p : prjList) {
+//			if (p.getHansuProjectId().equals(hansuId)) {
+//				ProjectValue pval = ProjectToProjectValueMapper.projectToProjectValue(p);
+//				return pval;
+//			}
+//		}
+//
+//		return null;
+//	}
 
 	/**
 	 * get all plans by projectId
@@ -135,9 +130,9 @@ public class StorageManager {
 	public List<PlanValue> getPlans(Long projectId) {
 
 		Project project = projectRepository.findByProjectId(projectId);
-		ProjectValue pval = ProjectToProjectValueMapper.projectToProjectValue(project);
+		ProjectValue2 pval = PrjToPrjVal2.ProjectToProjectValue2(project);
 
-		List<PlanValue> planValues = new ArrayList();
+		//List<PlanValue> planValues = new ArrayList();
 
 		// for (Plan plan : pval.getPlans()) {
 		// // map each plan to planValue
@@ -160,63 +155,63 @@ public class StorageManager {
 	
 	//-------------------OLD GET-----------------------------
 	
-	/**
-	 * Returns list of projects from database. DONE!!!
-	 * 
-	 * @return list of projects
-	 */
-	public ArrayList<ProjectValue> getProjects() {
-
-		ArrayList<Project> prjList = (ArrayList<Project>) projectRepository.findAll();
-		ArrayList<ProjectValue> prjValList = new ArrayList();
-
-		// for -loop for prjList
-
-		for (Project p : prjList) {
-			// map each project to projectValue
-			ProjectValue pval = ProjectToProjectValueMapper.projectToProjectValue(p);
-			prjValList.add(pval);
-		}
-		// return projectValue -ArrayList
-		return prjValList;
-	}
+//	/**
+//	 * Returns list of projects from database. DONE!!!
+//	 * 
+//	 * @return list of projects
+//	 */
+//	public ArrayList<ProjectValue2> getProjects() {
+//
+//		ArrayList<Project> prjList = (ArrayList<Project>) projectRepository.findAll();
+//		ArrayList<ProjectValue2> prjValList = new ArrayList();
+//
+//		// for -loop for prjList
+//
+//		for (Project p : prjList) {
+//			// map each project to projectValue
+//			ProjectValue2 pval = PrjToPrjVal2.ProjectToProjectValue2(p);
+//			prjValList.add(pval);
+//		}
+//		// return projectValue -ArrayList
+//		return prjValList;
+//	}
 
 	
-	/**
-	 * Return project object for given id from database. If project is not found
-	 * for id, returns null. DONE
-	 */
-	public ProjectValue getProject(Long projectId) {
-
-		Project project = projectRepository.findByProjectId(projectId);
-		ProjectValue pval = ProjectToProjectValueMapper.projectToProjectValue(project);
-		return pval;
-
-	}
+//	/**
+//	 * Return project object for given id from database. If project is not found
+//	 * for id, returns null. DONE
+//	 */
+//	public ProjectValue getProject(Long projectId) {
+//
+//		Project project = projectRepository.findByProjectId(projectId);
+//		ProjectValue pval = ProjectToProjectValueMapper.projectToProjectValue(project);
+//		return pval;
+//
+//	}
 	
 
 	// ---------------------POST-----------------------------------
 
-	/**
-	 * Create new project in database. DONE!!!!
-	 * 
-	 */
-	public ProjectValue createProject(ProjectValue projectV) {
-
-		// map projectV to project
-		Project project = projectRepository.findByProjectId(projectV.getProjectId());
-		Project prj = ProjectValueToProjectMapper.projectValueToProject(projectV, project);
-
-		// timestamp with time at db or microservice level
-		// prj.setCreatedAt(null);
-		Project savedProject = projectRepository.save(prj);
-
-		ProjectValue savedProjectValue = ProjectToProjectValueMapper.projectToProjectValue(savedProject);
-		// planRepository.save(5L);
-
-		// planRepository.
-		return savedProjectValue;
-	}
+//	/**
+//	 * Create new project in database. DONE!!!!
+//	 * 
+//	 */
+//	public ProjectValue createProject(ProjectValue projectV) {
+//
+//		// map projectV to project
+//		Project project = projectRepository.findByProjectId(projectV.getProjectId());
+//		Project prj = ProjectValueToProjectMapper.projectValueToProject(projectV, project);
+//
+//		// timestamp with time at db or microservice level
+//		// prj.setCreatedAt(null);
+//		Project savedProject = projectRepository.save(prj);
+//
+//		ProjectValue savedProjectValue = ProjectToProjectValueMapper.projectToProjectValue(savedProject);
+//		// planRepository.save(5L);
+//
+//		// planRepository.
+//		return savedProjectValue;
+//	}
 
 	public ProjectValue2 createProject2(ProjectValue2 projectV) {
 
@@ -249,21 +244,21 @@ public class StorageManager {
 
 	// ---------------------PUT------------------------------------
 
-	/**
-	 * 
-	 * @param projectV
-	 * @return
-	 */
-	public ProjectValue updateProject(ProjectValue projectV) {
-
-		Project projectTemp = projectRepository.findByProjectId(projectV.getProjectId());
-		Project project = ProjectValueToProjectMapper.projectValueToProjectUpdate(projectV, projectTemp);
-		Project updatedProject = projectRepository.save(project);
-
-		ProjectValue updatedProjectValue = ProjectToProjectValueMapper.projectToProjectValue(updatedProject);
-		return updatedProjectValue;
-
-	}
+//	/**
+//	 * 
+//	 * @param projectV
+//	 * @return
+//	 */
+//	public ProjectValue updateProject(ProjectValue projectV) {
+//
+//		Project projectTemp = projectRepository.findByProjectId(projectV.getProjectId());
+//		Project project = ProjectValueToProjectMapper.projectValueToProjectUpdate(projectV, projectTemp);
+//		Project updatedProject = projectRepository.save(project);
+//
+//		ProjectValue updatedProjectValue = ProjectToProjectValueMapper.projectToProjectValue(updatedProject);
+//		return updatedProjectValue;
+//
+//	}
 
 	public void updateProject2(ProjectValue2 projectV) {
 

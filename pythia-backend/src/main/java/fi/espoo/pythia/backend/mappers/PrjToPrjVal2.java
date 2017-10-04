@@ -14,39 +14,40 @@ import fi.espoo.pythia.backend.transfer.SisterProjectValue;
 public class PrjToPrjVal2 {
 
 	public static ProjectValue2 ProjectToProjectValue2(Project p) {
-		
+
 		ProjectValue2 pv = new ProjectValue2();
 		pv.setProjectId(p.getProjectId());
 		pv.setHansuProjectId(p.getHansuProjectId());
 		pv.setMainNo(p.getMainNo());
 		pv.setName(p.getName());
 		pv.setDescription(p.getDescription());
-		
-		
+		pv.setCompleted(p.isCompleted());
+		pv.setCreatedAt(p.getCreatedAt());
+
 		//
 		List<PlanValue> planvs = new ArrayList();
-		for(Plan pp : p.getPlans()){
-			System.out.println("Planid:"+pp.getPlanId());
+		for (Plan pp : p.getPlans()) {
+			System.out.println("Planid:" + pp.getPlanId());
 			planvs.add(PlanToPlanValueMapper.planToPlanValue(pp, p));
 		}
-			pv.setPlans(planvs);
-			
+		pv.setPlans(planvs);
+
 		// -------------------------------------------
-			
-		List<Long> sisterProjectIds = new ArrayList();	
-		
-		for(SisterProject pm : p.getSisterProjects()){
+
+		List<Long> sisterProjectIds = new ArrayList();
+
+		for (SisterProject pm : p.getSisterProjects()) {
 			sisterProjectIds.add(pm.getSisterProjectId());
-			System.out.println("id:"+pm.getSisterProjectId());
+			System.out.println("id:" + pm.getSisterProjectId());
 		}
-		
+
 		pv.setSisterProjects(sisterProjectIds);
-		
-//		pv.setCreatedAt(p.getCreatedAt());
-//		pv.setCreatedBy(p.getCreatedBy());
-//		pv.setUpdatedAt(p.getUpdatedAt());
-//		pv.setUpdatedBy(p.getUpdatedBy());
-		
+
+		// pv.setCreatedAt(p.getCreatedAt());
+		// pv.setCreatedBy(p.getCreatedBy());
+		// pv.setUpdatedAt(p.getUpdatedAt());
+		// pv.setUpdatedBy(p.getUpdatedBy());
+
 		return pv;
 	}
 

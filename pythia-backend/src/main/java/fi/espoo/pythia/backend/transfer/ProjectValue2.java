@@ -1,15 +1,8 @@
 package fi.espoo.pythia.backend.transfer;
 
 import java.io.Serializable;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonView;
-
-import fi.espoo.pythia.backend.repos.entities.Plan;
-import fi.espoo.pythia.backend.repos.entities.Project;
-import fi.espoo.pythia.backend.repos.entities.SisterProject;
 
 public class ProjectValue2 implements Serializable {
 
@@ -24,10 +17,11 @@ public class ProjectValue2 implements Serializable {
 	private String name;
 	private short mainNo;
 	private String description;
+	private boolean completed;
 	// removed ArrayList definition
 	private List<PlanValue> plans;
 	private List<Long> sisterProjects;
-	// private OffsetDateTime createdAt;
+	private Date createdAt;
 	// private String createdBy;
 	// private OffsetDateTime updatedAt;
 	// private String updatedBy;
@@ -36,13 +30,24 @@ public class ProjectValue2 implements Serializable {
 	}
 
 	public ProjectValue2(Long projectId, String hansuProjectId, String name, short mainNo, String description,
-			List<PlanValue> plans) {
+			boolean completed, List<PlanValue> plans, List<Long> sisterProjects) {
+
 		this.projectId = projectId;
 		this.hansuProjectId = hansuProjectId;
 		this.name = name;
 		this.mainNo = mainNo;
 		this.description = description;
+		this.completed = completed;
 		this.plans = plans;
+		this.sisterProjects = sisterProjects;
+	}
+
+	public boolean isCompleted() {
+		return completed;
+	}
+
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
 	}
 
 	public Long getProjectId() {
@@ -101,11 +106,15 @@ public class ProjectValue2 implements Serializable {
 		this.sisterProjects = sisterProjects;
 	}
 
-	
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
 
 
-
-	
 	// public String getCreatedBy() {
 	// return createdBy;
 	// }
