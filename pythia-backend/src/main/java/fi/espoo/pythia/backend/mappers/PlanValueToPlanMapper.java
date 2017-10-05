@@ -1,5 +1,7 @@
 package fi.espoo.pythia.backend.mappers;
 
+import java.time.OffsetDateTime;
+
 import fi.espoo.pythia.backend.repos.ProjectRepository;
 import fi.espoo.pythia.backend.repos.entities.Plan;
 import fi.espoo.pythia.backend.repos.entities.Project;
@@ -23,10 +25,10 @@ public class PlanValueToPlanMapper {
 		p.setUrl(pv.getUrl());
 		p.setApproved(pv.getApproved());
 				
-//		p.setCreatedAt(pv.getCreatedAt());
-//		p.setCreatedBy(pv.getCreatedBy());
-//		p.setUpdatedAt(pv.getUpdatedAt());
-//		p.setUpdatedBy(pv.getUpdatedBy());
+		p.setCreatedAt(OffsetDateTime.now());
+		p.setCreatedBy(pv.getCreatedBy());
+		p.setUpdatedAt(pv.getUpdatedAt());
+		p.setUpdatedBy(pv.getUpdatedBy());
 		
 		return p;
 	}

@@ -25,9 +25,9 @@ public class ProjectValue2 implements Serializable {
 	// private Date createdAt;
 	private OffsetDateTime createdAt;
 
-	// private String createdBy;
-	// private OffsetDateTime updatedAt;
-	// private String updatedBy;
+	private String createdBy;
+	private OffsetDateTime updatedAt;
+	private String updatedBy;
 
 	public ProjectValue2() {
 	}
@@ -117,28 +117,29 @@ public class ProjectValue2 implements Serializable {
 		this.createdAt = createdAt;
 	}
 
-	// public Date getCreatedAt() {
-	// return createdAt;
-	// }
-	//
-	// public void setCreatedAt(Date createdAt) {
-	// this.createdAt = createdAt;
-	// }
 
-	// public String getCreatedBy() {
-	// return createdBy;
-	// }
-	//
-	// public void setCreatedBy(String createdBy) {
-	// this.createdBy = createdBy;
-	// }
-	//
-	// public String getUpdatedBy() {
-	// return updatedBy;
-	// }
-	//
-	// public void setUpdatedBy(String updatedBy) {
-	// this.updatedBy = updatedBy;
-	// }
+	 public String getCreatedBy() {
+	 return createdBy;
+	 }
+	
+	 public void setCreatedBy(String createdBy) {
+	 this.createdBy = createdBy;
+	 }
+	
+	 public OffsetDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(OffsetDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public String getUpdatedBy() {
+	 return updatedBy;
+	 }
+	
+	 public void setUpdatedBy(String updatedBy) {
+	 this.updatedBy = updatedBy;
+	 }
 
 }

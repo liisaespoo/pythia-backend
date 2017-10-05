@@ -27,6 +27,9 @@ public class PrjVal2ToPrjMapper {
 		p.setDescription(pv.getDescription());
 		p.setCompleted(pv.isCompleted());
 		p.setCreatedAt(OffsetDateTime.now());
+		p.setCreatedBy(pv.getCreatedBy());
+		p.setUpdatedAt(pv.getUpdatedAt());
+		p.setUpdatedBy(pv.getUpdatedBy());
 
 		try {
 			List<Plan> plans = new ArrayList();
@@ -60,10 +63,6 @@ public class PrjVal2ToPrjMapper {
 		// p.setSisterProjects(project.getSisterProjects());
 		// }
 
-		// p.setCreatedAt(pv.getCreatedAt());
-		// p.setCreatedBy(pv.getCreatedBy());
-		// p.setUpdatedAt(pv.getUpdatedAt());
-		// p.setUpdatedBy(pv.getUpdatedBy());
 
 		return p;
 	}

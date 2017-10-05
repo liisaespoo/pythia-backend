@@ -76,24 +76,24 @@ public class Plan implements Serializable {
 	@Column(name = "approved")
 	private boolean approved;
 
-	// // https://jdbc.postgresql.org/documentation/head/java8-date-time.html
-	// // timestamp with timezone
-	// //@Temporal(TemporalType.TIMESTAMP)
-	// @Column(name = "created_at")
-	// private OffsetDateTime createdAt;
+	 // https://jdbc.postgresql.org/documentation/head/java8-date-time.html
+	 // timestamp with timezone
+	 //@Temporal(TemporalType.TIMESTAMP)
+	 @Column(name = "created_at")
+	 private OffsetDateTime createdAt;
 
-	// // varchar
-	// @Column(name = "created_by")
-	// private String createdBy;
+	 // varchar
+	 @Column(name = "created_by")
+	 private String createdBy;
 
-	// // timestamp with timezone timestamptz
-	// //@Temporal(TemporalType.TIMESTAMP)
-	// @Column(name = "updated_at")
-	// private OffsetDateTime updatedAt;
+	 // timestamp with timezone timestamptz
+	 //@Temporal(TemporalType.TIMESTAMP)
+	 @Column(name = "updated_at")
+	 private OffsetDateTime updatedAt;
 
-	// // varchar
-	// @Column(name = "updated_by")
-	// private String updatedBy;
+	 // varchar
+	 @Column(name = "updated_by")
+	 private String updatedBy;
 
 	public Plan() {
 
@@ -151,37 +151,37 @@ public class Plan implements Serializable {
 	
 	
 
-	// public OffsetDateTime getCreatedAt() {
-	// return createdAt;
-	// }
-	//
-	// public void setCreatedAt(OffsetDateTime createdAt) {
-	// this.createdAt = createdAt;
-	// }
-	//
-	// public String getCreatedBy() {
-	// return createdBy;
-	// }
-	//
-	// public void setCreatedBy(String createdBy) {
-	// this.createdBy = createdBy;
-	// }
+	 public OffsetDateTime getCreatedAt() {
+	 return createdAt;
+	 }
+	
+	 public void setCreatedAt(OffsetDateTime createdAt) {
+	 this.createdAt = createdAt;
+	 }
+	
+	 public String getCreatedBy() {
+	 return createdBy;
+	 }
+	
+	 public void setCreatedBy(String createdBy) {
+	 this.createdBy = createdBy;
+	 }
 
-	// public OffsetDateTime getUpdatedAt() {
-	// return updatedAt;
-	// }
-	//
-	// public void setUpdatedAt(OffsetDateTime updatedAt) {
-	// this.updatedAt = updatedAt;
-	// }
+	 public OffsetDateTime getUpdatedAt() {
+	 return updatedAt;
+	 }
+	
+	 public void setUpdatedAt(OffsetDateTime updatedAt) {
+	 this.updatedAt = updatedAt;
+	 }
 
-	// public String getUpdatedBy() {
-	// return updatedBy;
-	// }
-	//
-	// public void setUpdatedBy(String updatedBy) {
-	// this.updatedBy = updatedBy;
-	// }
+	 public String getUpdatedBy() {
+	 return updatedBy;
+	 }
+	
+	 public void setUpdatedBy(String updatedBy) {
+	 this.updatedBy = updatedBy;
+	 }
 
 	public List<Comment> getComments() {
 		return comments;

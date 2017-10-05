@@ -1,6 +1,7 @@
 package fi.espoo.pythia.backend.transfer;
 
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -29,7 +30,16 @@ public class PlanValue  implements Serializable {
 	
 	
 	private boolean approved;
-
+	
+	
+	private OffsetDateTime createdAt;
+	
+	private String createdBy;
+	
+	private OffsetDateTime updatedAt;
+	
+	private String updatedBy;
+	
 	
 	public Long getPlanId() {
 		return planId;
@@ -97,4 +107,46 @@ public class PlanValue  implements Serializable {
 	public void setApproved(boolean approved) {
 		this.approved = approved;
 	}
+
+
+	public OffsetDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+
+	public void setCreatedAt(OffsetDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+
+	public OffsetDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+
+	public void setUpdatedAt(OffsetDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	
+	
 }
