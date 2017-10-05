@@ -161,13 +161,6 @@ public class Project implements Serializable {
 	}
 	
 
-//	public Date getCreatedAt() {
-//		return createdAt;
-//	}
-//
-//	public void setCreatedAt(Date createdAt) {
-//		this.createdAt = createdAt;
-//	}
 
 
 	// public String getCreatedBy() {

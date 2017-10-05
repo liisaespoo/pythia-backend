@@ -11,6 +11,8 @@ public class CommentValue implements Serializable {
 	private String text;
 
 	private boolean approved;
+	
+	private String url;
 
 	public CommentValue(Long commentId, Long planId, String text, boolean approved) {
 		
@@ -54,6 +56,14 @@ public class CommentValue implements Serializable {
 
 	public void setApproved(boolean approved) {
 		this.approved = approved;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	
