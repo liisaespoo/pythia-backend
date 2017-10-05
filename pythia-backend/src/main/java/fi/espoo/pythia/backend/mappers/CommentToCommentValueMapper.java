@@ -13,6 +13,7 @@ public class CommentToCommentValueMapper {
 		cv.setPlanId(plan.getPlanId()); 
 		cv.setText(c.getText());
 		cv.setApproved(c.isApproved());
+		cv.setUrl(c.getUrl());
 		return cv;
 	}
 

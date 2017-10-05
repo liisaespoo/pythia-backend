@@ -14,7 +14,7 @@ public class CommentValueToCommentMapper {
 		c.setPlan(plan);
 		c.setText(cv.getText());
 		c.setApproved(cv.isApproved());
-		
+		c.setUrl(cv.getUrl());
 
 		return c;
 	}

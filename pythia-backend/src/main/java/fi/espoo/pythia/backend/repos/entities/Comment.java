@@ -38,6 +38,9 @@ public class Comment implements Serializable {
 	@Column(name = "approved")
 	private boolean approved;
 	
+	@Column(name = "url")
+	private String url;
+	
 	public Comment() {
 		
 	}
@@ -76,6 +79,15 @@ public class Comment implements Serializable {
 	public void setApproved(boolean approved) {
 		this.approved = approved;
 	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
 	
 	
 }
