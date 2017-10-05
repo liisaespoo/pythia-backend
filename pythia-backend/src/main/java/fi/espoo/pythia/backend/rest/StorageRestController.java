@@ -355,7 +355,7 @@ public class StorageRestController {
 				return new ResponseEntity<String>("",HttpStatus.NOT_FOUND);
 			}
 			
-			String savedImageUrl = s3Manager.createPlanMultipartFile("1test", "kirapythia-example-bucket", mfile);
+			String savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-plans-bucket", mfile);
 			
 			// set PlanValue url 
 			planV.setUrl(savedImageUrl);

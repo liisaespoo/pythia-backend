@@ -28,7 +28,7 @@ import fi.espoo.pythia.backend.converters.FileConverter;
 @Component
 public class S3Manager {
 
-	public String createPlanMultipartFile(String key, String bucketName, MultipartFile mfile) throws IOException{
+	public String createPlanMultipartFile(String bucketName, MultipartFile mfile) throws IOException{
 
 		// tarkista ettei ole null
 //		if (json64base.isEmpty() || json64base == null) {
@@ -38,9 +38,13 @@ public class S3Manager {
 		AmazonS3 s3client = authenticate();
 		File file = FileConverter.multipartFileToFile(mfile);
 		
-		key = file.getName();
+		String key = file.getName();
 		
+		/* TEST COMMENT AWAY
 		s3client.putObject(bucketName, key, file);
+		
+		*/
+		
 		// encode base64 to InputStream
 //		S3ObjectInputStream imageStream = EncoderBase64.base64String2InputStream(json64base);		
 //
