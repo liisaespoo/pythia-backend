@@ -43,7 +43,7 @@ public class Comment implements Serializable {
 	private String url;
 	
 	@Column(name = "createdAt")
-	private OffsetDateTime cretedAt;
+	private OffsetDateTime createdAt;
 	
 	@Column(name = "createdBy")
 	private String createdBy;
@@ -102,11 +102,11 @@ public class Comment implements Serializable {
 	}
 
 	public OffsetDateTime getCreatedAt() {
-		return cretedAt;
+		return createdAt;
 	}
 
-	public void setCreatedAt(OffsetDateTime cretedAt) {
-		this.cretedAt = cretedAt;
+	public void setCreatedAt(OffsetDateTime createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	public String getCreatedBy() {
