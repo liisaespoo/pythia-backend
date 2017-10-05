@@ -469,9 +469,9 @@ public class StorageRestController {
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
 			return new ResponseEntity<ProjectValue2>(HttpStatus.FORBIDDEN);
 		}
-
 	}
 
+	
 	// ------------------------ NOT DONE --------------------------
 
 	/**
