@@ -377,6 +377,44 @@ public class StorageRestController {
 	}
 	
 	
+
+	
+	@SuppressWarnings("unchecked")
+	@PostMapping(value = "/projects/{projectId}/plans/{planId}/comments/{commentId}/files/")
+	public ResponseEntity<String> createCommentFile(@RequestParam("mfile") MultipartFile mfile,   @PathVariable("commentId") long id) {
+		
+		
+		// Value object mapping
+		try {
+			
+			
+			CommentValue commV = storageManager.getComment(id);
+			
+			if(commV == null){
+				return new ResponseEntity<String>("",HttpStatus.NOT_FOUND);
+			}
+			
+			String savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-comments-bucket", mfile);
+			
+			// set PlanValue url 
+			commV.setUrl(savedImageUrl);
+			//update Plan with url
+			storageManager.updateComment(commV);
+	
+			if (savedImageUrl.isEmpty() || savedImageUrl == null) {
+				return new ResponseEntity<String>("",HttpStatus.NOT_FOUND);
+			}
+			return new ResponseEntity<String>(savedImageUrl, HttpStatus.OK);
+		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
+			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<String>(HttpStatus.I_AM_A_TEAPOT);
+		}
+
+	}
+	
 	
 
 	// ---------------------------PUT--------------------------------
