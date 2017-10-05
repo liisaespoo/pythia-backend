@@ -157,6 +157,14 @@ public class StorageManager {
 		return pVal;
 	}
 	
+	public CommentValue getComment(long id) {
+		Comment comment = commentRepository.findByCommentId(id);
+		Plan plan = comment.getPlan();
+		CommentValue cVal = CommentToCommentValueMapper.commentToCommentValue(comment, plan);
+		
+		return cVal;
+	}
+
 	
 	/**
 	 * get comments by planId
@@ -362,5 +370,19 @@ public class StorageManager {
 
 	}
 
+	public CommentValue updateComment(CommentValue commV) {
+		
+		Long id = commV.getPlanId();
+		Plan plan = planRepository.findByPlanId(id);
+		Comment comm = CommentValueToCommentMapper.commentValueToComment(commV, plan);
+		
+		Comment updatedComm = commentRepository.save(comm);
+		
+		CommentValue updatedCommentValue = CommentToCommentValueMapper.commentToCommentValue(updatedComm, plan);
+		return updatedCommentValue;
+		
+	}
+
+	
 
 }
