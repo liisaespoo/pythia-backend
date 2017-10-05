@@ -1,6 +1,7 @@
 package fi.espoo.pythia.backend.transfer;
 
 import java.io.Serializable;
+import java.time.OffsetDateTime;
 
 public class CommentValue implements Serializable {
 
@@ -13,6 +14,15 @@ public class CommentValue implements Serializable {
 	private boolean approved;
 	
 	private String url;
+	
+	private OffsetDateTime createdAt;
+	
+	private String createdBy;
+	
+	private OffsetDateTime updatedAt;
+	
+	private String updatedBy;
+
 
 	public CommentValue(Long commentId, Long planId, String text, boolean approved) {
 		
@@ -66,7 +76,36 @@ public class CommentValue implements Serializable {
 		this.url = url;
 	}
 
-	
-	
+	public OffsetDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(OffsetDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public OffsetDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(OffsetDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
 
 }

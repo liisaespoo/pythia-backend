@@ -21,10 +21,10 @@ public class PlanToPlanValueMapper {
 		pv.setUrl(p.getUrl());
 		pv.setApproved(p.getApproved());
 				
-//		pv.setCreatedAt(p.getCreatedAt());
-//		pv.setCreatedBy(p.getCreatedBy());
-//		pv.setUpdatedAt(p.getUpdatedAt());
-//		pv.setUpdatedBy(p.getUpdatedBy());
+		pv.setCreatedAt(p.getCreatedAt());
+		pv.setCreatedBy(p.getCreatedBy());
+		pv.setUpdatedAt(p.getUpdatedAt());
+		pv.setUpdatedBy(p.getUpdatedBy());
 		
 		return pv;
 	}

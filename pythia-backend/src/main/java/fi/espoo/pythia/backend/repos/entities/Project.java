@@ -73,24 +73,18 @@ public class Project implements Serializable {
 	 @Column(name = "created_at")
 	 private OffsetDateTime createdAt;
 
-	 
-//	 @Temporal(TemporalType.TIMESTAMP)
-//	    @Column(name = "created_at")
-//	    private Date createdAt;
-	 
-	 
-	// // varchar
-	// @Column(name = "created_by")
-	// private String createdBy;
+	 // varchar
+	 @Column(name = "created_by")
+	 private String createdBy;
 
-	// // timestamp with timezone timestamptz
-	// // @Temporal(TemporalType.TIMESTAMP)
-	// @Column(name = "updated_at")
-	// private OffsetDateTime updatedAt;
+	 // timestamp with timezone timestamptz
+	 // @Temporal(TemporalType.TIMESTAMP)
+	 @Column(name = "updated_at")
+	 private OffsetDateTime updatedAt;
 
-	// // varchar
-	// @Column(name = "updated_by")
-	// private String updatedBy;
+	 // varchar
+	 @Column(name = "updated_by")
+	 private String updatedBy;
 
 	public Project() {
 
@@ -163,29 +157,29 @@ public class Project implements Serializable {
 
 
 
-	// public String getCreatedBy() {
-	// return createdBy;
-	// }
-	//
-	// public void setCreatedBy(String createdBy) {
-	// this.createdBy = createdBy;
-	// }
+	 public String getCreatedBy() {
+	 return createdBy;
+	 }
+	
+	 public void setCreatedBy(String createdBy) {
+	 this.createdBy = createdBy;
+	 }
 
-	// public OffsetDateTime getUpdatedAt() {
-	// return updatedAt;
-	// }
-	//
-	// public void setUpdatedAt(OffsetDateTime updatedAt) {
-	// this.updatedAt = updatedAt;
-	// }
+	 public OffsetDateTime getUpdatedAt() {
+	 return updatedAt;
+	 }
+	
+	 public void setUpdatedAt(OffsetDateTime updatedAt) {
+	 this.updatedAt = updatedAt;
+	 }
 
-	// public String getUpdatedBy() {
-	// return updatedBy;
-	// }
-	//
-	// public void setUpdatedBy(String updatedBy) {
-	// this.updatedBy = updatedBy;
-	// }
+	 public String getUpdatedBy() {
+	 return updatedBy;
+	 }
+	
+	 public void setUpdatedBy(String updatedBy) {
+	 this.updatedBy = updatedBy;
+	 }
 
 
 

@@ -21,8 +21,10 @@ public class PrjToPrjVal2Mapper {
 		pv.setDescription(p.getDescription());
 		pv.setCompleted(p.isCompleted());
 		pv.setCreatedAt(p.getCreatedAt());
+		pv.setCreatedBy(p.getCreatedBy());
+		pv.setUpdatedAt(p.getUpdatedAt());
+		pv.setUpdatedBy(p.getUpdatedBy());
 
-		//
 		List<PlanValue> planvs = new ArrayList();
 		for (Plan pp : p.getPlans()) {
 			System.out.println("Planid:" + pp.getPlanId());
@@ -40,11 +42,6 @@ public class PrjToPrjVal2Mapper {
 		}
 
 		pv.setSisterProjects(sisterProjectIds);
-
-		// pv.setCreatedAt(p.getCreatedAt());
-		// pv.setCreatedBy(p.getCreatedBy());
-		// pv.setUpdatedAt(p.getUpdatedAt());
-		// pv.setUpdatedBy(p.getUpdatedBy());
 
 		return pv;
 	}

@@ -2,6 +2,7 @@ package fi.espoo.pythia.backend.repos.entities;
 
 import java.io.Serializable;
 //import java.time.OffsetDateTime;
+import java.time.OffsetDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,6 +41,18 @@ public class Comment implements Serializable {
 	
 	@Column(name = "url")
 	private String url;
+	
+	@Column(name = "createdAt")
+	private OffsetDateTime cretedAt;
+	
+	@Column(name = "createdBy")
+	private String createdBy;
+	
+	@Column(name = "updatedAt")
+	private OffsetDateTime updatedAt;
+	
+	@Column(name = "updatedBy")
+	private String updatedBy;
 	
 	public Comment() {
 		
@@ -87,8 +100,38 @@ public class Comment implements Serializable {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	
-	
+
+	public OffsetDateTime getCreatedAt() {
+		return cretedAt;
+	}
+
+	public void setCreatedAt(OffsetDateTime cretedAt) {
+		this.cretedAt = cretedAt;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public OffsetDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(OffsetDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
 	
 }
 
