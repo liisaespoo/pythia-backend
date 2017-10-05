@@ -24,10 +24,13 @@ public class PlanValueToPlanMapper {
 		p.setVersion(pv.getVersion());
 		p.setUrl(pv.getUrl());
 		p.setApproved(pv.getApproved());
-				
-		p.setCreatedAt(OffsetDateTime.now());
+		
+		if(p.getCreatedAt() == null){
+			p.setCreatedAt(OffsetDateTime.now());
+		}
+
 		p.setCreatedBy(pv.getCreatedBy());
-		p.setUpdatedAt(pv.getUpdatedAt());
+		p.setUpdatedAt(OffsetDateTime.now());
 		p.setUpdatedBy(pv.getUpdatedBy());
 		
 		return p;

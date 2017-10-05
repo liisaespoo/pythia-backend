@@ -26,9 +26,12 @@ public class PrjVal2ToPrjMapper {
 		p.setName(pv.getName());
 		p.setDescription(pv.getDescription());
 		p.setCompleted(pv.isCompleted());
-		p.setCreatedAt(OffsetDateTime.now());
+		if(p.getCreatedAt() == null){
+			p.setCreatedAt(OffsetDateTime.now());
+		}
+		
 		p.setCreatedBy(pv.getCreatedBy());
-		p.setUpdatedAt(pv.getUpdatedAt());
+		p.setUpdatedAt(OffsetDateTime.now());
 		p.setUpdatedBy(pv.getUpdatedBy());
 
 		try {

@@ -18,9 +18,14 @@ public class CommentValueToCommentMapper {
 		c.setText(cv.getText());
 		c.setApproved(cv.isApproved());
 		c.setUrl(cv.getUrl());
-		c.setCreatedAt(OffsetDateTime.now());
+		
+		if(c.getCreatedAt() == null){
+			c.setCreatedAt(OffsetDateTime.now());
+		}
+		
+		
 		c.setCreatedBy(cv.getCreatedBy());
-		c.setUpdatedAt(cv.getUpdatedAt());
+		c.setUpdatedAt(OffsetDateTime.now());
 		c.setUpdatedBy(cv.getUpdatedBy());
 
 		return c;

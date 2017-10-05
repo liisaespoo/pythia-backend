@@ -109,6 +109,9 @@ public class Plan implements Serializable {
 		this.project = project;
 	}
 
+	
+
+	
 	public Long getPlanId() {
 		return planId;
 	}
@@ -117,13 +120,13 @@ public class Plan implements Serializable {
 		this.planId = planId;
 	}
 
-	// public Long getProjectId() {
-	// return projectId;
-	// }
+	public List<Comment> getComments() {
+		return comments;
+	}
 
-	// public void setProjectId(Long projectId) {
-	// this.projectId = projectId;
-	// }
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
 
 	public short getMainNo() {
 		return mainNo;
@@ -148,48 +151,6 @@ public class Plan implements Serializable {
 	public void setVersion(String version) {
 		this.version = version;
 	}
-	
-	
-
-	 public OffsetDateTime getCreatedAt() {
-	 return createdAt;
-	 }
-	
-	 public void setCreatedAt(OffsetDateTime createdAt) {
-	 this.createdAt = createdAt;
-	 }
-	
-	 public String getCreatedBy() {
-	 return createdBy;
-	 }
-	
-	 public void setCreatedBy(String createdBy) {
-	 this.createdBy = createdBy;
-	 }
-
-	 public OffsetDateTime getUpdatedAt() {
-	 return updatedAt;
-	 }
-	
-	 public void setUpdatedAt(OffsetDateTime updatedAt) {
-	 this.updatedAt = updatedAt;
-	 }
-
-	 public String getUpdatedBy() {
-	 return updatedBy;
-	 }
-	
-	 public void setUpdatedBy(String updatedBy) {
-	 this.updatedBy = updatedBy;
-	 }
-
-	public List<Comment> getComments() {
-		return comments;
-	}
-
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
 
 	public String getUrl() {
 		return url;
@@ -199,14 +160,46 @@ public class Plan implements Serializable {
 		this.url = url;
 	}
 
-	public boolean getApproved() {
+	public boolean isApproved() {
 		return approved;
 	}
-	
-	public void setApproved(Boolean approved) {
+
+	public void setApproved(boolean approved) {
 		this.approved = approved;
 	}
-	
+
+	public OffsetDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(OffsetDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public OffsetDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(OffsetDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -44,10 +44,10 @@ public class Project implements Serializable {
 	// removed ArrayList definition
 	@OneToMany(mappedBy = "project")
 	private List<Plan> plans;
-	
+
 	@OneToMany(mappedBy = "project")
 	private List<SisterProject> sisterProjects;
-	
+
 	// varchar
 	@Column(name = "hansu_project_id")
 	private String hansuProjectId;
@@ -63,28 +63,28 @@ public class Project implements Serializable {
 	// varchar
 	@Column(name = "description")
 	private String description;
-	
+
 	@Column(name = "completed")
 	private boolean completed;
 
 	// // https://jdbc.postgresql.org/documentation/head/java8-date-time.html
 	// // timestamp with timezone
-	 //@Temporal(TemporalType.TIMESTAMP)
-	 @Column(name = "created_at")
-	 private OffsetDateTime createdAt;
+	// @Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "created_at")
+	private OffsetDateTime createdAt;
 
-	 // varchar
-	 @Column(name = "created_by")
-	 private String createdBy;
+	// varchar
+	@Column(name = "created_by")
+	private String createdBy;
 
-	 // timestamp with timezone timestamptz
-	 // @Temporal(TemporalType.TIMESTAMP)
-	 @Column(name = "updated_at")
-	 private OffsetDateTime updatedAt;
+	// timestamp with timezone timestamptz
+	// @Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "updated_at")
+	private OffsetDateTime updatedAt;
 
-	 // varchar
-	 @Column(name = "updated_by")
-	 private String updatedBy;
+	// varchar
+	@Column(name = "updated_by")
+	private String updatedBy;
 
 	public Project() {
 
@@ -145,7 +145,7 @@ public class Project implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public boolean isCompleted() {
 		return completed;
 	}
@@ -153,36 +153,30 @@ public class Project implements Serializable {
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
 	}
-	
 
+	public String getCreatedBy() {
+		return createdBy;
+	}
 
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
 
-	 public String getCreatedBy() {
-	 return createdBy;
-	 }
-	
-	 public void setCreatedBy(String createdBy) {
-	 this.createdBy = createdBy;
-	 }
+	public OffsetDateTime getUpdatedAt() {
+		return updatedAt;
+	}
 
-	 public OffsetDateTime getUpdatedAt() {
-	 return updatedAt;
-	 }
-	
-	 public void setUpdatedAt(OffsetDateTime updatedAt) {
-	 this.updatedAt = updatedAt;
-	 }
+	public void setUpdatedAt(OffsetDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
 
-	 public String getUpdatedBy() {
-	 return updatedBy;
-	 }
-	
-	 public void setUpdatedBy(String updatedBy) {
-	 this.updatedBy = updatedBy;
-	 }
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
 
-
-
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
 
 	public OffsetDateTime getCreatedAt() {
 		return createdAt;
@@ -201,8 +195,6 @@ public class Project implements Serializable {
 		plans.remove(plan);
 		plan.setProject(null);
 	}
-	
-	
 
 	@Override
 	public int hashCode() {
