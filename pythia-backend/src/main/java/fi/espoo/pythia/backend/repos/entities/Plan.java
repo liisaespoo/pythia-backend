@@ -6,6 +6,7 @@ package fi.espoo.pythia.backend.repos.entities;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -25,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "plan")
-public class Plan implements Serializable {
+public class Plan implements Serializable, Comparable<Plan> {
 
 	/**
 	 * 
@@ -44,11 +45,10 @@ public class Plan implements Serializable {
 	// project_id is the <<fk>> of table Plan
 
 	@ManyToOne
-	@JoinColumn(name = "project_id",nullable=false)
+	@JoinColumn(name = "project_id", nullable = false)
 	private Project project;
-	
-	
-	@OneToMany (mappedBy = "plan")
+
+	@OneToMany(mappedBy = "plan")
 	private List<Comment> comments;
 
 	// //bigint
@@ -65,35 +65,34 @@ public class Plan implements Serializable {
 
 	// varchar
 	@Column(name = "version")
-	private String version;
-	
-	//varchar
+	private short version;
+
+	// varchar
 	@Column(name = "url")
 	private String url;
-	
-	// Is it like this??? JPA expects the database data type to be integer, 
-	// where value of "1" means true, and value of "0" means false. 
+
+	// boolean
 	@Column(name = "approved")
 	private boolean approved;
 
-	 // https://jdbc.postgresql.org/documentation/head/java8-date-time.html
-	 // timestamp with timezone
-	 //@Temporal(TemporalType.TIMESTAMP)
-	 @Column(name = "created_at")
-	 private OffsetDateTime createdAt;
+	// https://jdbc.postgresql.org/documentation/head/java8-date-time.html
+	// timestamp with timezone
+	// @Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "created_at")
+	private OffsetDateTime createdAt;
 
-	 // varchar
-	 @Column(name = "created_by")
-	 private String createdBy;
+	// varchar
+	@Column(name = "created_by")
+	private String createdBy;
 
-	 // timestamp with timezone timestamptz
-	 //@Temporal(TemporalType.TIMESTAMP)
-	 @Column(name = "updated_at")
-	 private OffsetDateTime updatedAt;
+	// timestamp with timezone timestamptz
+	// @Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "updated_at")
+	private OffsetDateTime updatedAt;
 
-	 // varchar
-	 @Column(name = "updated_by")
-	 private String updatedBy;
+	// varchar
+	@Column(name = "updated_by")
+	private String updatedBy;
 
 	public Plan() {
 
@@ -109,9 +108,6 @@ public class Plan implements Serializable {
 		this.project = project;
 	}
 
-	
-
-	
 	public Long getPlanId() {
 		return planId;
 	}
@@ -144,11 +140,11 @@ public class Plan implements Serializable {
 		this.subNo = subNo;
 	}
 
-	public String getVersion() {
-		return version;
+	public short getVersion() {
+		return this.version;
 	}
 
-	public void setVersion(String version) {
+	public void setVersion(short version) {
 		this.version = version;
 	}
 
@@ -223,6 +219,18 @@ public class Plan implements Serializable {
 		} else if (!planId.equals(other.planId))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Plan p) {
+
+		if (this.version == p.getVersion()) {
+			return 0;
+		} else if (this.version > p.getVersion()) {
+			return 1;
+		} else {
+			return -1;
+		}
 	}
 
 }

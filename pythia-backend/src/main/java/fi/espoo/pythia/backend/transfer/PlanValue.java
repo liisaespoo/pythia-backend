@@ -23,7 +23,7 @@ public class PlanValue  implements Serializable {
 	private short subNo;
 
 
-	private String version;
+	private short version;
 
 	
 	private String url;
@@ -81,12 +81,12 @@ public class PlanValue  implements Serializable {
 	}
 
 
-	public String getVersion() {
+	public short getVersion() {
 		return version;
 	}
 
 
-	public void setVersion(String version) {
+	public void setVersion(short version) {
 		this.version = version;
 	}
 

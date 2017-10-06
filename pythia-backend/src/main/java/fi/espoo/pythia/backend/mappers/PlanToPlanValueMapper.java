@@ -9,8 +9,6 @@ public class PlanToPlanValueMapper {
 	public static PlanValue planToPlanValue(Plan p, Project project) {
 		
 		//get project_id 
-		
-
 		PlanValue pv = new PlanValue();
 		
 		pv.setPlanId(p.getPlanId());

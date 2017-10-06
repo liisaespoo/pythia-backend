@@ -10,4 +10,7 @@ import fi.espoo.pythia.backend.repos.entities.Project;
 public interface PlanRepository extends JpaRepository<Plan, Long> {
 
 	Plan findByPlanId(Long id);
+	
+	// get all plans with planV.projectId and planV.mainNo & planV.subNo
+	List<Plan> findByProjectInAndMainNoInAndSubNoIn(Project p, short mainNo, short subNo);
 }

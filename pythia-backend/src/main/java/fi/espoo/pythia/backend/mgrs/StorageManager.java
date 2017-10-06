@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -156,101 +157,38 @@ public class StorageManager {
 
 		return pVal;
 	}
-	
+
 	public CommentValue getComment(long id) {
 		Comment comment = commentRepository.findByCommentId(id);
 		Plan plan = comment.getPlan();
 		CommentValue cVal = CommentToCommentValueMapper.commentToCommentValue(comment, plan);
-		
+
 		return cVal;
 	}
 
-	
 	/**
 	 * get comments by planId
+	 * 
 	 * @param planId
 	 * @return
 	 */
 	public List<CommentValue> getComments(Long planId) {
-		
+
 		Plan plan = planRepository.findByPlanId(planId);
 		List<Comment> comments = commentRepository.findByPlan(plan);
-		
+
 		List<CommentValue> commentValues = new ArrayList();
-		for(Comment c : comments){
+		for (Comment c : comments) {
 			CommentValue cv = CommentToCommentValueMapper.commentToCommentValue(c, plan);
 			commentValues.add(cv);
 		}
-		
+
 		// TODO Auto-generated method stub
 		return commentValues;
-		
+
 	}
 
-
-	// -------------------OLD GET-----------------------------
-
-	// /**
-	// * Returns list of projects from database. DONE!!!
-	// *
-	// * @return list of projects
-	// */
-	// public ArrayList<ProjectValue2> getProjects() {
-	//
-	// ArrayList<Project> prjList = (ArrayList<Project>)
-	// projectRepository.findAll();
-	// ArrayList<ProjectValue2> prjValList = new ArrayList();
-	//
-	// // for -loop for prjList
-	//
-	// for (Project p : prjList) {
-	// // map each project to projectValue
-	// ProjectValue2 pval = PrjToPrjVal2.ProjectToProjectValue2(p);
-	// prjValList.add(pval);
-	// }
-	// // return projectValue -ArrayList
-	// return prjValList;
-	// }
-
-	// /**
-	// * Return project object for given id from database. If project is not
-	// found
-	// * for id, returns null. DONE
-	// */
-	// public ProjectValue getProject(Long projectId) {
-	//
-	// Project project = projectRepository.findByProjectId(projectId);
-	// ProjectValue pval =
-	// ProjectToProjectValueMapper.projectToProjectValue(project);
-	// return pval;
-	//
-	// }
-
 	// ---------------------POST-----------------------------------
-
-	// /**
-	// * Create new project in database. DONE!!!!
-	// *
-	// */
-	// public ProjectValue createProject(ProjectValue projectV) {
-	//
-	// // map projectV to project
-	// Project project =
-	// projectRepository.findByProjectId(projectV.getProjectId());
-	// Project prj = ProjectValueToProjectMapper.projectValueToProject(projectV,
-	// project);
-	//
-	// // timestamp with time at db or microservice level
-	// // prj.setCreatedAt(null);
-	// Project savedProject = projectRepository.save(prj);
-	//
-	// ProjectValue savedProjectValue =
-	// ProjectToProjectValueMapper.projectToProjectValue(savedProject);
-	// // planRepository.save(5L);
-	//
-	// // planRepository.
-	// return savedProjectValue;
-	// }
 
 	public ProjectValue2 createProject2(ProjectValue2 projectV) {
 
@@ -263,6 +201,11 @@ public class StorageManager {
 	}
 
 	/**
+	 * Checks if 1st version and if approved
+	 * 
+	 * If the 1st then version = 0 and approved = true
+	 * 
+	 * If not the 1st then increase version number by one
 	 * 
 	 * @return PlanValue
 	 */
@@ -271,10 +214,36 @@ public class StorageManager {
 		Long projectId = planV.getProjectId();
 		// get project by projectid
 		Project project = projectRepository.findByProjectId(projectId);
-
 		// map planV to plan
-		Plan plan = PlanValueToPlanMapper.planValueToPlan(planV, project);
-		Plan savedPlan = planRepository.save(plan);
+		Plan mappedPlan = PlanValueToPlanMapper.planValueToPlan(planV, project);
+
+		// get all plans with planV.projectId and planV.mainNo & planV.subNo
+
+		List<Plan> existingPlans = planRepository.findByProjectInAndMainNoInAndSubNoIn(project,
+				planV.getMainNo(), planV.getSubNo());
+
+		short version = 0;
+		boolean approved = true;
+		// first version
+		if (existingPlans.isEmpty()) {
+			version = 0;
+			approved = true;
+
+		} else {
+			// sorting from min to max
+			Collections.sort(existingPlans);
+			// get existingPlans max version with projctId, mainno and subno
+			Plan max = existingPlans.get(existingPlans.size() - 1);
+			// max version
+			short maxVersion = max.getVersion();
+			version = (short) (maxVersion +1);
+			approved = false;
+
+		}
+		mappedPlan.setVersion(version);
+		mappedPlan.setApproved(approved);
+
+		Plan savedPlan = planRepository.save(mappedPlan);
 
 		PlanValue savedPlanValue = PlanToPlanValueMapper.planToPlanValue(savedPlan, project);
 		// finally
@@ -283,7 +252,7 @@ public class StorageManager {
 
 	public CommentValue createComment(CommentValue commV, Long id) {
 
-		//Long planId = commV.getPlanId();
+		// Long planId = commV.getPlanId();
 		Plan plan = planRepository.findByPlanId(id);
 
 		Comment comm = CommentValueToCommentMapper.commentValueToComment(commV, plan);
@@ -371,18 +340,16 @@ public class StorageManager {
 	}
 
 	public CommentValue updateComment(CommentValue commV) {
-		
+
 		Long id = commV.getPlanId();
 		Plan plan = planRepository.findByPlanId(id);
 		Comment comm = CommentValueToCommentMapper.commentValueToComment(commV, plan);
-		
+
 		Comment updatedComm = commentRepository.save(comm);
-		
+
 		CommentValue updatedCommentValue = CommentToCommentValueMapper.commentToCommentValue(updatedComm, plan);
 		return updatedCommentValue;
-		
-	}
 
-	
+	}
 
 }
