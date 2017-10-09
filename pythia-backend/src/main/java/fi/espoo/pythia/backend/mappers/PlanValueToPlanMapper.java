@@ -5,12 +5,13 @@ import java.time.OffsetDateTime;
 import fi.espoo.pythia.backend.repos.ProjectRepository;
 import fi.espoo.pythia.backend.repos.entities.Plan;
 import fi.espoo.pythia.backend.repos.entities.Project;
+import fi.espoo.pythia.backend.repos.entities.ProjectUpdate;
 import fi.espoo.pythia.backend.transfer.PlanValue;
 
 public class PlanValueToPlanMapper {
 
 	
-	public static Plan planValueToPlan(PlanValue pv, Project project) {
+	public static Plan planValueToPlan(PlanValue pv, ProjectUpdate project, boolean updating) {
 		
 		//get project_id 
 		
@@ -25,8 +26,10 @@ public class PlanValueToPlanMapper {
 		p.setUrl(pv.getUrl());
 		p.setApproved(pv.getApproved());
 		
-		if(p.getCreatedAt() == null){
+		if (updating == false) {
 			p.setCreatedAt(OffsetDateTime.now());
+		} else {
+			p.setCreatedAt(pv.getCreatedAt());
 		}
 
 		p.setCreatedBy(pv.getCreatedBy());

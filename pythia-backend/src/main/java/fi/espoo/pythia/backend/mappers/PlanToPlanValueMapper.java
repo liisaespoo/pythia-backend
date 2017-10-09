@@ -2,11 +2,12 @@ package fi.espoo.pythia.backend.mappers;
 
 import fi.espoo.pythia.backend.repos.entities.Plan;
 import fi.espoo.pythia.backend.repos.entities.Project;
+import fi.espoo.pythia.backend.repos.entities.ProjectUpdate;
 import fi.espoo.pythia.backend.transfer.PlanValue;
 
 public class PlanToPlanValueMapper {
 
-	public static PlanValue planToPlanValue(Plan p, Project project) {
+	public static PlanValue planToPlanValue(Plan p, ProjectUpdate project) {
 		
 		//get project_id 
 		PlanValue pv = new PlanValue();
