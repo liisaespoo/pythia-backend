@@ -1,7 +1,5 @@
 package fi.espoo.pythia.backend.repos;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import fi.espoo.pythia.backend.repos.entities.Project;

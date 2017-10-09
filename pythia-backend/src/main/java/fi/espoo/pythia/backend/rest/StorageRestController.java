@@ -57,7 +57,6 @@ public class StorageRestController {
 	 * 
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	@GetMapping(value = "/projects/", produces = "application/json")
 	public ResponseEntity<List<ProjectValue2>> getProjects() {
 
@@ -77,7 +76,6 @@ public class StorageRestController {
 	/**
 	 * return a single project by id if found. Otherwise return null.
 	 */
-	@SuppressWarnings("unchecked")
 	@GetMapping(value = "/projects/{projectId}", produces = "application/json")
 	public ResponseEntity<ProjectValue2> getProject(@PathVariable("projectId") Long projectId) {
 
@@ -100,7 +98,6 @@ public class StorageRestController {
 	 * return a single project by hansuprojectid if found. Otherwise return
 	 * null.
 	 */
-	@SuppressWarnings("unchecked")
 	@GetMapping(value = "/projects/hansuprojectid/{hansuProjectId}", produces = "application/json")
 	public ResponseEntity<ProjectValue2> getHansuProject(@PathVariable("hansuProjectId") String hansuId) {
 
@@ -120,27 +117,26 @@ public class StorageRestController {
 
 	
 	
-//	/**
-//	 * 
-//	 * return 2 latest versions plans by projectId
-//	 * 
-//	 * @param projectId
-//	 * @return
-//	 */
-//	@SuppressWarnings("unchecked")
-//	@GetMapping(value = "/projects/{projectId}/plans/", produces = "application/json")
-//	public ResponseEntity<List<PlanValue>> getPlans(@PathVariable("projectId") Long projectId) {
-//
-//		try {
-//			List<PlanValue> plan = storageManager.getPlans(projectId);
-//			return new ResponseEntity<List<PlanValue>>(plan, HttpStatus.OK);
-//		} catch (java.lang.NullPointerException e) {
-//			return new ResponseEntity<List<PlanValue>>(HttpStatus.NOT_FOUND);
-//		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-//			return new ResponseEntity<List<PlanValue>>(HttpStatus.FORBIDDEN);
-//		}
-//
-//	}
+	/**
+	 * 
+	 * return 2 latest versions plans by projectId
+	 * 
+	 * @param projectId
+	 * @return
+	 */
+	@GetMapping(value = "/projects/{projectId}/plans/", produces = "application/json")
+	public ResponseEntity<List<PlanValue>> getPlans(@PathVariable("projectId") Long projectId) {
+
+		try {
+			List<PlanValue> plan = storageManager.getPlans(projectId);
+			return new ResponseEntity<List<PlanValue>>(plan, HttpStatus.OK);
+		} catch (java.lang.NullPointerException e) {
+			return new ResponseEntity<List<PlanValue>>(HttpStatus.NOT_FOUND);
+		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
+			return new ResponseEntity<List<PlanValue>>(HttpStatus.FORBIDDEN);
+		}
+
+	}
 	
 	
 	/**
@@ -150,7 +146,6 @@ public class StorageRestController {
 	 * @param projectId
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	@GetMapping(value = "/projects/{projectId}/plans/{planId}/comments/", produces = "application/json")
 	public ResponseEntity<List<CommentValue>> getComments(@PathVariable("planId") Long planId) {
 
@@ -182,7 +177,6 @@ public class StorageRestController {
 	 * @param projectValue
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	@PostMapping(value = "/projects/{projectId}/plans/", produces = "application/json", consumes = "application/json")
 	public ResponseEntity<PlanValue> createPlan(@RequestBody PlanValue planV) {
 
@@ -208,7 +202,6 @@ public class StorageRestController {
 	 * @param projectValue
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	@PostMapping(value = "/projects/{projectId}/plans/{planId}/comments/", produces = "application/json", consumes = "application/json")
 	public ResponseEntity<CommentValue> createComment(@RequestBody CommentValue commV, @PathVariable("planId") long id) {
 
@@ -232,7 +225,6 @@ public class StorageRestController {
 	 * @param projectValue
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	@PostMapping(value = "/projects/", produces = "application/json", consumes = "application/json")
 	public ResponseEntity<ProjectValue2> createProject(@RequestBody ProjectUpdateValue projectUpVal) {
 
@@ -249,8 +241,6 @@ public class StorageRestController {
 
 	
 	//, produces = "application/json", consumes = "file"
-	
-	@SuppressWarnings("unchecked")
 	@PostMapping(value = "/projects/{projectId}/plans/{planId}/files/")
 	public ResponseEntity<String> createPlanFile(@RequestParam("mfile") MultipartFile mfile,   @PathVariable("planId") long id) {
 		
@@ -279,7 +269,6 @@ public class StorageRestController {
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
 			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return new ResponseEntity<String>(HttpStatus.I_AM_A_TEAPOT);
 		}
@@ -288,8 +277,6 @@ public class StorageRestController {
 	
 	
 
-	
-	@SuppressWarnings("unchecked")
 	@PostMapping(value = "/projects/{projectId}/plans/{planId}/comments/{commentId}/files/")
 	public ResponseEntity<String> createCommentFile(@RequestParam("mfile") MultipartFile mfile,   @PathVariable("commentId") long id) {
 		
@@ -318,7 +305,6 @@ public class StorageRestController {
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
 			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return new ResponseEntity<String>(HttpStatus.I_AM_A_TEAPOT);
 		}
@@ -332,7 +318,7 @@ public class StorageRestController {
 	/**
 	 * update a plan of a project
 	 */
-	@SuppressWarnings("unchecked")
+	
 	@PutMapping(value = "/projects/{projectId}/plans/{planId}", produces = "application/json", consumes = "application/json")
 	public ResponseEntity<PlanValue> updatePlan(@RequestBody PlanValue planV) {
 
@@ -350,7 +336,6 @@ public class StorageRestController {
 	/**
 	 * update a project with List<Long> sisterProjectIds
 	 */
-	@SuppressWarnings("unchecked")
 	@PutMapping(value = "/projects/{projectId}", produces = "application/json", consumes = "application/json")
 	public ResponseEntity<ProjectValue2> updateProject(@RequestBody ProjectUpdateValue projectUpVal) {
 

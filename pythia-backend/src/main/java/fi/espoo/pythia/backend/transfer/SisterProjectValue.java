@@ -1,12 +1,13 @@
 package fi.espoo.pythia.backend.transfer;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
-import fi.espoo.pythia.backend.repos.entities.Project;
+public class SisterProjectValue implements Serializable{
 
-public class SisterProjectValue {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private Long id;
 

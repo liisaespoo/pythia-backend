@@ -6,9 +6,7 @@ package fi.espoo.pythia.backend.repos.entities;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.util.Comparator;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,8 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -46,7 +42,7 @@ public class Plan implements Serializable, Comparable<Plan> {
 
 	@ManyToOne
 	@JoinColumn(name = "project_id", nullable = false)
-	private Project project;
+	private ProjectUpdate project;
 
 	@OneToMany(mappedBy = "plan")
 	private List<Comment> comments;
@@ -99,13 +95,13 @@ public class Plan implements Serializable, Comparable<Plan> {
 	}
 
 	@JsonIgnore
-	public Project getProject() {
+	public ProjectUpdate getProject() {
 		return project;
 	}
 
 	@JsonIgnore
-	public void setProject(Project project) {
-		this.project = project;
+	public void setProject(ProjectUpdate project2) {
+		this.project = project2;
 	}
 
 	public Long getPlanId() {

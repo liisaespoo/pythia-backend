@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.espoo.pythia.backend.repos.entities.LatestPlans;
-import fi.espoo.pythia.backend.repos.entities.Plan;
 import fi.espoo.pythia.backend.repos.entities.Project;
 import fi.espoo.pythia.backend.repos.entities.SisterProject;
 import fi.espoo.pythia.backend.transfer.LatestPlansValue;
-import fi.espoo.pythia.backend.transfer.PlanValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue2;
 
 public class PrjToPrjVal2Mapper {
@@ -37,7 +35,7 @@ public class PrjToPrjVal2Mapper {
 		
 		//Latest plans
 		
-		List<LatestPlansValue> lplanvs = new ArrayList();
+		List<LatestPlansValue> lplanvs = new ArrayList<LatestPlansValue>();
 		for (LatestPlans pp : p.getLatestplans()) {
 			System.out.println("Planid:" + pp.getPlanId());
 			lplanvs.add(LPToLPValueMapper.lpTolpValue(pp, p));
@@ -47,7 +45,7 @@ public class PrjToPrjVal2Mapper {
 		
 		// -------------------------------------------
 
-		List<Long> sisterProjectIds = new ArrayList();
+		List<Long> sisterProjectIds = new ArrayList<Long>();
 
 		for (SisterProject pm : p.getSisterProjects()) {
 			sisterProjectIds.add(pm.getSisterProjectId());

@@ -5,7 +5,6 @@ import java.util.List;
 
 import fi.espoo.pythia.backend.repos.entities.Plan;
 import fi.espoo.pythia.backend.repos.entities.ProjectUpdate;
-import fi.espoo.pythia.backend.repos.entities.SisterProject;
 import fi.espoo.pythia.backend.repos.entities.SisterProjectUpdate;
 import fi.espoo.pythia.backend.transfer.PlanValue;
 import fi.espoo.pythia.backend.transfer.ProjectUpdateValue;
@@ -25,7 +24,7 @@ public class PrjUpToPrjUpValMapper {
 		pv.setUpdatedAt(p.getUpdatedAt());
 		pv.setUpdatedBy(p.getUpdatedBy());
 
-		List<PlanValue> planvs = new ArrayList();
+		List<PlanValue> planvs = new ArrayList<PlanValue>();
 		for (Plan pp : p.getPlans()) {
 			System.out.println("Planid:" + pp.getPlanId());
 			planvs.add(PlanToPlanValueMapper.planToPlanValue(pp, p));
@@ -45,7 +44,7 @@ public class PrjUpToPrjUpValMapper {
 		
 		// -------------------------------------------
 
-		List<Long> sisterProjectIds = new ArrayList();
+		List<Long> sisterProjectIds = new ArrayList<Long>();
 
 		for (SisterProjectUpdate pm : p.getSisterProjects()) {
 			sisterProjectIds.add(pm.getSisterProjectId());
