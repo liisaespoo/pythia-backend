@@ -5,6 +5,8 @@ import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
 
+import fi.espoo.pythia.backend.repos.entities.LatestPlans;
+
 public class ProjectValue2 implements Serializable {
 
 	// public interface WithoutPasswordView {
@@ -20,7 +22,8 @@ public class ProjectValue2 implements Serializable {
 	private String description;
 	private boolean completed;
 	// removed ArrayList definition
-	private List<PlanValue> plans;
+	//private List<PlanValue> plans;
+	private List<LatestPlansValue> latestplans;
 	private List<Long> sisterProjects;
 	// private Date createdAt;
 	private OffsetDateTime createdAt;
@@ -32,18 +35,7 @@ public class ProjectValue2 implements Serializable {
 	public ProjectValue2() {
 	}
 
-	public ProjectValue2(Long projectId, String hansuProjectId, String name, short mainNo, String description,
-			boolean completed, List<PlanValue> plans, List<Long> sisterProjects) {
 
-		this.projectId = projectId;
-		this.hansuProjectId = hansuProjectId;
-		this.name = name;
-		this.mainNo = mainNo;
-		this.description = description;
-		this.completed = completed;
-		this.plans = plans;
-		this.sisterProjects = sisterProjects;
-	}
 
 	public boolean isCompleted() {
 		return completed;
@@ -93,13 +85,6 @@ public class ProjectValue2 implements Serializable {
 		this.description = description;
 	}
 
-	public List<PlanValue> getPlans() {
-		return plans;
-	}
-
-	public void setPlans(List<PlanValue> plans) {
-		this.plans = plans;
-	}
 
 	public List<Long> getSisterProjects() {
 		return sisterProjects;
@@ -107,6 +92,14 @@ public class ProjectValue2 implements Serializable {
 
 	public void setSisterProjects(List<Long> sisterProjects) {
 		this.sisterProjects = sisterProjects;
+	}
+
+	public List<LatestPlansValue> getLatestplans() {
+		return latestplans;
+	}
+
+	public void setLatestplans(List<LatestPlansValue> latestplans) {
+		this.latestplans = latestplans;
 	}
 
 	public OffsetDateTime getCreatedAt() {

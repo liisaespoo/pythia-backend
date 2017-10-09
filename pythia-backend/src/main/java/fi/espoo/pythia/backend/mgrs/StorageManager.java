@@ -29,17 +29,24 @@ import fi.espoo.pythia.backend.mappers.CommentValueToCommentMapper;
 import fi.espoo.pythia.backend.mappers.PlanToPlanValueMapper;
 import fi.espoo.pythia.backend.mappers.PlanValueToPlanMapper;
 import fi.espoo.pythia.backend.mappers.PrjToPrjVal2Mapper;
+import fi.espoo.pythia.backend.mappers.PrjUpToPrjUpValMapper;
+import fi.espoo.pythia.backend.mappers.PrjUpValToPrjUpMapper;
 import fi.espoo.pythia.backend.mappers.PrjVal2ToPrjMapper;
 import fi.espoo.pythia.backend.repos.CommentRepository;
 import fi.espoo.pythia.backend.repos.PlanRepository;
 import fi.espoo.pythia.backend.repos.ProjectRepository;
+import fi.espoo.pythia.backend.repos.ProjectUpdateRepository;
 import fi.espoo.pythia.backend.repos.SisterProjectRepository;
+import fi.espoo.pythia.backend.repos.SisterProjectUpdateRepository;
 import fi.espoo.pythia.backend.repos.entities.Comment;
 import fi.espoo.pythia.backend.repos.entities.Plan;
 import fi.espoo.pythia.backend.repos.entities.Project;
+import fi.espoo.pythia.backend.repos.entities.ProjectUpdate;
 import fi.espoo.pythia.backend.repos.entities.SisterProject;
+import fi.espoo.pythia.backend.repos.entities.SisterProjectUpdate;
 import fi.espoo.pythia.backend.transfer.CommentValue;
 import fi.espoo.pythia.backend.transfer.PlanValue;
+import fi.espoo.pythia.backend.transfer.ProjectUpdateValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue2;
 
 @Component
@@ -56,7 +63,13 @@ public class StorageManager {
 	private SisterProjectRepository sisterProjectRepository;
 
 	@Autowired
+	private SisterProjectUpdateRepository sisterProjectUpdateRepository;
+
+	@Autowired
 	private CommentRepository commentRepository;
+
+	@Autowired
+	private ProjectUpdateRepository projectUpdateRepository;
 	// ---------------------GET------------------------------------
 
 	/**
@@ -109,23 +122,6 @@ public class StorageManager {
 		return null;
 	}
 
-	// /**
-	// *
-	// * @param hansuId
-	// * @return
-	// */
-	// public ProjectValue getProjectByHansuId(String hansuId) {
-	// List<Project> prjList = projectRepository.findAll();
-	// for (Project p : prjList) {
-	// if (p.getHansuProjectId().equals(hansuId)) {
-	// ProjectValue pval = ProjectToProjectValueMapper.projectToProjectValue(p);
-	// return pval;
-	// }
-	// }
-	//
-	// return null;
-	// }
-
 	/**
 	 * get all plans by projectId
 	 * 
@@ -134,8 +130,8 @@ public class StorageManager {
 	 */
 	public List<PlanValue> getPlans(Long projectId) {
 
-		Project project = projectRepository.findByProjectId(projectId);
-		ProjectValue2 pval = PrjToPrjVal2Mapper.ProjectToProjectValue2(project);
+		ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
+		ProjectUpdateValue pval = PrjUpToPrjUpValMapper.ProjectUpdateToProjectUpdateValue(projectUpdate);
 
 		// List<PlanValue> planValues = new ArrayList();
 
@@ -152,7 +148,7 @@ public class StorageManager {
 	public PlanValue getPlan(Long planId) {
 
 		Plan plan = planRepository.findByPlanId(planId);
-		Project project = plan.getProject();
+		ProjectUpdate project = plan.getProject();
 		PlanValue pVal = PlanToPlanValueMapper.planToPlanValue(plan, project);
 
 		return pVal;
@@ -190,14 +186,14 @@ public class StorageManager {
 
 	// ---------------------POST-----------------------------------
 
-	public ProjectValue2 createProject2(ProjectValue2 projectV) {
+	public ProjectUpdate createProject(ProjectUpdateValue projectV) {
 
-		Project projectTemp = projectRepository.findByProjectId(projectV.getProjectId());
-		Project project = PrjVal2ToPrjMapper.projectValue2ToProject(projectV, projectTemp);
-		Project updatedProject = projectRepository.save(project);
-		ProjectValue2 updatedProjectValue2 = PrjToPrjVal2Mapper.ProjectToProjectValue2(updatedProject);
-		return updatedProjectValue2;
+		ProjectUpdate projectUpTemp = projectUpdateRepository.findByProjectId(projectV.getProjectId());
+		ProjectUpdate projectUp = PrjUpValToPrjUpMapper.projectValue2ToProject(projectV, projectUpTemp, false);
+		ProjectUpdate updatedProject = projectUpdateRepository.save(projectUp);
+		updateSisterProjects(projectV, projectUp);
 
+		return updatedProject;
 	}
 
 	/**
@@ -213,14 +209,14 @@ public class StorageManager {
 
 		Long projectId = planV.getProjectId();
 		// get project by projectid
-		Project project = projectRepository.findByProjectId(projectId);
+		ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
 		// map planV to plan
-		Plan mappedPlan = PlanValueToPlanMapper.planValueToPlan(planV, project);
+		Plan mappedPlan = PlanValueToPlanMapper.planValueToPlan(planV, projectUpdate, false);
 
 		// get all plans with planV.projectId and planV.mainNo & planV.subNo
 
-		List<Plan> existingPlans = planRepository.findByProjectInAndMainNoInAndSubNoIn(project,
-				planV.getMainNo(), planV.getSubNo());
+		List<Plan> existingPlans = planRepository.findByProjectInAndMainNoInAndSubNoIn(projectUpdate, planV.getMainNo(),
+				planV.getSubNo());
 
 		short version = 0;
 		boolean approved = true;
@@ -236,7 +232,7 @@ public class StorageManager {
 			Plan max = existingPlans.get(existingPlans.size() - 1);
 			// max version
 			short maxVersion = max.getVersion();
-			version = (short) (maxVersion +1);
+			version = (short) (maxVersion + 1);
 			approved = false;
 
 		}
@@ -245,7 +241,7 @@ public class StorageManager {
 
 		Plan savedPlan = planRepository.save(mappedPlan);
 
-		PlanValue savedPlanValue = PlanToPlanValueMapper.planToPlanValue(savedPlan, project);
+		PlanValue savedPlanValue = PlanToPlanValueMapper.planToPlanValue(savedPlan, projectUpdate);
 		// finally
 		return savedPlanValue;
 	}
@@ -285,37 +281,37 @@ public class StorageManager {
 	//
 	// }
 
-	public void updateProject2(ProjectValue2 projectV) {
+	public void updateProject(ProjectUpdateValue projectV) {
 
-		Project projectTemp = projectRepository.findByProjectId(projectV.getProjectId());
-		Project project = PrjVal2ToPrjMapper.projectValue2ToProject(projectV, projectTemp);
+		ProjectUpdate projectUpTemp = projectUpdateRepository.findByProjectId(projectV.getProjectId());
+		ProjectUpdate projectUp = PrjUpValToPrjUpMapper.projectValue2ToProject(projectV, projectUpTemp, true);
 		// update basic project table
-		projectRepository.save(project);
+		projectUpdateRepository.save(projectUp);
 
 		// update sisterProjects table
-		updateSisterProjects(projectV, project);
+		updateSisterProjects(projectV, projectUp);
 
 		// ProjectValue2 updatedProjectValue2 = PrjToPrjVal2
 		// .ProjectToProjectValue2(projectRepository.findByProjectId(projectV.getProjectId()));
 		// return updatedProjectValue2;
 	}
 
-	public void updateSisterProjects(ProjectValue2 pv, Project project) {
+	public void updateSisterProjects(ProjectUpdateValue pv, ProjectUpdate projectUp) {
 
 		// get latest by repo id
-		Project p = projectRepository.findByProjectId(pv.getProjectId());
+		ProjectUpdate p = projectUpdateRepository.findByProjectId(pv.getProjectId());
 		// create empty sisterprojects list
 		List<SisterProject> sProjects = new ArrayList<SisterProject>();
 
 		// first delete all rows with this project
-		sisterProjectRepository.deleteByProject(project);
+		sisterProjectUpdateRepository.deleteByProject(projectUp);
 		Long j = 1L;
 		// add sisterprojects to the db
 		for (Long id : pv.getSisterProjects()) {
 			System.out.println("updatesisterProjectId:" + id);
-			SisterProject sProject = (new SisterProject(j, project, id));
+			SisterProjectUpdate sProjectUp = (new SisterProjectUpdate(j, projectUp, id));
 
-			sisterProjectRepository.save(sProject);
+			sisterProjectUpdateRepository.save(sProjectUp);
 			j++;
 		}
 	}
@@ -329,12 +325,12 @@ public class StorageManager {
 	public PlanValue updatePlan(PlanValue planV) {
 
 		Long id = planV.getProjectId();
-		Project project = projectRepository.findByProjectId(id);
-		Plan plan = PlanValueToPlanMapper.planValueToPlan(planV, project);
+		ProjectUpdate projectUp = projectUpdateRepository.findByProjectId(id);
+		Plan plan = PlanValueToPlanMapper.planValueToPlan(planV, projectUp, true);
 
 		Plan updatedPlan = planRepository.save(plan);
 
-		PlanValue updatedPlanValue = PlanToPlanValueMapper.planToPlanValue(updatedPlan, project);
+		PlanValue updatedPlanValue = PlanToPlanValueMapper.planToPlanValue(updatedPlan, projectUp);
 		return updatedPlanValue;
 
 	}
