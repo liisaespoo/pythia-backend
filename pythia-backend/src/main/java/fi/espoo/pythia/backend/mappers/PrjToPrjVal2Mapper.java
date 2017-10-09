@@ -40,7 +40,7 @@ public class PrjToPrjVal2Mapper {
 			System.out.println("Planid:" + pp.getPlanId());
 			lplanvs.add(LPToLPValueMapper.lpTolpValue(pp, p));
 		}
-		pv.setLatestplans(lplanvs);
+		pv.setLatestPlans(lplanvs);
 
 		
 		// -------------------------------------------

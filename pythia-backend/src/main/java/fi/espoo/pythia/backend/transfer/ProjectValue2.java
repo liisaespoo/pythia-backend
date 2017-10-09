@@ -18,7 +18,7 @@ public class ProjectValue2 implements Serializable {
 	private boolean completed;
 	// removed ArrayList definition
 	//private List<PlanValue> plans;
-	private List<LatestPlansValue> latestplans;
+	private List<LatestPlansValue> latestPlans;
 	private List<Long> sisterProjects;
 	// private Date createdAt;
 	private OffsetDateTime createdAt;
@@ -89,13 +89,19 @@ public class ProjectValue2 implements Serializable {
 		this.sisterProjects = sisterProjects;
 	}
 
-	public List<LatestPlansValue> getLatestplans() {
-		return latestplans;
+
+
+	public List<LatestPlansValue> getLatestPlans() {
+		return latestPlans;
 	}
 
-	public void setLatestplans(List<LatestPlansValue> latestplans) {
-		this.latestplans = latestplans;
+
+
+	public void setLatestPlans(List<LatestPlansValue> latestPlans) {
+		this.latestPlans = latestPlans;
 	}
+
+
 
 	public OffsetDateTime getCreatedAt() {
 		return createdAt;
