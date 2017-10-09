@@ -10,7 +10,7 @@ import fi.espoo.pythia.backend.transfer.CommentValue;
 
 public class CommentValueToCommentMapper {
 
-	public static Comment commentValueToComment(CommentValue cv, Plan plan) {
+	public static Comment commentValueToComment(CommentValue cv, Plan plan, boolean updating) {
 		Comment c = new Comment();
 
 		c.setCommentId(cv.getCommentId());
@@ -18,10 +18,13 @@ public class CommentValueToCommentMapper {
 		c.setText(cv.getText());
 		c.setApproved(cv.isApproved());
 		c.setUrl(cv.getUrl());
-		
-		if(c.getCreatedAt() == null){
+
+		if (updating == false) {
 			c.setCreatedAt(OffsetDateTime.now());
+		} else {
+			c.setCreatedAt(c.getCreatedAt());
 		}
+
 		
 		
 		c.setCreatedBy(cv.getCreatedBy());

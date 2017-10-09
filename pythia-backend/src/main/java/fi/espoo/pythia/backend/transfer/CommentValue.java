@@ -5,6 +5,11 @@ import java.time.OffsetDateTime;
 
 public class CommentValue implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private Long commentId;
 
 	private Long planId;

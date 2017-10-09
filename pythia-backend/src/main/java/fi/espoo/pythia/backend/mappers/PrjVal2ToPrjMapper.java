@@ -2,12 +2,9 @@ package fi.espoo.pythia.backend.mappers;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import fi.espoo.pythia.backend.repos.entities.Plan;
 import fi.espoo.pythia.backend.repos.entities.Project;
-import fi.espoo.pythia.backend.transfer.PlanValue;
+import fi.espoo.pythia.backend.repos.entities.SisterProject;
 import fi.espoo.pythia.backend.transfer.ProjectValue2;
 
 public class PrjVal2ToPrjMapper {
@@ -48,7 +45,7 @@ public class PrjVal2ToPrjMapper {
 			p.setSisterProjects(project.getSisterProjects());
 
 		} catch (java.lang.NullPointerException e) {
-			p.setSisterProjects(new ArrayList());
+			p.setSisterProjects(new ArrayList<SisterProject>());
 
 		}
 		// try {

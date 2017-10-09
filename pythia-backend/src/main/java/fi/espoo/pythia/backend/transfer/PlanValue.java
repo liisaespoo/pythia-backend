@@ -3,13 +3,13 @@ package fi.espoo.pythia.backend.transfer;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import fi.espoo.pythia.backend.repos.entities.Project;
-
 public class PlanValue  implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 
 	private Long planId;
 

@@ -2,19 +2,14 @@ package fi.espoo.pythia.backend.transfer;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.util.Date;
 import java.util.List;
-
-import fi.espoo.pythia.backend.repos.entities.LatestPlans;
 
 public class ProjectValue2 implements Serializable {
 
-	// public interface WithoutPasswordView {
-	// };
-	//
-	// public interface WithPasswordView extends WithoutPasswordView {
-	// };
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long projectId;
 	private String hansuProjectId;
 	private String name;
