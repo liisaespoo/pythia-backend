@@ -38,7 +38,7 @@ public class Project implements Serializable {
 
 	// removed ArrayList definition
 	@OneToMany(mappedBy = "project")
-	private List<LatestPlans> latestplans;
+	private List<LatestPlans> latestPlans;
 
 	@OneToMany(mappedBy = "project")
 	private List<SisterProject> sisterProjects;
@@ -95,13 +95,16 @@ public class Project implements Serializable {
 	}
 	
 
-	public List<LatestPlans> getLatestplans() {
-		return latestplans;
+
+	public List<LatestPlans> getLatestPlans() {
+		return latestPlans;
 	}
 
-	public void setLatestplans(List<LatestPlans> latestplans) {
-		this.latestplans = latestplans;
+
+	public void setLatestPlans(List<LatestPlans> latestPlans) {
+		this.latestPlans = latestPlans;
 	}
+
 
 	public Long getProjectId() {
 		return projectId;
