@@ -251,7 +251,7 @@ public class StorageManager {
 		// Long planId = commV.getPlanId();
 		Plan plan = planRepository.findByPlanId(id);
 
-		Comment comm = CommentValueToCommentMapper.commentValueToComment(commV, plan);
+		Comment comm = CommentValueToCommentMapper.commentValueToComment(commV, plan, false);
 		Comment savedComm = commentRepository.save(comm);
 
 		CommentValue savedCommValue = CommentToCommentValueMapper.commentToCommentValue(savedComm, plan);
@@ -339,7 +339,7 @@ public class StorageManager {
 
 		Long id = commV.getPlanId();
 		Plan plan = planRepository.findByPlanId(id);
-		Comment comm = CommentValueToCommentMapper.commentValueToComment(commV, plan);
+		Comment comm = CommentValueToCommentMapper.commentValueToComment(commV, plan, true);
 
 		Comment updatedComm = commentRepository.save(comm);
 

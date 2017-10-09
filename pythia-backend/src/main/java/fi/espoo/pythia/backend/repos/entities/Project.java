@@ -43,7 +43,7 @@ public class Project implements Serializable {
 
 	// removed ArrayList definition
 	@OneToMany(mappedBy = "project")
-	private List<Plan> plans;
+	private List<LatestPlans> latestplans;
 
 	@OneToMany(mappedBy = "project")
 	private List<SisterProject> sisterProjects;
@@ -90,13 +90,6 @@ public class Project implements Serializable {
 
 	}
 
-	public List<Plan> getPlans() {
-		return plans;
-	}
-
-	public void setPlans(List<Plan> plans) {
-		this.plans = plans;
-	}
 
 	public List<SisterProject> getSisterProjects() {
 		return sisterProjects;
@@ -104,6 +97,15 @@ public class Project implements Serializable {
 
 	public void setSisterProjects(List<SisterProject> sisterProjects) {
 		this.sisterProjects = sisterProjects;
+	}
+	
+
+	public List<LatestPlans> getLatestplans() {
+		return latestplans;
+	}
+
+	public void setLatestplans(List<LatestPlans> latestplans) {
+		this.latestplans = latestplans;
 	}
 
 	public Long getProjectId() {
@@ -186,15 +188,15 @@ public class Project implements Serializable {
 		this.createdAt = createdAt;
 	}
 
-	public void addPlan(Plan plan) {
-		plans.add(plan);
-		plan.setProject(this);
-	}
-
-	public void removePlan(Plan plan) {
-		plans.remove(plan);
-		plan.setProject(null);
-	}
+//	public void addPlan(Plan plan) {
+//		plans.add(plan);
+//		plan.setProject(this);
+//	}
+//
+//	public void removePlan(Plan plan) {
+//		plans.remove(plan);
+//		plan.setProject(null);
+//	}
 
 	@Override
 	public int hashCode() {

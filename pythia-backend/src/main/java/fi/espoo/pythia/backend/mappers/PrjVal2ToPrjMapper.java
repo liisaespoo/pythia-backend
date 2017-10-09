@@ -26,7 +26,7 @@ public class PrjVal2ToPrjMapper {
 		p.setName(pv.getName());
 		p.setDescription(pv.getDescription());
 		p.setCompleted(pv.isCompleted());
-		if(p.getCreatedAt() == null){
+		if(p.getCreatedAt().isEqual(null)){
 			p.setCreatedAt(OffsetDateTime.now());
 		}
 		
@@ -34,15 +34,15 @@ public class PrjVal2ToPrjMapper {
 		p.setUpdatedAt(OffsetDateTime.now());
 		p.setUpdatedBy(pv.getUpdatedBy());
 
-		try {
-			List<Plan> plans = new ArrayList();
-			for (PlanValue pp : pv.getPlans()) {
-				plans.add(PlanValueToPlanMapper.planValueToPlan(pp, p));
-			}
-			p.setPlans(plans);
-		} catch (java.lang.NullPointerException e) {
-			p.setPlans(new ArrayList<Plan>());
-		}
+//		try {
+//			List<Plan> plans = new ArrayList();
+//			for (PlanValue pp : pv.getPlans()) {
+//				plans.add(PlanValueToPlanMapper.planValueToPlan(pp, p));
+//			}
+//			p.setPlans(plans);
+//		} catch (java.lang.NullPointerException e) {
+//			p.setPlans(new ArrayList<Plan>());
+//		}
 
 		try {
 			p.setSisterProjects(project.getSisterProjects());

@@ -3,9 +3,11 @@ package fi.espoo.pythia.backend.mappers;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.espoo.pythia.backend.repos.entities.LatestPlans;
 import fi.espoo.pythia.backend.repos.entities.Plan;
 import fi.espoo.pythia.backend.repos.entities.Project;
 import fi.espoo.pythia.backend.repos.entities.SisterProject;
+import fi.espoo.pythia.backend.transfer.LatestPlansValue;
 import fi.espoo.pythia.backend.transfer.PlanValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue2;
 
@@ -25,13 +27,24 @@ public class PrjToPrjVal2Mapper {
 		pv.setUpdatedAt(p.getUpdatedAt());
 		pv.setUpdatedBy(p.getUpdatedBy());
 
-		List<PlanValue> planvs = new ArrayList();
-		for (Plan pp : p.getPlans()) {
-			System.out.println("Planid:" + pp.getPlanId());
-			planvs.add(PlanToPlanValueMapper.planToPlanValue(pp, p));
-		}
-		pv.setPlans(planvs);
+//		List<PlanValue> planvs = new ArrayList();
+//		for (Plan pp : p.getPlans()) {
+//			System.out.println("Planid:" + pp.getPlanId());
+//			planvs.add(PlanToPlanValueMapper.planToPlanValue(pp, p));
+//		}
+//		pv.setPlans(planvs);
 
+		
+		//Latest plans
+		
+		List<LatestPlansValue> lplanvs = new ArrayList();
+		for (LatestPlans pp : p.getLatestplans()) {
+			System.out.println("Planid:" + pp.getPlanId());
+			lplanvs.add(LPToLPValueMapper.lpTolpValue(pp, p));
+		}
+		pv.setLatestplans(lplanvs);
+
+		
 		// -------------------------------------------
 
 		List<Long> sisterProjectIds = new ArrayList();
