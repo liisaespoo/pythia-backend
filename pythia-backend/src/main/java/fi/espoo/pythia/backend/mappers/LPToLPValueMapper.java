@@ -1,16 +1,16 @@
 package fi.espoo.pythia.backend.mappers;
 
-import fi.espoo.pythia.backend.repos.entities.Plan;
+import fi.espoo.pythia.backend.repos.entities.LatestPlans;
 import fi.espoo.pythia.backend.repos.entities.Project;
-import fi.espoo.pythia.backend.transfer.PlanValue;
+import fi.espoo.pythia.backend.transfer.LatestPlansValue;
 
-public class PlanToPlanValueMapper {
+public class LPToLPValueMapper {
 
-	public static PlanValue planToPlanValue(Plan p, Project project) {
-		
-		//get project_id 
-		PlanValue pv = new PlanValue();
-		
+	public static LatestPlansValue lpTolpValue(LatestPlans p, Project project) {
+
+		// get project_id
+		LatestPlansValue pv = new LatestPlansValue();
+
 		pv.setPlanId(p.getPlanId());
 		pv.setProjectId(project.getProjectId());
 		pv.setMainNo(p.getMainNo());
@@ -18,13 +18,12 @@ public class PlanToPlanValueMapper {
 		pv.setVersion(p.getVersion());
 		pv.setUrl(p.getUrl());
 		pv.setApproved(p.isApproved());
-				
+
 		pv.setCreatedAt(p.getCreatedAt());
 		pv.setCreatedBy(p.getCreatedBy());
 		pv.setUpdatedAt(p.getUpdatedAt());
 		pv.setUpdatedBy(p.getUpdatedBy());
-		
+
 		return pv;
 	}
-	
 }

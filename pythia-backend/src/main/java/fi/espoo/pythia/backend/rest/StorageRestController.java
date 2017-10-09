@@ -33,8 +33,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import fi.espoo.pythia.backend.mgrs.S3Manager;
 import fi.espoo.pythia.backend.mgrs.StorageManager;
+import fi.espoo.pythia.backend.repos.entities.ProjectUpdate;
 import fi.espoo.pythia.backend.transfer.CommentValue;
 import fi.espoo.pythia.backend.transfer.PlanValue;
+import fi.espoo.pythia.backend.transfer.ProjectUpdateValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue2;
 
 @RestController
@@ -48,25 +50,6 @@ public class StorageRestController {
 	private S3Manager s3Manager;
 
 	// -------------------------GET-------------------------------
-
-//	/**
-//	 * return all projects
-//	 * 
-//	 * @return
-//	 */
-//	@SuppressWarnings("unchecked")
-//	@GetMapping(value = "/projects/", produces = "application/json")
-//	public ResponseEntity<List<ProjectValue>> getProject() {
-//
-//		try {
-//			List<ProjectValue> project = storageManager.getProjects();
-//			return new ResponseEntity<List<ProjectValue>>(project, HttpStatus.OK);
-//		} catch (java.lang.NullPointerException e) {
-//			return new ResponseEntity<List<ProjectValue>>(HttpStatus.NOT_FOUND);
-//		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-//			return new ResponseEntity<List<ProjectValue>>(HttpStatus.FORBIDDEN);
-//		}
-//	}
 
 	
 	/**
@@ -88,26 +71,7 @@ public class StorageRestController {
 		}
 	}
 	
-	
-//	
-//	/**
-//	 * return a single project by id if found. Otherwise return null.
-//	 */
-//	@SuppressWarnings("unchecked")
-//	@GetMapping(value = "/projects/{projectId}", produces = "application/json")
-//	public ResponseEntity<ProjectValue> getProject(@PathVariable("projectId") Long projectId) {
-//
-//		try {
-//			ProjectValue project = storageManager.getProject(projectId);
-//
-//			return new ResponseEntity<ProjectValue>(project, HttpStatus.OK);
-//		} catch (java.lang.NullPointerException e) {
-//			return new ResponseEntity<ProjectValue>(new ProjectValue(), HttpStatus.NOT_FOUND);
-//		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-//			return new ResponseEntity<ProjectValue>(HttpStatus.FORBIDDEN);
-//		}
-//	}
-	
+
 	
 	
 	/**
@@ -129,29 +93,7 @@ public class StorageRestController {
 	}
 	
 	
-	
 
-//	/**
-//	 * return a single project by hansuprojectid if found. Otherwise return
-//	 * null.
-//	 */
-//	@SuppressWarnings("unchecked")
-//	@GetMapping(value = "/projects/hansuprojectid/{hansuProjectId}", produces = "application/json")
-//	public ResponseEntity<ProjectValue> getHansuProject(@PathVariable("hansuProjectId") String hansuId) {
-//
-//		try {
-//			ProjectValue project = storageManager.getProjectByHansuId(hansuId);
-//			System.out.println("project:" + project);
-//			if (project == null) {
-//				return new ResponseEntity<ProjectValue>(project, HttpStatus.NOT_FOUND);
-//			}
-//			return new ResponseEntity<ProjectValue>(project, HttpStatus.OK);
-//		} catch (java.lang.NullPointerException e) {
-//			return new ResponseEntity<ProjectValue>(new ProjectValue(), HttpStatus.NOT_FOUND);
-//		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-//			return new ResponseEntity<ProjectValue>(HttpStatus.FORBIDDEN);
-//		}
-//	}
 
 	
 	/**
@@ -178,27 +120,27 @@ public class StorageRestController {
 
 	
 	
-	/**
-	 * 
-	 * return all plans by projectId
-	 * 
-	 * @param projectId
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	@GetMapping(value = "/projects/{projectId}/plans/", produces = "application/json")
-	public ResponseEntity<List<PlanValue>> getPlans(@PathVariable("projectId") Long projectId) {
-
-		try {
-			List<PlanValue> plan = storageManager.getPlans(projectId);
-			return new ResponseEntity<List<PlanValue>>(plan, HttpStatus.OK);
-		} catch (java.lang.NullPointerException e) {
-			return new ResponseEntity<List<PlanValue>>(HttpStatus.NOT_FOUND);
-		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-			return new ResponseEntity<List<PlanValue>>(HttpStatus.FORBIDDEN);
-		}
-
-	}
+//	/**
+//	 * 
+//	 * return 2 latest versions plans by projectId
+//	 * 
+//	 * @param projectId
+//	 * @return
+//	 */
+//	@SuppressWarnings("unchecked")
+//	@GetMapping(value = "/projects/{projectId}/plans/", produces = "application/json")
+//	public ResponseEntity<List<PlanValue>> getPlans(@PathVariable("projectId") Long projectId) {
+//
+//		try {
+//			List<PlanValue> plan = storageManager.getPlans(projectId);
+//			return new ResponseEntity<List<PlanValue>>(plan, HttpStatus.OK);
+//		} catch (java.lang.NullPointerException e) {
+//			return new ResponseEntity<List<PlanValue>>(HttpStatus.NOT_FOUND);
+//		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
+//			return new ResponseEntity<List<PlanValue>>(HttpStatus.FORBIDDEN);
+//		}
+//
+//	}
 	
 	
 	/**
@@ -230,6 +172,13 @@ public class StorageRestController {
 	 * create a new plan to the db and return the whole project with all
 	 * attributes
 	 * 
+	 * 
+	 *  Checks if 1st version and if approved
+	 * 
+	 * If the 1st then version = 0 and approved = true
+	 * 
+	 * If not the 1st then increase version number by one 
+	 * 
 	 * @param projectValue
 	 * @return
 	 */
@@ -237,11 +186,14 @@ public class StorageRestController {
 	@PostMapping(value = "/projects/{projectId}/plans/", produces = "application/json", consumes = "application/json")
 	public ResponseEntity<PlanValue> createPlan(@RequestBody PlanValue planV) {
 
-		// catch exception database connection
+		
 		//
 		// Value object mapping
 		try {
+			
 			PlanValue savedPlan = storageManager.createPlan(planV);
+			
+			
 			return new ResponseEntity<PlanValue>(savedPlan, HttpStatus.OK);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
 			return new ResponseEntity<PlanValue>(HttpStatus.FORBIDDEN);
@@ -270,26 +222,7 @@ public class StorageRestController {
 
 	}
 
-//	/**
-//	 * create a new project to the db and return the whole project with all
-//	 * attributes
-//	 * 
-//	 * @param projectValue
-//	 * @return
-//	 */
-//	@SuppressWarnings("unchecked")
-//	@PostMapping(value = "/projects/", produces = "application/json", consumes = "application/json")
-//	public ResponseEntity<ProjectValue> createProject(@RequestBody ProjectValue project) {
-//
-//		// Value object mapping
-//		try {
-//			ProjectValue savedProject = storageManager.createProject(project);
-//			return new ResponseEntity<ProjectValue>(savedProject, HttpStatus.OK);
-//		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-//			return new ResponseEntity<ProjectValue>(HttpStatus.FORBIDDEN);
-//		}
-//
-//	}
+
 	
 	
 	/**
@@ -301,42 +234,19 @@ public class StorageRestController {
 	 */
 	@SuppressWarnings("unchecked")
 	@PostMapping(value = "/projects/", produces = "application/json", consumes = "application/json")
-	public ResponseEntity<ProjectValue2> createProject2(@RequestBody ProjectValue2 project) {
+	public ResponseEntity<ProjectValue2> createProject(@RequestBody ProjectUpdateValue projectUpVal) {
 
 		// Value object mapping
 		try {
-			ProjectValue2 savedProject = storageManager.createProject2(project);
+			 ProjectUpdate pu = storageManager.createProject(projectUpVal);
+			 ProjectValue2 savedProject = storageManager.getProject2(pu.getProjectId());
 			return new ResponseEntity<ProjectValue2>(savedProject, HttpStatus.OK);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
 			return new ResponseEntity<ProjectValue2>(HttpStatus.FORBIDDEN);
 		}
 
 	}
-	
-	
-//	@SuppressWarnings("unchecked")
-//	@PostMapping(value = "/projects/{projectId}/plans/{planId}/files/", produces = "application/json", consumes = "application/json")
-//	public ResponseEntity<String> createPlanFile(@RequestBody FileValue base64) {
-//
-//		System.out.println(base64);
-//		
-//		// Value object mapping
-//		try {
-//			String savedImage = s3Manager.createPlanFileBase64("1test", "kirapythia-example-bucket", base64);
-//			if (savedImage.isEmpty() || savedImage == null) {
-//				return new ResponseEntity<String>("",HttpStatus.NOT_FOUND);
-//			}
-//			return new ResponseEntity<String>(savedImage, HttpStatus.OK);
-//		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-//			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			return new ResponseEntity<String>(HttpStatus.I_AM_A_TEAPOT);
-//		}
-//
-//	}
-	
+
 	
 	//, produces = "application/json", consumes = "file"
 	
@@ -435,36 +345,18 @@ public class StorageRestController {
 
 	}
 
-//	/**
-//	 * update a project
-//	 */
-//	@SuppressWarnings("unchecked")
-//	@PutMapping(value = "/projects/{projectId}", produces = "application/json", consumes = "application/json")
-//	public ResponseEntity<ProjectValue> updateProject(@RequestBody ProjectValue projectV) {
-//
-//		try {
-//			List<SisterProjectValue> spv = projectV.getSisterProjects();
-//			storageManager.updateSisterProjects(spv);
-//			ProjectValue updatedProject = storageManager.updateProject(projectV);
-//			
-//			return new ResponseEntity<ProjectValue>(updatedProject, HttpStatus.OK);
-//		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-//			return new ResponseEntity<ProjectValue>(HttpStatus.FORBIDDEN);
-//		}
-//
-//	}
-	
+
 	
 	/**
 	 * update a project with List<Long> sisterProjectIds
 	 */
 	@SuppressWarnings("unchecked")
 	@PutMapping(value = "/projects/{projectId}", produces = "application/json", consumes = "application/json")
-	public ResponseEntity<ProjectValue2> updateProject2(@RequestBody ProjectValue2 projectV) {
+	public ResponseEntity<ProjectValue2> updateProject(@RequestBody ProjectUpdateValue projectUpVal) {
 
 		try {
-		storageManager.updateProject2(projectV);
-		ProjectValue2 updatedProject = storageManager.getProject2(projectV.getProjectId());
+		storageManager.updateProject(projectUpVal);
+		ProjectValue2 updatedProject = storageManager.getProject2(projectUpVal.getProjectId());
 			return new ResponseEntity<ProjectValue2>(updatedProject, HttpStatus.OK);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
 			return new ResponseEntity<ProjectValue2>(HttpStatus.FORBIDDEN);
