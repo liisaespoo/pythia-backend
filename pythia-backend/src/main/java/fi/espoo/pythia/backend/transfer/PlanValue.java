@@ -40,6 +40,7 @@ public class PlanValue  implements Serializable {
 	
 	private String updatedBy;
 	
+	private boolean deleted;
 	
 	public Long getPlanId() {
 		return planId;
@@ -146,6 +147,16 @@ public class PlanValue  implements Serializable {
 
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 	
 	

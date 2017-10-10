@@ -18,217 +18,224 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "latest_plans")
-public class LatestPlans 
+public class LatestPlans
 
-	implements Serializable, Comparable<LatestPlans> {
+		implements Serializable, Comparable<LatestPlans> {
 
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-		// bigint
-		@Id
-		@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "plan_generator")
-		@SequenceGenerator(name = "plan_generator", sequenceName = "plan_serial", allocationSize = 1)
-		@Column(name = "plan_id", updatable = false, nullable = false)
-		private Long planId;
+	// bigint
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "plan_generator")
+	@SequenceGenerator(name = "plan_generator", sequenceName = "plan_serial", allocationSize = 1)
+	@Column(name = "plan_id", updatable = false, nullable = false)
+	private Long planId;
 
-		// bidirectional manytoone with Project
-		// project object maps to class Project
-		// project_id is the <<fk>> of table Plan
+	// bidirectional manytoone with Project
+	// project object maps to class Project
+	// project_id is the <<fk>> of table Plan
 
-		@ManyToOne
-		@JoinColumn(name = "project_id", nullable = false)
-		private Project project;
+	@ManyToOne
+	@JoinColumn(name = "project_id", nullable = false)
+	private Project project;
 
-		@OneToMany(mappedBy = "plan")
-		private List<Comment> comments;
+	@OneToMany(mappedBy = "plan")
+	private List<Comment> comments;
 
-		// //bigint
-		// @Column(name = "project_id")
-		// private Long projectId;
+	// //bigint
+	// @Column(name = "project_id")
+	// private Long projectId;
 
-		// smallint
-		@Column(name = "main_no")
-		private short mainNo;
+	// smallint
+	@Column(name = "main_no")
+	private short mainNo;
 
-		// smallint
-		@Column(name = "sub_no")
-		private short subNo;
+	// smallint
+	@Column(name = "sub_no")
+	private short subNo;
 
-		// varchar
-		@Column(name = "version")
-		private short version;
+	// varchar
+	@Column(name = "version")
+	private short version;
 
-		// varchar
-		@Column(name = "url")
-		private String url;
+	// varchar
+	@Column(name = "url")
+	private String url;
 
-		// boolean
-		@Column(name = "approved")
-		private boolean approved;
+	// boolean
+	@Column(name = "approved")
+	private boolean approved;
 
-		// https://jdbc.postgresql.org/documentation/head/java8-date-time.html
-		// timestamp with timezone
-		// @Temporal(TemporalType.TIMESTAMP)
-		@Column(name = "created_at")
-		private OffsetDateTime createdAt;
+	// https://jdbc.postgresql.org/documentation/head/java8-date-time.html
+	// timestamp with timezone
+	// @Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "created_at")
+	private OffsetDateTime createdAt;
 
-		// varchar
-		@Column(name = "created_by")
-		private String createdBy;
+	// varchar
+	@Column(name = "created_by")
+	private String createdBy;
 
-		// timestamp with timezone timestamptz
-		// @Temporal(TemporalType.TIMESTAMP)
-		@Column(name = "updated_at")
-		private OffsetDateTime updatedAt;
+	// timestamp with timezone timestamptz
+	// @Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "updated_at")
+	private OffsetDateTime updatedAt;
 
-		// varchar
-		@Column(name = "updated_by")
-		private String updatedBy;
+	// varchar
+	@Column(name = "updated_by")
+	private String updatedBy;
 
-		public LatestPlans() {
+	@Column(name = "deleted")
+	private boolean deleted;
 
-		}
+	public LatestPlans() {
 
-		@JsonIgnore
-		public Project getProject() {
-			return project;
-		}
+	}
 
-		@JsonIgnore
-		public void setProject(Project project) {
-			this.project = project;
-		}
+	@JsonIgnore
+	public Project getProject() {
+		return project;
+	}
 
-		public Long getPlanId() {
-			return planId;
-		}
+	@JsonIgnore
+	public void setProject(Project project) {
+		this.project = project;
+	}
 
-		public void setPlanId(Long planId) {
-			this.planId = planId;
-		}
+	public Long getPlanId() {
+		return planId;
+	}
 
-		public List<Comment> getComments() {
-			return comments;
-		}
+	public void setPlanId(Long planId) {
+		this.planId = planId;
+	}
 
-		public void setComments(List<Comment> comments) {
-			this.comments = comments;
-		}
+	public List<Comment> getComments() {
+		return comments;
+	}
 
-		public short getMainNo() {
-			return mainNo;
-		}
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
 
-		public void setMainNo(short mainNo) {
-			this.mainNo = mainNo;
-		}
+	public short getMainNo() {
+		return mainNo;
+	}
 
-		public short getSubNo() {
-			return subNo;
-		}
+	public void setMainNo(short mainNo) {
+		this.mainNo = mainNo;
+	}
 
-		public void setSubNo(short subNo) {
-			this.subNo = subNo;
-		}
+	public short getSubNo() {
+		return subNo;
+	}
 
-		public short getVersion() {
-			return this.version;
-		}
+	public void setSubNo(short subNo) {
+		this.subNo = subNo;
+	}
 
-		public void setVersion(short version) {
-			this.version = version;
-		}
+	public short getVersion() {
+		return this.version;
+	}
 
-		public String getUrl() {
-			return url;
-		}
+	public void setVersion(short version) {
+		this.version = version;
+	}
 
-		public void setUrl(String url) {
-			this.url = url;
-		}
+	public String getUrl() {
+		return url;
+	}
 
-		public boolean isApproved() {
-			return approved;
-		}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
-		public void setApproved(boolean approved) {
-			this.approved = approved;
-		}
+	public boolean isApproved() {
+		return approved;
+	}
 
-		public OffsetDateTime getCreatedAt() {
-			return createdAt;
-		}
+	public void setApproved(boolean approved) {
+		this.approved = approved;
+	}
 
-		public void setCreatedAt(OffsetDateTime createdAt) {
-			this.createdAt = createdAt;
-		}
+	public OffsetDateTime getCreatedAt() {
+		return createdAt;
+	}
 
-		public String getCreatedBy() {
-			return createdBy;
-		}
+	public void setCreatedAt(OffsetDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
 
-		public void setCreatedBy(String createdBy) {
-			this.createdBy = createdBy;
-		}
+	public String getCreatedBy() {
+		return createdBy;
+	}
 
-		public OffsetDateTime getUpdatedAt() {
-			return updatedAt;
-		}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
 
-		public void setUpdatedAt(OffsetDateTime updatedAt) {
-			this.updatedAt = updatedAt;
-		}
+	public OffsetDateTime getUpdatedAt() {
+		return updatedAt;
+	}
 
-		public String getUpdatedBy() {
-			return updatedBy;
-		}
+	public void setUpdatedAt(OffsetDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
 
-		public void setUpdatedBy(String updatedBy) {
-			this.updatedBy = updatedBy;
-		}
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
 
-	
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
 
+	public boolean isDeleted() {
+		return deleted;
+	}
 
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + ((planId == null) ? 0 : planId.hashCode());
-			return result;
-		}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((planId == null) ? 0 : planId.hashCode());
+		return result;
+	}
 
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			LatestPlans other = (LatestPlans) obj;
-			if (planId == null) {
-				if (other.planId != null)
-					return false;
-			} else if (!planId.equals(other.planId))
-				return false;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
 			return true;
-		}
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LatestPlans other = (LatestPlans) obj;
+		if (planId == null) {
+			if (other.planId != null)
+				return false;
+		} else if (!planId.equals(other.planId))
+			return false;
+		return true;
+	}
 
-		@Override
-		public int compareTo(LatestPlans p) {
+	@Override
+	public int compareTo(LatestPlans p) {
 
-			if (this.version == p.getVersion()) {
-				return 0;
-			} else if (this.version > p.getVersion()) {
-				return 1;
-			} else {
-				return -1;
-			}
+		if (this.version == p.getVersion()) {
+			return 0;
+		} else if (this.version > p.getVersion()) {
+			return 1;
+		} else {
+			return -1;
 		}
+	}
 
 }

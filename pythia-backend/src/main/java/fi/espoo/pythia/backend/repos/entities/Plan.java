@@ -89,6 +89,10 @@ public class Plan implements Serializable, Comparable<Plan> {
 	// varchar
 	@Column(name = "updated_by")
 	private String updatedBy;
+	
+	//boolean
+	@Column(name = "deleted")
+	private boolean deleted;
 
 	public Plan() {
 
@@ -190,6 +194,14 @@ public class Plan implements Serializable, Comparable<Plan> {
 
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	@Override
