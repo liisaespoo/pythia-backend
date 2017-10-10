@@ -18,11 +18,11 @@ public class PlanToPlanValueMapper {
 		pv.setVersion(p.getVersion());
 		pv.setUrl(p.getUrl());
 		pv.setApproved(p.isApproved());
-				
 		pv.setCreatedAt(p.getCreatedAt());
 		pv.setCreatedBy(p.getCreatedBy());
 		pv.setUpdatedAt(p.getUpdatedAt());
 		pv.setUpdatedBy(p.getUpdatedBy());
+		pv.setDeleted(p.isDeleted());
 		
 		return pv;
 	}
