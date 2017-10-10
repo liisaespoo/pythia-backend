@@ -1,7 +1,6 @@
 package fi.espoo.pythia.backend.mappers;
 
 import fi.espoo.pythia.backend.repos.entities.Plan;
-import fi.espoo.pythia.backend.repos.entities.Project;
 import fi.espoo.pythia.backend.repos.entities.ProjectUpdate;
 import fi.espoo.pythia.backend.transfer.PlanValue;
 

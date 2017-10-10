@@ -133,6 +133,7 @@ public class S3Manager {
 		return inputStream;
 	}
 
+	@SuppressWarnings("unused")
 	private void listBuckets(AmazonS3 s3client) {
 		List<Bucket> buckets = s3client.listBuckets();
 		for (Bucket bucket : buckets) {
@@ -140,6 +141,7 @@ public class S3Manager {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void createBucket(String bucketName, AmazonS3 s3client) {
 
 		if (s3client.doesBucketExist(bucketName)) {
@@ -151,6 +153,7 @@ public class S3Manager {
 
 	}
 
+	@SuppressWarnings("unused")
 	private void deleteBucket(AmazonS3 s3client) {
 		// DELETE BUCKET
 		try {
@@ -179,7 +182,6 @@ public class S3Manager {
 			 try {
 				Files.deleteIfExists(f.toPath());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
