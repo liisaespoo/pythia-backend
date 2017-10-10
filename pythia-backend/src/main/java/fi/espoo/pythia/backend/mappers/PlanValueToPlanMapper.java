@@ -33,6 +33,7 @@ public class PlanValueToPlanMapper {
 		p.setCreatedBy(pv.getCreatedBy());
 		p.setUpdatedAt(OffsetDateTime.now());
 		p.setUpdatedBy(pv.getUpdatedBy());
+		p.setDeleted(pv.isDeleted());
 		
 		return p;
 	}
