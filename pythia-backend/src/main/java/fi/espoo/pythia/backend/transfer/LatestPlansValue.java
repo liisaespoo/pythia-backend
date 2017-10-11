@@ -1,6 +1,7 @@
 package fi.espoo.pythia.backend.transfer;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 public class LatestPlansValue {
 
@@ -24,6 +25,7 @@ private Long planId;
 	
 	private boolean approved;
 	
+	private List<CommentValue> commentValues;
 	
 	private OffsetDateTime createdAt;
 	
@@ -151,6 +153,16 @@ private Long planId;
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+
+
+	public List<CommentValue> getCommentValues() {
+		return commentValues;
+	}
+
+
+	public void setCommentValues(List<CommentValue> commentValues) {
+		this.commentValues = commentValues;
 	}
 	
 	

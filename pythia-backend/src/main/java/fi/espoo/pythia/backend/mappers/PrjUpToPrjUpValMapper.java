@@ -31,15 +31,6 @@ public class PrjUpToPrjUpValMapper {
 		}
 		pv.setPlans(planvs);
 
-		
-		//Latest plans
-		
-//		List<LatestPlansValue> lplanvs = new ArrayList();
-//		for (LatestPlans pp : p.getLatestplans()) {
-//			System.out.println("Planid:" + pp.getPlanId());
-//			lplanvs.add(LPToLPValueMapper.lpTolpValue(pp, p));
-//		}
-//		pv.setLatestplans(lplanvs);
 
 		
 		// -------------------------------------------

@@ -16,20 +16,18 @@ public class CommentValueToCommentMapper {
 		c.setCommentId(cv.getCommentId());
 		c.setPlan(plan);
 		c.setText(cv.getText());
-//		c.setApproved(cv.isApproved());
-//		c.setUrl(cv.getUrl());
-//
-//		if (updating == false) {
-//			c.setCreatedAt(OffsetDateTime.now());
-//		} else {
-//			c.setCreatedAt(c.getCreatedAt());
-//		}
-//
-//		
-//		
-//		c.setCreatedBy(cv.getCreatedBy());
-//		c.setUpdatedAt(OffsetDateTime.now());
-//		c.setUpdatedBy(cv.getUpdatedBy());
+		c.setApproved(cv.isApproved());
+		c.setUrl(cv.getUrl());
+
+		if (updating == false) {
+			c.setCreatedAt(OffsetDateTime.now());
+		} else {
+			c.setCreatedAt(c.getCreatedAt());
+		}
+
+		c.setCreatedBy(cv.getCreatedBy());
+		c.setUpdatedAt(OffsetDateTime.now());
+		c.setUpdatedBy(cv.getUpdatedBy());
 
 		return c;
 	}
