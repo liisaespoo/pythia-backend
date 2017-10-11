@@ -2,6 +2,7 @@ package fi.espoo.pythia.backend.transfer;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 public class PlanValue  implements Serializable {
 
@@ -41,6 +42,8 @@ public class PlanValue  implements Serializable {
 	private String updatedBy;
 	
 	private boolean deleted;
+	
+	List<CommentValue> commentValues;
 	
 	public Long getPlanId() {
 		return planId;
@@ -160,6 +163,18 @@ public class PlanValue  implements Serializable {
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
 	}
+
+
+	public List<CommentValue> getCommentValues() {
+		return commentValues;
+	}
+
+
+	public void setCommentValues(List<CommentValue> commentValues) {
+		this.commentValues = commentValues;
+	}
+
+
 	
 	
 }
