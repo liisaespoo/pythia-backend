@@ -45,10 +45,6 @@ public class LatestPlans
 	@OneToMany(mappedBy = "plan")
 	private List<Comment> comments;
 
-	// //bigint
-	// @Column(name = "project_id")
-	// private Long projectId;
-
 	// smallint
 	@Column(name = "main_no")
 	private short mainNo;

@@ -33,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import fi.espoo.pythia.backend.mgrs.S3Manager;
 import fi.espoo.pythia.backend.mgrs.StorageManager;
+import fi.espoo.pythia.backend.repos.entities.Comment;
 import fi.espoo.pythia.backend.repos.entities.ProjectUpdate;
 import fi.espoo.pythia.backend.transfer.CommentValue;
 import fi.espoo.pythia.backend.transfer.PlanValue;
@@ -139,6 +140,27 @@ public class StorageRestController {
 	}
 	
 	
+//	/**
+//	 * 
+//	 * return all comments by planId
+//	 * 
+//	 * @param projectId
+//	 * @return
+//	 */
+//	@GetMapping(value = "/projects/{projectId}/plans/{planId}/comments/", produces = "application/json")
+//	public ResponseEntity<List<CommentValue>> getComments(@PathVariable("planId") Long planId) {
+//
+//		try {
+//			List<CommentValue> commList = storageManager.getComments(planId);
+//			return new ResponseEntity<List<CommentValue>>(commList, HttpStatus.OK);
+//		} catch (java.lang.NullPointerException e) {
+//			return new ResponseEntity<List<CommentValue>>(HttpStatus.NOT_FOUND);
+//		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
+//			return new ResponseEntity<List<CommentValue>>(HttpStatus.FORBIDDEN);
+//		}
+//
+//	}
+	
 	/**
 	 * 
 	 * return all comments by planId
@@ -147,15 +169,15 @@ public class StorageRestController {
 	 * @return
 	 */
 	@GetMapping(value = "/projects/{projectId}/plans/{planId}/comments/", produces = "application/json")
-	public ResponseEntity<List<CommentValue>> getComments(@PathVariable("planId") Long planId) {
+	public ResponseEntity<List<Comment>> getComments(@PathVariable("planId") Long planId) {
 
 		try {
-			List<CommentValue> commList = storageManager.getComments(planId);
-			return new ResponseEntity<List<CommentValue>>(commList, HttpStatus.OK);
+			List<Comment> commList = storageManager.getComments(planId);
+			return new ResponseEntity<List<Comment>>(commList, HttpStatus.OK);
 		} catch (java.lang.NullPointerException e) {
-			return new ResponseEntity<List<CommentValue>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<Comment>>(HttpStatus.NOT_FOUND);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-			return new ResponseEntity<List<CommentValue>>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<List<Comment>>(HttpStatus.FORBIDDEN);
 		}
 
 	}

@@ -1,3 +1,14 @@
+/**
+ * comment_id bigint NOT NULL,
+  text character varying,
+  plan_id bigint,
+  url character varying,
+  approved boolean,
+  created_at timestamp with time zone,
+  created_by character varying,
+  updated_at timestamp with time zone,
+  updated_by character varying,
+ */
 package fi.espoo.pythia.backend.repos.entities;
 
 import java.io.Serializable;
@@ -19,8 +30,9 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "Comment")
+@Table(name = "comment")
 public class Comment implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -30,7 +42,7 @@ public class Comment implements Serializable {
 	private Long commentId;
 	
 	@ManyToOne
-	@JoinColumn(name  = "plan_id, nullable=false")
+	@JoinColumn(name  = "plan_id")
 	private Plan plan;
 
 	@Column(name = "text")
@@ -42,16 +54,16 @@ public class Comment implements Serializable {
 	@Column(name = "url")
 	private String url;
 	
-	@Column(name = "createdAt")
+	@Column(name = "created_at")
 	private OffsetDateTime createdAt;
 	
-	@Column(name = "createdBy")
+	@Column(name = "created_by")
 	private String createdBy;
 	
-	@Column(name = "updatedAt")
+	@Column(name = "updated_at")
 	private OffsetDateTime updatedAt;
 	
-	@Column(name = "updatedBy")
+	@Column(name = "updated_by")
 	private String updatedBy;
 	
 	public Comment() {
@@ -132,6 +144,6 @@ public class Comment implements Serializable {
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
 	}
-	
+
 }
 
