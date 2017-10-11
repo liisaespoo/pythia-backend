@@ -22,7 +22,7 @@ public class PlanValueToPlanMapper {
 		p.setSubNo(pv.getSubNo());
 		p.setVersion(pv.getVersion());
 		p.setUrl(pv.getUrl());
-		p.setApproved(pv.getApproved());
+		p.setApproved(pv.isApproved());
 		
 		if (updating == false) {
 			p.setCreatedAt(OffsetDateTime.now());

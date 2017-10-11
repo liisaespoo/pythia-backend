@@ -100,11 +100,13 @@ public class PlanValue  implements Serializable {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	
-	public boolean getApproved() {
+
+
+	public boolean isApproved() {
 		return approved;
 	}
-	
+
+
 	public void setApproved(boolean approved) {
 		this.approved = approved;
 	}

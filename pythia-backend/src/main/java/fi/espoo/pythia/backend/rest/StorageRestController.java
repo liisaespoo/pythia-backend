@@ -169,15 +169,15 @@ public class StorageRestController {
 	 * @return
 	 */
 	@GetMapping(value = "/projects/{projectId}/plans/{planId}/comments/", produces = "application/json")
-	public ResponseEntity<List<Comment>> getComments(@PathVariable("planId") Long planId) {
+	public ResponseEntity<List<CommentValue>> getComments(@PathVariable("planId") Long planId) {
 
 		try {
-			List<Comment> commList = storageManager.getComments(planId);
-			return new ResponseEntity<List<Comment>>(commList, HttpStatus.OK);
+			List<CommentValue> commList = storageManager.getComments(planId);
+			return new ResponseEntity<List<CommentValue>>(commList, HttpStatus.OK);
 		} catch (java.lang.NullPointerException e) {
-			return new ResponseEntity<List<Comment>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<CommentValue>>(HttpStatus.NOT_FOUND);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-			return new ResponseEntity<List<Comment>>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<List<CommentValue>>(HttpStatus.FORBIDDEN);
 		}
 
 	}

@@ -16,6 +16,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import fi.espoo.pythia.backend.transfer.CommentValue;
+
 @Entity
 @Table(name = "latest_plans")
 public class LatestPlans
@@ -64,6 +66,7 @@ public class LatestPlans
 	// boolean
 	@Column(name = "approved")
 	private boolean approved;
+	
 
 	// https://jdbc.postgresql.org/documentation/head/java8-date-time.html
 	// timestamp with timezone
