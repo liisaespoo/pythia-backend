@@ -133,14 +133,6 @@ public class StorageManager {
 		ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
 		ProjectUpdateValue pval = PrjUpToPrjUpValMapper.ProjectUpdateToProjectUpdateValue(projectUpdate);
 
-		// List<PlanValue> planValues = new ArrayList();
-
-		// for (Plan plan : pval.getPlans()) {
-		// // map each plan to planValue
-		// PlanValue planValue = PlanToPlanValueMapper.planToPlanValue(plan,
-		// project);
-		// planValues.add(planValue);
-		// }
 		return pval.getPlans();
 
 	}
@@ -268,11 +260,18 @@ public class StorageManager {
 		return savedPlanValue;
 	}
 
+	/**
+	 * 
+	 * @param commV
+	 * @param id
+	 * @return
+	 */
 	public CommentValue createComment(CommentValue commV, Long id) {
 
 		// Long planId = commV.getPlanId();
 		System.out.println("ID:"+id);
 		Plan plan = planRepository.findByPlanId(id);
+		System.out.println("Plan id:" + plan.getPlanId());
 
 		Comment comm = CommentValueToCommentMapper.commentValueToComment(commV, plan, false);
 		System.out.println("Comm plan id:" + comm.getPlan().getPlanId());

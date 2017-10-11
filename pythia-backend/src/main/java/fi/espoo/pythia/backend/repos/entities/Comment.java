@@ -43,7 +43,7 @@ public class Comment implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name  = "plan_id")
-	private Plan plan;
+	private Plan plan;	
 
 	@Column(name = "text")
 	private String text;
