@@ -12,12 +12,12 @@ public class CommentToCommentValueMapper {
 		cv.setCommentId(c.getCommentId());
 		cv.setPlanId(plan.getPlanId()); 
 		cv.setText(c.getText());
-		cv.setApproved(c.isApproved());
-		cv.setUrl(c.getUrl());
-		cv.setCreatedAt(c.getCreatedAt());
-		cv.setCreatedBy(c.getCreatedBy());
-		cv.setUpdatedAt(c.getUpdatedAt());
-		cv.setUpdatedBy(c.getUpdatedBy());
+//		cv.setApproved(c.isApproved());
+//		cv.setUrl(c.getUrl());
+//		cv.setCreatedAt(c.getCreatedAt());
+//		cv.setCreatedBy(c.getCreatedBy());
+//		cv.setUpdatedAt(c.getUpdatedAt());
+//		cv.setUpdatedBy(c.getUpdatedBy());
 
 
 		return cv;

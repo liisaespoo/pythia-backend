@@ -17,7 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -47,9 +46,6 @@ public class Plan implements Serializable, Comparable<Plan> {
 	@OneToMany(mappedBy = "plan")
 	private List<Comment> comments;
 
-	// //bigint
-	// @Column(name = "project_id")
-	// private Long projectId;
 
 	// smallint
 	@Column(name = "main_no")

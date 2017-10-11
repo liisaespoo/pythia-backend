@@ -162,25 +162,48 @@ public class StorageManager {
 		return cVal;
 	}
 
+//	/**
+//	 * get comments by planId
+//	 * 
+//	 * @param planId
+//	 * @return
+//	 */
+//	public List<CommentValue> getComments(Long planId) {
+//
+//		Plan plan = planRepository.findByPlanId(planId);
+//		List<Comment> comments = commentRepository.findByPlan(plan);
+//
+//		List<CommentValue> commentValues = new ArrayList<CommentValue>();
+//		for (Comment c : comments) {
+//			CommentValue cv = CommentToCommentValueMapper.commentToCommentValue(c, plan);
+//			commentValues.add(cv);
+//		}
+//
+//		// TODO Auto-generated method stub
+//		return commentValues;
+//
+//	}
+	
 	/**
-	 * get comments by planId
-	 * 
+	 * get comments 
 	 * @param planId
 	 * @return
 	 */
-	public List<CommentValue> getComments(Long planId) {
+	public List<Comment> getComments(Long planId) {
 
-		Plan plan = planRepository.findByPlanId(planId);
-		List<Comment> comments = commentRepository.findByPlan(plan);
+		//Plan plan = planRepository.findByPlanId(planId);
+		List<Comment> comments = commentRepository.findAll();
 
-		List<CommentValue> commentValues = new ArrayList();
-		for (Comment c : comments) {
-			CommentValue cv = CommentToCommentValueMapper.commentToCommentValue(c, plan);
-			commentValues.add(cv);
-		}
+		System.out.println("Comment list size:"+comments.size());
+//		List<CommentValue> commentValues = new ArrayList<CommentValue>();
+//		for (Comment c : comments) {
+//			System.out.println("Comment c:"+c.getText());
+//			CommentValue cv = CommentToCommentValueMapper.commentToCommentValue(c, plan);
+//			commentValues.add(cv);
+//		}
 
 		// TODO Auto-generated method stub
-		return commentValues;
+		return comments;
 
 	}
 
