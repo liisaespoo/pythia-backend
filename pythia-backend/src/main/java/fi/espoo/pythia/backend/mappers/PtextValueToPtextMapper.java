@@ -10,13 +10,13 @@ import fi.espoo.pythia.backend.transfer.PtextValue;
 
 public class PtextValueToPtextMapper {
 
-	public static Ptext commentValueToComment(PtextValue cv, Plan plan, boolean updating) {
+	public static Ptext commentValueToComment(PtextValue cv, Plan plan, boolean approved, boolean updating) {
 		Ptext c = new Ptext();
 
 		//c.setCommentId(cv.getCommentId());
 		c.setPlan(plan);
 		c.setPtext(cv.getPtext());
-		c.setApproved(cv.isApproved());
+		c.setApproved(approved);
 		c.setUrl(cv.getUrl());
 
 		if (updating == false) {
