@@ -377,8 +377,8 @@ public class StorageRestController {
 	/**
 	 * not done
 	 */
-	@DeleteMapping("/projects/{projectId}")
-	public void deleteProject() {
+	@DeleteMapping("/projects/{projectId}/plans/{planId}")
+	public void deletePlan() {
 
 	}
 }
