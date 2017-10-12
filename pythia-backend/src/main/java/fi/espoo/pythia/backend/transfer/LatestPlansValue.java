@@ -25,7 +25,7 @@ private Long planId;
 	
 	private boolean approved;
 	
-	private List<CommentValue> commentValues;
+	private List<PtextValue> commentValues;
 	
 	private OffsetDateTime createdAt;
 	
@@ -156,12 +156,12 @@ private Long planId;
 	}
 
 
-	public List<CommentValue> getCommentValues() {
+	public List<PtextValue> getCommentValues() {
 		return commentValues;
 	}
 
 
-	public void setCommentValues(List<CommentValue> commentValues) {
+	public void setCommentValues(List<PtextValue> commentValues) {
 		this.commentValues = commentValues;
 	}
 	

@@ -6,4 +6,6 @@ import fi.espoo.pythia.backend.repos.entities.LatestPlans;
 
 public interface LatestPlansRepository extends JpaRepository<LatestPlans, Long>{
 
+	LatestPlans findByPlanId(Long id);
+
 }

@@ -3,10 +3,10 @@ package fi.espoo.pythia.backend.mappers;
 import java.util.ArrayList;
 import java.util.List;
 
-import fi.espoo.pythia.backend.repos.entities.Comment;
+import fi.espoo.pythia.backend.repos.entities.Ptext;
 import fi.espoo.pythia.backend.repos.entities.Plan;
 import fi.espoo.pythia.backend.repos.entities.ProjectUpdate;
-import fi.espoo.pythia.backend.transfer.CommentValue;
+import fi.espoo.pythia.backend.transfer.PtextValue;
 import fi.espoo.pythia.backend.transfer.PlanValue;
 
 public class PlanToPlanValueMapper {
@@ -25,13 +25,13 @@ public class PlanToPlanValueMapper {
 		pv.setApproved(p.isApproved());
 
 		try {
-			List<CommentValue> commentValues = new ArrayList<CommentValue>();
-			for (Comment c : p.getComments()) {
-				commentValues.add(CommentToCommentValueMapper.commentToCommentValue(c, p));
+			List<PtextValue> ptextValues = new ArrayList<PtextValue>();
+			for (Ptext c : p.getPtextList()) {
+				ptextValues.add(PtextToPtextValueMapper.ptextToPtextValue(c, p));
 			}
-			pv.setCommentValues(commentValues);
+			pv.setCommentValues(ptextValues);
 		} catch (java.lang.NullPointerException e) {
-			pv.setCommentValues(new ArrayList<CommentValue>());
+			pv.setCommentValues(new ArrayList<PtextValue>());
 		}
 
 		pv.setCreatedAt(p.getCreatedAt());

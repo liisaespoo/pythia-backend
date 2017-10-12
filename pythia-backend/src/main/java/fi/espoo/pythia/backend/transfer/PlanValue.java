@@ -43,7 +43,7 @@ public class PlanValue  implements Serializable {
 	
 	private boolean deleted;
 	
-	List<CommentValue> commentValues;
+	List<PtextValue> commentValues;
 	
 	public Long getPlanId() {
 		return planId;
@@ -165,12 +165,12 @@ public class PlanValue  implements Serializable {
 	}
 
 
-	public List<CommentValue> getCommentValues() {
+	public List<PtextValue> getCommentValues() {
 		return commentValues;
 	}
 
 
-	public void setCommentValues(List<CommentValue> commentValues) {
+	public void setCommentValues(List<PtextValue> commentValues) {
 		this.commentValues = commentValues;
 	}
 

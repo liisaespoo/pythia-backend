@@ -85,7 +85,6 @@ public class Project implements Serializable {
 
 	}
 
-
 	public List<SisterProject> getSisterProjects() {
 		return sisterProjects;
 	}
@@ -93,18 +92,14 @@ public class Project implements Serializable {
 	public void setSisterProjects(List<SisterProject> sisterProjects) {
 		this.sisterProjects = sisterProjects;
 	}
-	
-
 
 	public List<LatestPlans> getLatestPlans() {
 		return latestPlans;
 	}
 
-
 	public void setLatestPlans(List<LatestPlans> latestPlans) {
 		this.latestPlans = latestPlans;
 	}
-
 
 	public Long getProjectId() {
 		return projectId;
@@ -186,15 +181,15 @@ public class Project implements Serializable {
 		this.createdAt = createdAt;
 	}
 
-//	public void addPlan(Plan plan) {
-//		plans.add(plan);
-//		plan.setProject(this);
-//	}
-//
-//	public void removePlan(Plan plan) {
-//		plans.remove(plan);
-//		plan.setProject(null);
-//	}
+	// public void addPlan(Plan plan) {
+	// plans.add(plan);
+	// plan.setProject(this);
+	// }
+	//
+	// public void removePlan(Plan plan) {
+	// plans.remove(plan);
+	// plan.setProject(null);
+	// }
 
 	@Override
 	public int hashCode() {

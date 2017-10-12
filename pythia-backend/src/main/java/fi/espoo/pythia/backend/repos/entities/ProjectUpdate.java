@@ -1,5 +1,4 @@
 
-
 package fi.espoo.pythia.backend.repos.entities;
 
 import java.io.Serializable;
@@ -85,26 +84,17 @@ public class ProjectUpdate implements Serializable {
 	@Column(name = "updated_by")
 	private String updatedBy;
 
-
-
-
 	public ProjectUpdate() {
 		super();
 	}
 
-
-	
 	public List<SisterProjectUpdate> getSisterProjects() {
 		return sisterProjects;
 	}
 
-
-
 	public void setSisterProjects(List<SisterProjectUpdate> sisterProjects) {
 		this.sisterProjects = sisterProjects;
 	}
-
-
 
 	@JsonIgnore
 	public Long getProjectId() {
@@ -115,8 +105,6 @@ public class ProjectUpdate implements Serializable {
 	public void setProjectId(Long projectId) {
 		this.projectId = projectId;
 	}
-
-
 
 	public List<Plan> getPlans() {
 		return plans;
@@ -207,7 +195,5 @@ public class ProjectUpdate implements Serializable {
 		plans.remove(plan);
 		plan.setProject(null);
 	}
-
-	
 
 }

@@ -44,8 +44,7 @@ public class Plan implements Serializable, Comparable<Plan> {
 	private ProjectUpdate project;
 
 	@OneToMany(mappedBy = "plan")
-	private List<Comment> comments;
-
+	private List<Ptext> ptextList;
 
 	// smallint
 	@Column(name = "main_no")
@@ -112,12 +111,13 @@ public class Plan implements Serializable, Comparable<Plan> {
 		this.planId = planId;
 	}
 
-	public List<Comment> getComments() {
-		return comments;
+
+	public List<Ptext> getPtextList() {
+		return ptextList;
 	}
 
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
+	public void setPtextList(List<Ptext> ptextList) {
+		this.ptextList = ptextList;
 	}
 
 	public short getMainNo() {
