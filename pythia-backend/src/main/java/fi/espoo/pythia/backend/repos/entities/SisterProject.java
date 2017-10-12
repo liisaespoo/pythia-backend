@@ -39,8 +39,6 @@ public class SisterProject implements Serializable {
 	@Column(name = "sister_project_id")
 	private Long sisterProjectId;
 
-	
-	
 	public SisterProject(Long id, Project project, Long sisterProjectId) {
 		super();
 		this.id = id;
@@ -48,8 +46,8 @@ public class SisterProject implements Serializable {
 		this.sisterProjectId = sisterProjectId;
 	}
 
-	public SisterProject(){
-		
+	public SisterProject() {
+
 	}
 
 	public Long getId() {
@@ -68,12 +66,12 @@ public class SisterProject implements Serializable {
 		this.sisterProjectId = sisterProjectId;
 	}
 
-	 @JsonIgnore
+	@JsonIgnore
 	public Project getProject() {
 		return project;
 	}
 
-	 @JsonIgnore
+	@JsonIgnore
 	public void setProject(Project project) {
 		this.project = project;
 	}

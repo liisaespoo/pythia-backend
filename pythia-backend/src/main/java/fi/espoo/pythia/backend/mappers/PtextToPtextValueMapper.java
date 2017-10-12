@@ -1,18 +1,18 @@
 package fi.espoo.pythia.backend.mappers;
 
-import fi.espoo.pythia.backend.repos.entities.Comment;
+import fi.espoo.pythia.backend.repos.entities.Ptext;
 import fi.espoo.pythia.backend.repos.entities.LatestPlans;
 import fi.espoo.pythia.backend.repos.entities.Plan;
-import fi.espoo.pythia.backend.transfer.CommentValue;
+import fi.espoo.pythia.backend.transfer.PtextValue;
 
-public class CommentToCommentValueMapper {
+public class PtextToPtextValueMapper {
 	
-	public static CommentValue commentToCommentValue(Comment c, Plan plan) {
-		CommentValue cv = new CommentValue();
+	public static PtextValue ptextToPtextValue(Ptext c, Plan plan) {
+		PtextValue cv = new PtextValue();
 		
-		cv.setCommentId(c.getCommentId());
+		cv.setText_id(c.getTextId());
 		cv.setPlanId(plan.getPlanId()); 
-		cv.setText(c.getText());
+		cv.setPtext(c.getPtext());
 		cv.setApproved(c.isApproved());
 		cv.setUrl(c.getUrl());
 		cv.setCreatedAt(c.getCreatedAt());
@@ -24,12 +24,12 @@ public class CommentToCommentValueMapper {
 		return cv;
 	}
 	
-	public static CommentValue commentToCommentValue(Comment c, LatestPlans plan) {
-		CommentValue cv = new CommentValue();
+	public static PtextValue ptextToPtextValue(Ptext c, LatestPlans plan) {
+		PtextValue cv = new PtextValue();
 		
-		cv.setCommentId(c.getCommentId());
+		cv.setText_id(c.getTextId());
 		cv.setPlanId(plan.getPlanId()); 
-		cv.setText(c.getText());
+		cv.setPtext(c.getPtext());
 		cv.setApproved(c.isApproved());
 		cv.setUrl(c.getUrl());
 		cv.setCreatedAt(c.getCreatedAt());

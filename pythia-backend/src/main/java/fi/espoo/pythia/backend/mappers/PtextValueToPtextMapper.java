@@ -5,17 +5,17 @@ import fi.espoo.pythia.backend.repos.entities.Plan;
 
 import java.time.OffsetDateTime;
 
-import fi.espoo.pythia.backend.repos.entities.Comment;
-import fi.espoo.pythia.backend.transfer.CommentValue;
+import fi.espoo.pythia.backend.repos.entities.Ptext;
+import fi.espoo.pythia.backend.transfer.PtextValue;
 
-public class CommentValueToCommentMapper {
+public class PtextValueToPtextMapper {
 
-	public static Comment commentValueToComment(CommentValue cv, Plan plan, boolean updating) {
-		Comment c = new Comment();
+	public static Ptext commentValueToComment(PtextValue cv, Plan plan, boolean updating) {
+		Ptext c = new Ptext();
 
-		c.setCommentId(cv.getCommentId());
+		//c.setCommentId(cv.getCommentId());
 		c.setPlan(plan);
-		c.setText(cv.getText());
+		c.setPtext(cv.getPtext());
 		c.setApproved(cv.isApproved());
 		c.setUrl(cv.getUrl());
 

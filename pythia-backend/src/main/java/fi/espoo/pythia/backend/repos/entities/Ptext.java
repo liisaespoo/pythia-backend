@@ -30,71 +30,74 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "comment")
-public class Comment implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_generator")
-	@SequenceGenerator(name = "comment_generator", sequenceName = "comm_serial, allocationSize = 1")
-	@Column(name = "comment_id", updatable = false, nullable = false)
-	private Long commentId;
-	
-	@ManyToOne
-	@JoinColumn(name  = "plan_id")
-	private Plan plan;	
+@Table(name = "ptext")
+public class Ptext implements Serializable {
 
-	@Column(name = "text")
-	private String text;
-	
+	private static final long serialVersionUID = 1L;
+
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ptex_generator")
+//	@SequenceGenerator(name = "ptex_generator", sequenceName = "ptex_serial, allocationSize = 1")
+//	@Column(name = "text_id", updatable = false, nullable = false)
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ptex_generator")
+	@SequenceGenerator(name = "ptex_generator", sequenceName = "ptex_serial", allocationSize = 1)
+	@Column(name = "text_id", updatable = false, nullable = false)
+	private Long textId;
+
+	@ManyToOne
+	@JoinColumn(name = "plan_id")
+	private Plan plan;
+
+	@Column(name = "ptext")
+	private String ptext;
+
 	@Column(name = "approved")
 	private boolean approved;
-	
+
 	@Column(name = "url")
 	private String url;
-	
+
 	@Column(name = "created_at")
 	private OffsetDateTime createdAt;
-	
+
 	@Column(name = "created_by")
 	private String createdBy;
-	
+
 	@Column(name = "updated_at")
 	private OffsetDateTime updatedAt;
-	
+
 	@Column(name = "updated_by")
 	private String updatedBy;
-	
-	public Comment() {
-		
+
+	public Ptext() {
+
 	}
-	
+
+	public Long getTextId() {
+		return textId;
+	}
+
+	public void setTextId(Long textId) {
+		this.textId = textId;
+	}
+
 	@JsonIgnore
 	public Plan getPlan() {
 		return plan;
 	}
-	
+
 	@JsonIgnore
 	public void setPlan(Plan plan) {
 		this.plan = plan;
 	}
-	
-	public Long getCommentId() {
-		return commentId;
+
+	public String getPtext() {
+		return ptext;
 	}
-	
-	public void setCommentId(Long commentId ) {
-		this.commentId = commentId;
-	}
-	
-	public String getText() {
-		return this.text;
-		
-	}
-	
-	public void setText(String text) {
-		this.text = text;
+
+	public void setPtext(String ptext) {
+		this.ptext = ptext;
 	}
 
 	public boolean isApproved() {
@@ -145,5 +148,29 @@ public class Comment implements Serializable {
 		this.updatedBy = updatedBy;
 	}
 
-}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((textId == null) ? 0 : textId.hashCode());
+		return result;
+	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Ptext other = (Ptext) obj;
+		if (textId == null) {
+			if (other.textId != null)
+				return false;
+		} else if (!textId.equals(other.textId))
+			return false;
+		return true;
+	}
+
+}

@@ -33,9 +33,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import fi.espoo.pythia.backend.mgrs.S3Manager;
 import fi.espoo.pythia.backend.mgrs.StorageManager;
-import fi.espoo.pythia.backend.repos.entities.Comment;
+import fi.espoo.pythia.backend.repos.entities.Ptext;
 import fi.espoo.pythia.backend.repos.entities.ProjectUpdate;
-import fi.espoo.pythia.backend.transfer.CommentValue;
+import fi.espoo.pythia.backend.transfer.PtextValue;
+import fi.espoo.pythia.backend.transfer.LatestPlansValue;
 import fi.espoo.pythia.backend.transfer.PlanValue;
 import fi.espoo.pythia.backend.transfer.ProjectUpdateValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue2;
@@ -120,7 +121,7 @@ public class StorageRestController {
 	
 	/**
 	 * 
-	 * return 2 latest versions plans by projectId
+	 * return plans by projectId
 	 * 
 	 * @param projectId
 	 * @return
@@ -169,15 +170,15 @@ public class StorageRestController {
 	 * @return
 	 */
 	@GetMapping(value = "/projects/{projectId}/plans/{planId}/comments/", produces = "application/json")
-	public ResponseEntity<List<CommentValue>> getComments(@PathVariable("planId") Long planId) {
+	public ResponseEntity<List<PtextValue>> getComments(@PathVariable("planId") Long planId) {
 
 		try {
-			List<CommentValue> commList = storageManager.getComments(planId);
-			return new ResponseEntity<List<CommentValue>>(commList, HttpStatus.OK);
+			List<PtextValue> commList = storageManager.getComments(planId);
+			return new ResponseEntity<List<PtextValue>>(commList, HttpStatus.OK);
 		} catch (java.lang.NullPointerException e) {
-			return new ResponseEntity<List<CommentValue>>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<List<PtextValue>>(HttpStatus.NOT_FOUND);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-			return new ResponseEntity<List<CommentValue>>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<List<PtextValue>>(HttpStatus.FORBIDDEN);
 		}
 
 	}
@@ -225,13 +226,13 @@ public class StorageRestController {
 	 * @return
 	 */
 	@PostMapping(value = "/projects/{projectId}/plans/{planId}/comments/", produces = "application/json", consumes = "application/json")
-	public ResponseEntity<CommentValue> createComment(@RequestBody CommentValue commV, @PathVariable("planId") long id) {
+	public ResponseEntity<PtextValue> createComment(@RequestBody PtextValue commV, @PathVariable("planId") long id) {
 
 		try {
-			CommentValue savedComm = storageManager.createComment(commV, id);
-			return new ResponseEntity<CommentValue>(savedComm, HttpStatus.OK);
+			PtextValue savedComm = storageManager.createComment(commV, id);
+			return new ResponseEntity<PtextValue>(savedComm, HttpStatus.OK);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-			return new ResponseEntity<CommentValue>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<PtextValue>(HttpStatus.FORBIDDEN);
 		}
 	
 
@@ -307,7 +308,7 @@ public class StorageRestController {
 		try {
 			
 			
-			CommentValue commV = storageManager.getComment(id);
+			PtextValue commV = storageManager.getComment(id);
 			
 			if(commV == null){
 				return new ResponseEntity<String>("",HttpStatus.NOT_FOUND);
@@ -342,13 +343,13 @@ public class StorageRestController {
 	 */
 	
 	@PutMapping(value = "/projects/{projectId}/plans/{planId}", produces = "application/json", consumes = "application/json")
-	public ResponseEntity<PlanValue> updatePlan(@RequestBody PlanValue planV) {
+	public ResponseEntity<LatestPlansValue> updatePlan(@RequestBody PlanValue planV) {
 
 		try {
-			PlanValue updatedPlan = storageManager.updatePlan(planV);
-			return new ResponseEntity<PlanValue>(updatedPlan, HttpStatus.OK);
+			LatestPlansValue updatedPlan = storageManager.updatePlan(planV);
+			return new ResponseEntity<LatestPlansValue>(updatedPlan, HttpStatus.OK);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-			return new ResponseEntity<PlanValue>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<LatestPlansValue>(HttpStatus.FORBIDDEN);
 		}
 
 	}

@@ -1,53 +1,41 @@
 package fi.espoo.pythia.backend.mgrs;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
-
-import fi.espoo.pythia.backend.converters.FileConverter;
-import fi.espoo.pythia.backend.encoders.EncoderBase64;
-import fi.espoo.pythia.backend.mappers.CommentToCommentValueMapper;
-import fi.espoo.pythia.backend.mappers.CommentValueToCommentMapper;
+import fi.espoo.pythia.backend.mappers.LPToLPValueMapper;
 import fi.espoo.pythia.backend.mappers.PlanToPlanValueMapper;
 import fi.espoo.pythia.backend.mappers.PlanValueToPlanMapper;
 import fi.espoo.pythia.backend.mappers.PrjToPrjVal2Mapper;
 import fi.espoo.pythia.backend.mappers.PrjUpToPrjUpValMapper;
 import fi.espoo.pythia.backend.mappers.PrjUpValToPrjUpMapper;
-import fi.espoo.pythia.backend.mappers.PrjVal2ToPrjMapper;
-import fi.espoo.pythia.backend.repos.CommentRepository;
+import fi.espoo.pythia.backend.mappers.PtextToPtextValueMapper;
+import fi.espoo.pythia.backend.mappers.PtextValueToPtextMapper;
+import fi.espoo.pythia.backend.repos.LatestPlansRepository;
 import fi.espoo.pythia.backend.repos.PlanRepository;
 import fi.espoo.pythia.backend.repos.ProjectRepository;
 import fi.espoo.pythia.backend.repos.ProjectUpdateRepository;
+import fi.espoo.pythia.backend.repos.PtextRepository;
 import fi.espoo.pythia.backend.repos.SisterProjectRepository;
 import fi.espoo.pythia.backend.repos.SisterProjectUpdateRepository;
-import fi.espoo.pythia.backend.repos.entities.Comment;
+import fi.espoo.pythia.backend.repos.entities.LatestPlans;
 import fi.espoo.pythia.backend.repos.entities.Plan;
 import fi.espoo.pythia.backend.repos.entities.Project;
 import fi.espoo.pythia.backend.repos.entities.ProjectUpdate;
+import fi.espoo.pythia.backend.repos.entities.Ptext;
 import fi.espoo.pythia.backend.repos.entities.SisterProject;
 import fi.espoo.pythia.backend.repos.entities.SisterProjectUpdate;
-import fi.espoo.pythia.backend.transfer.CommentValue;
+import fi.espoo.pythia.backend.transfer.LatestPlansValue;
 import fi.espoo.pythia.backend.transfer.PlanValue;
 import fi.espoo.pythia.backend.transfer.ProjectUpdateValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue2;
+import fi.espoo.pythia.backend.transfer.PtextValue;
 
 @Component
 @Transactional
@@ -66,10 +54,13 @@ public class StorageManager {
 	private SisterProjectUpdateRepository sisterProjectUpdateRepository;
 
 	@Autowired
-	private CommentRepository commentRepository;
+	private PtextRepository ptextRepository;
 
 	@Autowired
 	private ProjectUpdateRepository projectUpdateRepository;
+	
+	@Autowired
+	private LatestPlansRepository latestPlansRepository;
 	// ---------------------GET------------------------------------
 
 	/**
@@ -146,10 +137,10 @@ public class StorageManager {
 		return pVal;
 	}
 
-	public CommentValue getComment(long id) {
-		Comment comment = commentRepository.findByCommentId(id);
+	public PtextValue getComment(long id) {
+		Ptext comment = ptextRepository.findByTextId(id);
 		Plan plan = comment.getPlan();
-		CommentValue cVal = CommentToCommentValueMapper.commentToCommentValue(comment, plan);
+		PtextValue cVal = PtextToPtextValueMapper.ptextToPtextValue(comment, plan);
 
 		return cVal;
 	}
@@ -160,14 +151,14 @@ public class StorageManager {
 	 * @param planId
 	 * @return
 	 */
-	public List<CommentValue> getComments(Long planId) {
+	public List<PtextValue> getComments(Long planId) {
 
 		Plan plan = planRepository.findByPlanId(planId);
-		List<Comment> comments = commentRepository.findByPlan(plan);
+		List<Ptext> comments =ptextRepository.findByPlan(plan);
 
-		List<CommentValue> commentValues = new ArrayList<CommentValue>();
-		for (Comment c : comments) {
-			CommentValue cv = CommentToCommentValueMapper.commentToCommentValue(c, plan);
+		List<PtextValue> commentValues = new ArrayList<PtextValue>();
+		for (Ptext c : comments) {
+			PtextValue cv = PtextToPtextValueMapper.ptextToPtextValue(c, plan);
 			commentValues.add(cv);
 		}
 
@@ -266,20 +257,21 @@ public class StorageManager {
 	 * @param id
 	 * @return
 	 */
-	public CommentValue createComment(CommentValue commV, Long id) {
+	public PtextValue createComment(PtextValue commV, Long id) {
 
 		// Long planId = commV.getPlanId();
 		System.out.println("ID:"+id);
 		Plan plan = planRepository.findByPlanId(id);
 		System.out.println("Plan id:" + plan.getPlanId());
 
-		Comment comm = CommentValueToCommentMapper.commentValueToComment(commV, plan, false);
+		Ptext comm = PtextValueToPtextMapper.commentValueToComment(commV, plan, false);
 		System.out.println("Comm plan id:" + comm.getPlan().getPlanId());
-	    Comment savedComm = commentRepository.save(comm);
+		
+	    Ptext savedComm = ptextRepository.save(comm);
 
-		System.out.println("savedComm id:" + savedComm.getCommentId());
+		System.out.println("savedComm id:" + savedComm.getTextId());
 	    
-		CommentValue savedCommValue = CommentToCommentValueMapper.commentToCommentValue(savedComm, plan);
+		PtextValue savedCommValue = PtextToPtextValueMapper.ptextToPtextValue(savedComm, plan);
 		return savedCommValue;
 
 	}
@@ -347,28 +339,31 @@ public class StorageManager {
 	 * @return
 	 */
 
-	public PlanValue updatePlan(PlanValue planV) {
+	public LatestPlansValue updatePlan(PlanValue planV) {
 
 		Long id = planV.getProjectId();
 		ProjectUpdate projectUp = projectUpdateRepository.findByProjectId(id);
 		Plan plan = PlanValueToPlanMapper.planValueToPlan(planV, projectUp, true);
 
 		Plan updatedPlan = planRepository.save(plan);
+		
+		LatestPlans latestPlans = latestPlansRepository.findByPlanId(updatedPlan.getPlanId());
+		Project project = projectRepository.findByProjectId(id);
 
-		PlanValue updatedPlanValue = PlanToPlanValueMapper.planToPlanValue(updatedPlan, projectUp);
-		return updatedPlanValue;
+		LatestPlansValue updatedLAtestPlanValue = LPToLPValueMapper.lpTolpValue(latestPlans, project);
+		return updatedLAtestPlanValue;
 
 	}
 
-	public CommentValue updateComment(CommentValue commV) {
+	public PtextValue updateComment(PtextValue commV) {
 
 		Long id = commV.getPlanId();
 		Plan plan = planRepository.findByPlanId(id);
-		Comment comm = CommentValueToCommentMapper.commentValueToComment(commV, plan, true);
+		Ptext comm = PtextValueToPtextMapper.commentValueToComment(commV, plan, true);
 
-		Comment updatedComm = commentRepository.save(comm);
+		Ptext updatedComm = ptextRepository.save(comm);
 
-		CommentValue updatedCommentValue = CommentToCommentValueMapper.commentToCommentValue(updatedComm, plan);
+		PtextValue updatedCommentValue = PtextToPtextValueMapper.ptextToPtextValue(updatedComm, plan);
 		return updatedCommentValue;
 
 	}

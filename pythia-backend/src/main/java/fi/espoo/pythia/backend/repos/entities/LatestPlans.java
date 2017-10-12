@@ -16,7 +16,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import fi.espoo.pythia.backend.transfer.CommentValue;
+import fi.espoo.pythia.backend.transfer.PtextValue;
 
 @Entity
 @Table(name = "latest_plans")
@@ -45,7 +45,7 @@ public class LatestPlans
 	private Project project;
 
 	@OneToMany(mappedBy = "plan")
-	private List<Comment> comments;
+	private List<Ptext> comments;
 
 	// smallint
 	@Column(name = "main_no")
@@ -112,11 +112,11 @@ public class LatestPlans
 		this.planId = planId;
 	}
 
-	public List<Comment> getComments() {
+	public List<Ptext> getComments() {
 		return comments;
 	}
 
-	public void setComments(List<Comment> comments) {
+	public void setComments(List<Ptext> comments) {
 		this.comments = comments;
 	}
 
