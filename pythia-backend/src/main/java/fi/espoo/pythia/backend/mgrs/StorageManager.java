@@ -58,7 +58,7 @@ public class StorageManager {
 
 	@Autowired
 	private ProjectUpdateRepository projectUpdateRepository;
-	
+
 	@Autowired
 	private LatestPlansRepository latestPlansRepository;
 	// ---------------------GET------------------------------------
@@ -154,7 +154,7 @@ public class StorageManager {
 	public List<PtextValue> getComments(Long planId) {
 
 		Plan plan = planRepository.findByPlanId(planId);
-		List<Ptext> comments =ptextRepository.findByPlan(plan);
+		List<Ptext> comments = ptextRepository.findByPlan(plan);
 
 		List<PtextValue> commentValues = new ArrayList<PtextValue>();
 		for (Ptext c : comments) {
@@ -165,29 +165,30 @@ public class StorageManager {
 		return commentValues;
 
 	}
-	
-//	/**
-//	 * get comments 
-//	 * @param planId
-//	 * @return
-//	 */
-//	public List<Comment> getComments(Long planId) {
-//
-//		//Plan plan = planRepository.findByPlanId(planId);
-//		List<Comment> comments = commentRepository.findAll();
-//
-//		System.out.println("Comment list size:"+comments.size());
-////		List<CommentValue> commentValues = new ArrayList<CommentValue>();
-////		for (Comment c : comments) {
-////			System.out.println("Comment c:"+c.getText());
-////			CommentValue cv = CommentToCommentValueMapper.commentToCommentValue(c, plan);
-////			commentValues.add(cv);
-////		}
-//
-//		// TODO Auto-generated method stub
-//		return comments;
-//
-//	}
+
+	// /**
+	// * get comments
+	// * @param planId
+	// * @return
+	// */
+	// public List<Comment> getComments(Long planId) {
+	//
+	// //Plan plan = planRepository.findByPlanId(planId);
+	// List<Comment> comments = commentRepository.findAll();
+	//
+	// System.out.println("Comment list size:"+comments.size());
+	//// List<CommentValue> commentValues = new ArrayList<CommentValue>();
+	//// for (Comment c : comments) {
+	//// System.out.println("Comment c:"+c.getText());
+	//// CommentValue cv = CommentToCommentValueMapper.commentToCommentValue(c,
+	// plan);
+	//// commentValues.add(cv);
+	//// }
+	//
+	// // TODO Auto-generated method stub
+	// return comments;
+	//
+	// }
 
 	// ---------------------POST-----------------------------------
 
@@ -253,25 +254,18 @@ public class StorageManager {
 
 	/**
 	 * 
-	 * @param commV
+	 * @param pTextVal
 	 * @param id
 	 * @return
 	 */
-	public PtextValue createComment(PtextValue commV, Long id) {
+	public PtextValue createPtext(PtextValue pTextVal, Long id) {
 
 		// Long planId = commV.getPlanId();
-		System.out.println("ID:"+id);
 		Plan plan = planRepository.findByPlanId(id);
-		System.out.println("Plan id:" + plan.getPlanId());
-
-		Ptext comm = PtextValueToPtextMapper.commentValueToComment(commV, plan, false);
-		System.out.println("Comm plan id:" + comm.getPlan().getPlanId());
-		
-	    Ptext savedComm = ptextRepository.save(comm);
-
-		System.out.println("savedComm id:" + savedComm.getTextId());
-	    
-		PtextValue savedCommValue = PtextToPtextValueMapper.ptextToPtextValue(savedComm, plan);
+		pTextVal.setPlanId(id);
+		Ptext pText = PtextValueToPtextMapper.commentValueToComment(pTextVal, plan, false, false);
+		Ptext savedPtext = ptextRepository.save(pText);
+		PtextValue savedCommValue = PtextToPtextValueMapper.ptextToPtextValue(savedPtext, plan);
 		return savedCommValue;
 
 	}
@@ -346,7 +340,7 @@ public class StorageManager {
 		Plan plan = PlanValueToPlanMapper.planValueToPlan(planV, projectUp, true);
 
 		Plan updatedPlan = planRepository.save(plan);
-		
+
 		LatestPlans latestPlans = latestPlansRepository.findByPlanId(updatedPlan.getPlanId());
 		Project project = projectRepository.findByProjectId(id);
 
@@ -355,16 +349,16 @@ public class StorageManager {
 
 	}
 
-	public PtextValue updateComment(PtextValue commV) {
+	public PtextValue updatePtext(PtextValue pTextVal) {
 
-		Long id = commV.getPlanId();
+		Long id = pTextVal.getPlanId();
 		Plan plan = planRepository.findByPlanId(id);
-		Ptext comm = PtextValueToPtextMapper.commentValueToComment(commV, plan, true);
+		Ptext pText = PtextValueToPtextMapper.commentValueToComment(pTextVal, plan, pTextVal.isApproved(), true);
 
-		Ptext updatedComm = ptextRepository.save(comm);
+		Ptext updatedPtext = ptextRepository.save(pText);
 
-		PtextValue updatedCommentValue = PtextToPtextValueMapper.ptextToPtextValue(updatedComm, plan);
-		return updatedCommentValue;
+		PtextValue updatedPtextValue = PtextToPtextValueMapper.ptextToPtextValue(updatedPtext, plan);
+		return updatedPtextValue;
 
 	}
 

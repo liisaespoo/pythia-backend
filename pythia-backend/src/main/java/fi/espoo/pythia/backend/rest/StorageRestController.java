@@ -226,11 +226,11 @@ public class StorageRestController {
 	 * @return
 	 */
 	@PostMapping(value = "/projects/{projectId}/plans/{planId}/comments/", produces = "application/json", consumes = "application/json")
-	public ResponseEntity<PtextValue> createComment(@RequestBody PtextValue commV, @PathVariable("planId") long id) {
+	public ResponseEntity<PtextValue> createComment(@RequestBody PtextValue pTextVal, @PathVariable("planId") long id) {
 
 		try {
-			PtextValue savedComm = storageManager.createComment(commV, id);
-			return new ResponseEntity<PtextValue>(savedComm, HttpStatus.OK);
+			PtextValue savedPtext = storageManager.createPtext(pTextVal, id);
+			return new ResponseEntity<PtextValue>(savedPtext, HttpStatus.OK);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
 			return new ResponseEntity<PtextValue>(HttpStatus.FORBIDDEN);
 		}
@@ -308,18 +308,18 @@ public class StorageRestController {
 		try {
 			
 			
-			PtextValue commV = storageManager.getComment(id);
+			PtextValue ptextVal = storageManager.getComment(id);
 			
-			if(commV == null){
+			if(ptextVal == null){
 				return new ResponseEntity<String>("",HttpStatus.NOT_FOUND);
 			}
 			
 			String savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-comments-bucket", mfile);
 			
 			// set PlanValue url 
-			commV.setUrl(savedImageUrl);
+			ptextVal.setUrl(savedImageUrl);
 			//update Plan with url
-			storageManager.updateComment(commV);
+			storageManager.updatePtext(ptextVal);
 	
 			if (savedImageUrl.isEmpty() || savedImageUrl == null) {
 				return new ResponseEntity<String>("",HttpStatus.NOT_FOUND);
