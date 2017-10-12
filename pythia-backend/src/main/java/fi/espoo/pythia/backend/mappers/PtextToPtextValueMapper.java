@@ -10,7 +10,7 @@ public class PtextToPtextValueMapper {
 	public static PtextValue ptextToPtextValue(Ptext c, Plan plan) {
 		PtextValue cv = new PtextValue();
 		
-		cv.setText_id(c.getTextId());
+		cv.setTextId(c.getTextId());
 		cv.setPlanId(plan.getPlanId()); 
 		cv.setPtext(c.getPtext());
 		cv.setApproved(c.isApproved());
@@ -27,7 +27,7 @@ public class PtextToPtextValueMapper {
 	public static PtextValue ptextToPtextValue(Ptext c, LatestPlans plan) {
 		PtextValue cv = new PtextValue();
 		
-		cv.setText_id(c.getTextId());
+		cv.setTextId(c.getTextId());
 		cv.setPlanId(plan.getPlanId()); 
 		cv.setPtext(c.getPtext());
 		cv.setApproved(c.isApproved());
