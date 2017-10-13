@@ -1,6 +1,9 @@
 # Never use "latest" as base container but specific tagged version instead
 FROM anapsix/alpine-java:8u131b11_jdk
 
+# make dir for AWS
+RUN mkdir -p ~/.aws
+
 # Copy application JAR(s) to /app
 COPY build/libs/pythia-backend.jar /app/pythia-backend.jar
 COPY pythia-backend.sh version.json /
