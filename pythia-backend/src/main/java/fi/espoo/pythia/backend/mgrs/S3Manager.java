@@ -24,6 +24,7 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 
 import fi.espoo.pythia.backend.converters.FileConverter;
+import fi.espoo.pythia.backend.encoders.EncoderBase64;
 
 @Component
 public class S3Manager {
@@ -61,10 +62,14 @@ public class S3Manager {
 	
 	
 
-	public String getPlanFile(String nimi) {
-		// palauta
-		return "";
-	}
+//	public String createPlanFile64(String json) {
+//
+//		S3ObjectInputStream inputStream2 = EncoderBase64.base64String2InputStream(json);
+//		;
+//		String output = null;
+//		FileConverter.inputStreamToFile(inputStream2, output);
+//		return "";
+//	}
 
 	// -----------------------AUTHENTICATION WITH ENVIRONMENTAL VARIABLES
 
