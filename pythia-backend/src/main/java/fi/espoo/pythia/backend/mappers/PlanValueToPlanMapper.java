@@ -9,7 +9,7 @@ import fi.espoo.pythia.backend.transfer.PlanValue;
 public class PlanValueToPlanMapper {
 
 	
-	public static Plan planValueToPlan(PlanValue pv, ProjectUpdate project, boolean updating) {
+	public static Plan planValueToPlan(PlanValue pv, ProjectUpdate project, boolean updating, boolean approved) {
 		
 		//get project_id 
 		
@@ -22,7 +22,7 @@ public class PlanValueToPlanMapper {
 		p.setSubNo(pv.getSubNo());
 		p.setVersion(pv.getVersion());
 		p.setUrl(pv.getUrl());
-		p.setApproved(pv.isApproved());
+		p.setApproved(approved);
 		
 		if (updating == false) {
 			p.setCreatedAt(OffsetDateTime.now());

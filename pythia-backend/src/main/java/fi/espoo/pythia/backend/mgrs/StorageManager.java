@@ -217,7 +217,7 @@ public class StorageManager {
 		// get project by projectid
 		ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
 		// map planV to plan
-		Plan mappedPlan = PlanValueToPlanMapper.planValueToPlan(planV, projectUpdate, false);
+		Plan mappedPlan = PlanValueToPlanMapper.planValueToPlan(planV, projectUpdate, false, false);
 
 		// get all plans with planV.projectId and planV.mainNo & planV.subNo
 
@@ -333,11 +333,44 @@ public class StorageManager {
 	 * @return
 	 */
 
-	public LatestPlansValue updatePlan(PlanValue planV) {
+	public PlanValue updatePlan(PlanValue planV) {
 
 		Long id = planV.getProjectId();
+		boolean approved = planV.isApproved();
 		ProjectUpdate projectUp = projectUpdateRepository.findByProjectId(id);
-		Plan plan = PlanValueToPlanMapper.planValueToPlan(planV, projectUp, true);
+
+		Plan plan = PlanValueToPlanMapper.planValueToPlan(planV, projectUp, true, approved);
+
+		Plan updatedPlan = planRepository.save(plan);
+		PlanValue returnPlan = PlanToPlanValueMapper.planToPlanValue(updatedPlan, projectUp);
+		return returnPlan;
+
+	}
+
+	public PtextValue updatePtext(PtextValue pTextVal, long id) {
+
+		// Long id = pTextVal.getPlanId();
+		Plan plan = planRepository.findByPlanId(id);
+		Ptext pText = PtextValueToPtextMapper.commentValueToComment(pTextVal, plan, pTextVal.isApproved(), true);
+
+		Ptext updatedPtext = ptextRepository.save(pText);
+
+		PtextValue updatedPtextValue = PtextToPtextValueMapper.ptextToPtextValue(updatedPtext, plan);
+		return updatedPtextValue;
+
+	}
+
+	// --------------------- DELETE --------------------------------
+
+	/**
+	 * update plan value deleted to true
+	 * 
+	 * @param id
+	 */
+	public LatestPlansValue deletePlan(long id) {
+		// TODO Auto-generated method stub
+		Plan plan = planRepository.findByPlanId(id);
+		plan.setDeleted(true);
 
 		Plan updatedPlan = planRepository.save(plan);
 
@@ -346,19 +379,6 @@ public class StorageManager {
 
 		LatestPlansValue updatedLAtestPlanValue = LPToLPValueMapper.lpTolpValue(latestPlans, project);
 		return updatedLAtestPlanValue;
-
-	}
-
-	public PtextValue updatePtext(PtextValue pTextVal) {
-
-		Long id = pTextVal.getPlanId();
-		Plan plan = planRepository.findByPlanId(id);
-		Ptext pText = PtextValueToPtextMapper.commentValueToComment(pTextVal, plan, pTextVal.isApproved(), true);
-
-		Ptext updatedPtext = ptextRepository.save(pText);
-
-		PtextValue updatedPtextValue = PtextToPtextValueMapper.ptextToPtextValue(updatedPtext, plan);
-		return updatedPtextValue;
 
 	}
 
