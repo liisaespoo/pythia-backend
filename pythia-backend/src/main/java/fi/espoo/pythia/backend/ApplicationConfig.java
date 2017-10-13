@@ -121,11 +121,17 @@ public class ApplicationConfig {
 		// spring.jpa.properties.hibernate.default_schema=project
 
 		jpaProperties.put("hibernate.default_schema", "project");
+		
 
+		
 		entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
 		return entityManagerFactoryBean;
 	}
+	
+	
+	
+	
 
 	@Bean
 	JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
