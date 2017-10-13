@@ -355,6 +355,8 @@ public class StorageManager {
 		Plan plan = planRepository.findByPlanId(pTextVal.getPlanId());
 		Ptext pText = PtextValueToPtextMapper.commentValueToComment(pTextVal, plan, pTextVal.isApproved(), true);
 
+		pText.setTextId(id);
+		
 		Ptext updatedPtext = ptextRepository.save(pText);
 
 		PtextValue updatedPtextValue = PtextToPtextValueMapper.ptextToPtextValue(updatedPtext, plan);
