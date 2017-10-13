@@ -1,3 +1,8 @@
+/**
+ * When posting multipart file add size by tweaking both 
+ *  1)src/main/resources application.propeties and 
+ *  2)PythiaBackendApplication.class Tomcat setMaxPostSize Bean  (this class)
+ */
 package fi.espoo.pythia.backend;
 
 import org.apache.coyote.http11.AbstractHttp11Protocol;
@@ -12,43 +17,32 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class PythiaBackendApplication {
 
-	private int maxUploadSizeInMb = 10 * 1024 * 1024; // 10 MB
-	
+	// 10485760 bytes
+	private int maxPostSize10MB = 10 * 1024 * 1024;
+	//104857600 bytes
+	private int maxPostSize100MB = 10 * 10 * 1024 * 1024;
+	// 1048576000 bytes 
+	private int maxPostSize1GB = 10 * 10 * 1024 * 1024;
+	// 104857600000 bytes
+	private int maxPostSize10GB = 10 * 10 * 10 * 1024 * 1024;
+
 	public static void main(String[] args) {
 		SpringApplication.run(PythiaBackendApplication.class, args);
 	}
-	
-//	 //Tomcat large file upload connection reset
-//    //http://www.mkyong.com/spring/spring-file-upload-and-connection-reset-issue/
-//    @Bean
-//    public TomcatEmbeddedServletContainerFactory tomcatEmbedded() {
-//
-//        TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory();
-//
-//        tomcat.addConnectorCustomizers((TomcatConnectorCustomizer) connector -> {
-//            if ((connector.getProtocolHandler() instanceof AbstractHttp11Protocol<?>)) {
-//                //-1 means unlimited
-//                ((AbstractHttp11Protocol<?>) connector.getProtocolHandler()).setMaxSwallowSize(-1);
-//            }
-//        });
-//
-//        return tomcat;
-//
-//    }
-    
-    
-    @Bean
-    public EmbeddedServletContainerCustomizer containerCustomizer() throws Exception {
-        return (ConfigurableEmbeddedServletContainer container) -> {
-            if (container instanceof TomcatEmbeddedServletContainerFactory) {
-                TomcatEmbeddedServletContainerFactory tomcat = (TomcatEmbeddedServletContainerFactory) container;
-                tomcat.addConnectorCustomizers(
-                    (connector) -> {
-                        connector.setMaxPostSize(100000000); // 100 MB
-                    }
-                );
-            }
-        };
-    }
+
+
+	// Tomcat setMaxPostSize Bean
+	@Bean
+	public EmbeddedServletContainerCustomizer containerCustomizer() throws Exception {
+		return (ConfigurableEmbeddedServletContainer container) -> {
+			if (container instanceof TomcatEmbeddedServletContainerFactory) {
+				TomcatEmbeddedServletContainerFactory tomcat = (TomcatEmbeddedServletContainerFactory) container;
+				tomcat.addConnectorCustomizers((connector) -> {
+					// 1 GB
+					connector.setMaxPostSize(maxPostSize1GB); 
+				});
+			}
+		};
+	}
 
 }

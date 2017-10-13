@@ -122,12 +122,13 @@ public class ApplicationConfig {
 
 		jpaProperties.put("hibernate.default_schema", "project");
 		
-
 		
+
 		entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
 		return entityManagerFactoryBean;
 	}
+	
 	
 	
 	

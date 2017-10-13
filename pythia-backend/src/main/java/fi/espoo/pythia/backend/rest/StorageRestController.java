@@ -9,7 +9,10 @@
  * 
  * http://www.springboottutorial.com/unit-testing-for-spring-boot-rest-services
  * 
- * 
+ *  When posting multipart file add size by tweaking both 
+ *  1)src/main/resources application.propeties and 
+ *  2)PythiaBackendApplication.class Tomcat setMaxPostSize Bean  
+ *   
  */
 
 package fi.espoo.pythia.backend.rest;
@@ -306,6 +309,9 @@ public class StorageRestController {
 	 * @param mfile
 	 * @param id
 	 * @return
+	 * 
+	 * When posting multipart file add size by teaking both src/main/resources application.propeties and PythiaBackendApplication.class Tomcat setMaxPostSize Bean  
+	 * 
 	 */
 	// , produces = "application/json", consumes = "file"
 	@PostMapping(value = "/projects/{projectId}/plans/{planId}/files/")

@@ -349,8 +349,10 @@ public class StorageManager {
 
 	public PtextValue updatePtext(PtextValue pTextVal, long id) {
 
-		// Long id = pTextVal.getPlanId();
-		Plan plan = planRepository.findByPlanId(id);
+		//TODO
+		//VERIFY THAT path variable commentId long id and pTextVal.pTextVal.getTextId() match
+
+		Plan plan = planRepository.findByPlanId(pTextVal.getPlanId());
 		Ptext pText = PtextValueToPtextMapper.commentValueToComment(pTextVal, plan, pTextVal.isApproved(), true);
 
 		Ptext updatedPtext = ptextRepository.save(pText);
