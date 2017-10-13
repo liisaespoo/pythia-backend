@@ -29,47 +29,48 @@ import fi.espoo.pythia.backend.encoders.EncoderBase64;
 @Component
 public class S3Manager {
 
-	public String createPlanMultipartFile(String bucketName, MultipartFile mfile) throws IOException{
+	public String createPlanMultipartFile(String bucketName, MultipartFile mfile) throws IOException {
 
 		// tarkista ettei ole null
-//		if (json64base.isEmpty() || json64base == null) {
-//			return null;
-//		}
+		// if (json64base.isEmpty() || json64base == null) {
+		// return null;
+		// }
 
 		AmazonS3 s3client = authenticate();
 		File file = FileConverter.multipartFileToFile(mfile);
-		
+
 		String key = file.getName();
-		
-		/* TEST COMMENT AWAY
-		s3client.putObject(bucketName, key, file);
-		
-		*/
-		
+
+		/*
+		 * TEST COMMENT AWAY s3client.putObject(bucketName, key, file);
+		 * 
+		 */
+
 		// encode base64 to InputStream
-//		S3ObjectInputStream imageStream = EncoderBase64.base64String2InputStream(json64base);		
-//
-//		File file = FileConverter.inputStreamToVirtualFile(imageStream);
-		
+		// S3ObjectInputStream imageStream =
+		// EncoderBase64.base64String2InputStream(json64base);
+		//
+		// File file = FileConverter.inputStreamToVirtualFile(imageStream);
+
 		String url = uploadObject(s3client, file, key, bucketName);
-		
-		//UI should not allow but pdf or dwg filetypes. 
-		//If you want to add more filetypes modify the method getFileList(String dirPath)
+
+		// UI should not allow but pdf or dwg filetypes.
+		// If you want to add more filetypes modify the method
+		// getFileList(String dirPath)
 		clearFiles();
 		return url;
-		
-	}
-	
-	
 
-//	public String createPlanFile64(String json) {
-//
-//		S3ObjectInputStream inputStream2 = EncoderBase64.base64String2InputStream(json);
-//		;
-//		String output = null;
-//		FileConverter.inputStreamToFile(inputStream2, output);
-//		return "";
-//	}
+	}
+
+	// public String createPlanFile64(String json) {
+	//
+	// S3ObjectInputStream inputStream2 =
+	// EncoderBase64.base64String2InputStream(json);
+	// ;
+	// String output = null;
+	// FileConverter.inputStreamToFile(inputStream2, output);
+	// return "";
+	// }
 
 	// -----------------------AUTHENTICATION WITH ENVIRONMENTAL VARIABLES
 
@@ -85,10 +86,10 @@ public class S3Manager {
 			Map.Entry pair = (Map.Entry) it.next();
 			if (pair.getKey().equals("s3public")) {
 				publicKey = (String) pair.getValue();
-				//System.out.println(pair.getKey() + " = " + pair.getValue());
+				// System.out.println(pair.getKey() + " = " + pair.getValue());
 			} else if (pair.getKey().equals("s3private")) {
 				privateKey = (String) pair.getValue();
-				//System.out.println(pair.getKey() + " = " + pair.getValue());
+				// System.out.println(pair.getKey() + " = " + pair.getValue());
 			}
 			System.out.println(pair.getKey() + " = " + pair.getValue());
 			// it.remove(); // avoids a ConcurrentModificationException
@@ -119,7 +120,7 @@ public class S3Manager {
 	 * @return
 	 */
 	public String uploadObject(AmazonS3 s3client, File file, String key, String bucketName) {
-		
+
 		s3client.putObject(bucketName, key, file);
 		URL url = s3client.getUrl(bucketName, key);
 		return url.toString();
@@ -170,13 +171,13 @@ public class S3Manager {
 
 	}
 
-	
 	/**
-	 * clear temp files pdf and dwg
+	 * clear temp files pdf, dwg, xml
+	 * 
 	 * @param path
 	 */
-	private void clearFiles(){
-		
+	private void clearFiles() {
+
 		String dirPath = System.getProperty("user.dir");
 		System.out.println(dirPath);
 
@@ -184,36 +185,30 @@ public class S3Manager {
 
 		for (File f : files) {
 			System.out.println(f.getName());
-			 try {
+			try {
 				Files.deleteIfExists(f.toPath());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-//		
-//		   
-		
+		//
+		//
+
 	}
-	
+
 	private static File[] getFileList(String dirPath) {
 		File dir = new File(dirPath);
 
 		File[] fileList = dir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
-				return name.endsWith(".pdf") || name.endsWith(".dwg");
+				return name.endsWith(".pdf") || name.endsWith(".dwg") || name.endsWith(".xml") || name.endsWith(".DAT")
+						|| name.endsWith(".png") || name.endsWith(".jpg") || name.endsWith(".gif")
+						|| name.endsWith(".tiff");
+
 			}
 		});
 		return fileList;
 	}
 	// -----------------------ENCODING ----------------------------------
 
-
-
-	
-	
 }
-
-
-
-
-

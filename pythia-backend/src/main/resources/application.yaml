@@ -1,6 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://127.0.0.1:5432/pythia
-    username: pythiaservice
-    password: pythiaservice
-    driver-class-name: org.postgresql.Driver
