@@ -447,7 +447,16 @@ public class StorageRestController {
 	public ResponseEntity<PlanValue> updatePlan(@RequestBody PlanValue planV) {
 
 		try {
+			SESManager sesManager = new SESManager();
 			PlanValue updatedPlan = storageManager.updatePlan(planV);
+			ProjectValue2 p = storageManager.getProject2(updatedPlan.getProjectId());
+			String project = p.getName();
+			String projectId = p.getProjectId().toString();
+			String planUrl = updatedPlan.getUrl();
+			// if update approved = true
+			if(updatedPlan.isApproved()){
+				sesManager.newVersion(project, projectId, planUrl);
+			}
 			PlanValue returnPlan = storageManager.getPlan(updatedPlan.getPlanId());
 			return new ResponseEntity<PlanValue>(returnPlan, HttpStatus.OK);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {

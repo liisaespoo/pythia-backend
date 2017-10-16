@@ -34,23 +34,49 @@ public class SESManager {
 		// static final String CONFIGSET = "ConfigSet";
 
 		// The subject line for the email.
-		final String SUBJECT = "New Version in Project " + project;
+		final String SUBJECT = "New Version in Project waiting for approval" + project;
 
-		// The HTML body for the email.
-		final String HTMLBODY = "<h1>New version in project " + project + "</h1>" + "<BR>New version for plan " + plan
-				+ "<BR>http://localhost:3000/project/" + projectId;
+		final String HTMLBODY = "<h1>New version in project " + project + "</h1>" + "<p> New version for plan "
+				+ plan +" </p>"+ "<BR><p> http://localhost:3000/project/" + projectId+"</p>";
 
 		// The email body for recipients with non-HTML email clients.
-		final String TEXTBODY = "New version in project " + project + "\nNew version for plan " + plan
-				+ "\nhttp://localhost:3000/project/" + projectId;
+		final String TEXTBODY = "New version in project " + project + "\n  New version for plan  " + plan
+				+ "\n  http://localhost:3000/project/" + projectId;
+
 
 		AmazonSimpleEmailService client = authenticate();
 
 		sendEmailRequest(client, TO, FROM, SUBJECT, HTMLBODY, TEXTBODY);
 	}
 
-	public void planApproved() {
+	public void planApproved(String project, String projectId, String plan) {
+		// Replace sender@example.com with your "From" address.
+		// This address must be verified with Amazon SES.
+		final String FROM = "kakedigibot@gmail.com";
 
+		// Replace recipient@example.com with a "To" address. If your account
+		// is still in the sandbox, this address must be verified.
+		final String TO = "kakedigi@gmail.com";
+
+		// The configuration set to use for this email. If you do not want to
+		// use a
+		// configuration set, comment the next line and line 60.
+		// static final String CONFIGSET = "ConfigSet";
+
+		// The subject line for the email.
+		final String SUBJECT = "The plan " + plan + " is approved";
+
+		final String HTMLBODY = "<h1>New version in project " + project + "</h1>" + "<p> New version for plan "
+				+ plan +" </p>"+ "<BR><p> http://localhost:3000/project/" + projectId+"</p>";
+
+		// The email body for recipients with non-HTML email clients.
+		final String TEXTBODY = "New version in project " + project + "\n  New version for plan  " + plan
+				+ "\n  http://localhost:3000/project/" + projectId;
+
+
+		AmazonSimpleEmailService client = authenticate();
+
+		sendEmailRequest(client, TO, FROM, SUBJECT, HTMLBODY, TEXTBODY);
 	}
 
 	public void commentApproved() {
