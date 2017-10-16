@@ -347,8 +347,11 @@ public class StorageRestController {
 			String project = p.getName();
 			String projectId = p.getProjectId().toString();
 			
+			// if 1st version no email
+			if(planV.getVersion() > 0){
+				sesManager.newVersion(project, projectId, savedImageUrl);
+			}
 			
-			sesManager.newVersion(project, projectId, savedImageUrl);
 			return new ResponseEntity<String>(savedImageUrl, HttpStatus.OK);
 			
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {

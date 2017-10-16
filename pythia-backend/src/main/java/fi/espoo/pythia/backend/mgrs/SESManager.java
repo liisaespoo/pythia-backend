@@ -37,12 +37,12 @@ public class SESManager {
 		final String SUBJECT = "New Version in Project " + project;
 
 		// The HTML body for the email.
-		final String HTMLBODY = "<h1>New version in project " + project + "</h1>" + "New version for plan " + plan
-				+ "http://localhost:3000/project/" + projectId;
+		final String HTMLBODY = "<h1>New version in project " + project + "</h1>" + "<BR>New version for plan " + plan
+				+ "<BR>http://localhost:3000/project/" + projectId;
 
 		// The email body for recipients with non-HTML email clients.
-		final String TEXTBODY = "New version in project " + project + "New version for plan " + plan
-				+ "http://localhost:3000/project/" + projectId;
+		final String TEXTBODY = "New version in project " + project + "\nNew version for plan " + plan
+				+ "\nhttp://localhost:3000/project/" + projectId;
 
 		AmazonSimpleEmailService client = authenticate();
 
