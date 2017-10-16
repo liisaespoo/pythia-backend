@@ -455,7 +455,7 @@ public class StorageRestController {
 			String planUrl = updatedPlan.getUrl();
 			// if update approved = true
 			if(updatedPlan.isApproved()){
-				sesManager.newVersion(project, projectId, planUrl);
+				sesManager.planApproved(project, projectId, planUrl);
 			}
 			PlanValue returnPlan = storageManager.getPlan(updatedPlan.getPlanId());
 			return new ResponseEntity<PlanValue>(returnPlan, HttpStatus.OK);
