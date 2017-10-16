@@ -34,15 +34,14 @@ public class SESManager {
 		// static final String CONFIGSET = "ConfigSet";
 
 		// The subject line for the email.
-		final String SUBJECT = "New Version in Project waiting for approval" + project;
+		final String SUBJECT = "New Version in Project " + project + " is waiting for approval ";
 
-		final String HTMLBODY = "<h1>New version in project " + project + "</h1>" + "<p> New version for plan "
-				+ plan +" </p>"+ "<BR><p> http://localhost:3000/project/" + projectId+"</p>";
+		final String HTMLBODY = "<h1>New version in project " + project + "</h1>" + "<p> New version for plan " + plan
+				+ " </p>" + "<BR><p> http://localhost:3000/project/" + projectId + "</p>";
 
 		// The email body for recipients with non-HTML email clients.
 		final String TEXTBODY = "New version in project " + project + "\n  New version for plan  " + plan
 				+ "\n  http://localhost:3000/project/" + projectId;
-
 
 		AmazonSimpleEmailService client = authenticate();
 
@@ -64,15 +63,14 @@ public class SESManager {
 		// static final String CONFIGSET = "ConfigSet";
 
 		// The subject line for the email.
-		final String SUBJECT = "The plan " + plan + " is approved";
+		final String SUBJECT = "The plan " + plan + "";
 
-		final String HTMLBODY = "<h1>New version in project " + project + "</h1>" + "<p> New version for plan "
-				+ plan +" </p>"+ "<BR><p> http://localhost:3000/project/" + projectId+"</p>";
+		final String HTMLBODY = "<h1>New version in project " + project + "</h1>" + "<p> New version for plan " + plan
+				+ " </p>" + "<BR><p> http://localhost:3000/project/" + projectId + "</p>";
 
 		// The email body for recipients with non-HTML email clients.
 		final String TEXTBODY = "New version in project " + project + "\n  New version for plan  " + plan
 				+ "\n  http://localhost:3000/project/" + projectId;
-
 
 		AmazonSimpleEmailService client = authenticate();
 
