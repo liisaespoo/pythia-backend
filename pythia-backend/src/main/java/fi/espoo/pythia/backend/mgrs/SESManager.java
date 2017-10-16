@@ -63,7 +63,7 @@ public class SESManager {
 		// static final String CONFIGSET = "ConfigSet";
 
 		// The subject line for the email.
-		final String SUBJECT = "The plan " + plan + "";
+		final String SUBJECT = "New Version in Project " + project + " for plan "+plan;
 
 		final String HTMLBODY = "<h1>New version in project " + project + "</h1>" + "<p> New version for plan " + plan
 				+ " </p>" + "<BR><p> http://localhost:3000/project/" + projectId + "</p>";
