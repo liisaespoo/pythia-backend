@@ -347,8 +347,11 @@ public class StorageRestController {
 			String project = p.getName();
 			String projectId = p.getProjectId().toString();
 			
+			// if 1st version no email
+			if(planV.getVersion() > 0){
+				sesManager.newVersion(project, projectId, savedImageUrl);
+			}
 			
-			sesManager.newVersion(project, projectId, savedImageUrl);
 			return new ResponseEntity<String>(savedImageUrl, HttpStatus.OK);
 			
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
@@ -444,7 +447,16 @@ public class StorageRestController {
 	public ResponseEntity<PlanValue> updatePlan(@RequestBody PlanValue planV) {
 
 		try {
+			SESManager sesManager = new SESManager();
 			PlanValue updatedPlan = storageManager.updatePlan(planV);
+			ProjectValue2 p = storageManager.getProject2(updatedPlan.getProjectId());
+			String project = p.getName();
+			String projectId = p.getProjectId().toString();
+			String planUrl = updatedPlan.getUrl();
+			// if update approved = true
+			if(updatedPlan.isApproved()){
+				sesManager.newVersion(project, projectId, planUrl);
+			}
 			PlanValue returnPlan = storageManager.getPlan(updatedPlan.getPlanId());
 			return new ResponseEntity<PlanValue>(returnPlan, HttpStatus.OK);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
