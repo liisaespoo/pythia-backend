@@ -39,8 +39,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import fi.espoo.pythia.backend.mgrs.S3Manager;
+import fi.espoo.pythia.backend.mgrs.SESManager;
 import fi.espoo.pythia.backend.mgrs.StorageManager;
 import fi.espoo.pythia.backend.repos.entities.Ptext;
+import fi.espoo.pythia.backend.repos.entities.Project;
 import fi.espoo.pythia.backend.repos.entities.ProjectUpdate;
 import fi.espoo.pythia.backend.transfer.PtextValue;
 import fi.espoo.pythia.backend.transfer.LatestPlansValue;
@@ -319,10 +321,13 @@ public class StorageRestController {
 			@PathVariable("planId") long id) {
 
 		System.out.println("id:" + id);
+		
+		SESManager sesManager = new SESManager();
 		// Value object mapping
 		try {
 
 			PlanValue planV = storageManager.getPlan(id);
+		    ProjectValue2 p = storageManager.getProject2(planV.getProjectId());
 
 			if (planV == null) {
 				return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
@@ -338,7 +343,14 @@ public class StorageRestController {
 			if (savedImageUrl.isEmpty() || savedImageUrl == null) {
 				return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
 			}
+			
+			String project = p.getName();
+			String projectId = p.getProjectId().toString();
+			
+			
+			sesManager.newVersion(project, projectId, savedImageUrl);
 			return new ResponseEntity<String>(savedImageUrl, HttpStatus.OK);
+			
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
 			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
 		} catch (IOException e) {

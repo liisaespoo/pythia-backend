@@ -55,8 +55,6 @@ dependencies {
  
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
  
-    compile 'com.amazonaws:aws-java-sdk-s3'
-    
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
     compile group:  'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310'
     
@@ -68,7 +66,11 @@ dependencies {
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
     // https://mvnrepository.com/artifact/com.h2database/h2
     testCompile group: 'com.h2database', name: 'h2', version: '1.4.196'
+    // AWS mail
+    compile group: 'com.amazonaws', name: 'amazon-kinesis-client', version: '1.8.5'
     
+    compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.213'
+   
     
     
 }

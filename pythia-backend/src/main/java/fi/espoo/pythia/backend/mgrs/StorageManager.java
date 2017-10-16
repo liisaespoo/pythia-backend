@@ -247,6 +247,7 @@ public class StorageManager {
 
 		Plan savedPlan = planRepository.save(mappedPlan);
 
+		//send mail TODO
 		PlanValue savedPlanValue = PlanToPlanValueMapper.planToPlanValue(savedPlan, projectUpdate);
 		// finally
 		return savedPlanValue;
