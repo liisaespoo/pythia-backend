@@ -22,7 +22,7 @@ public class LPToLPValueMapper {
 		pv.setSubNo(p.getSubNo());
 		pv.setVersion(p.getVersion());
 		pv.setUrl(p.getUrl());
-		pv.setApproved(p.isApproved());
+		pv.setStatus(p.getStatus());
 
 		List<PtextValue> commentValues = new ArrayList<PtextValue>();
 		for (Ptext c : p.getComments()) {

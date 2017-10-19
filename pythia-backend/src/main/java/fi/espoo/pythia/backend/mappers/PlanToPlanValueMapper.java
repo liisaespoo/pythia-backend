@@ -22,7 +22,7 @@ public class PlanToPlanValueMapper {
 		pv.setSubNo(p.getSubNo());
 		pv.setVersion(p.getVersion());
 		pv.setUrl(p.getUrl());
-		pv.setApproved(p.isApproved());
+		pv.setStatus(p.getStatus());
 
 		try {
 			List<PtextValue> ptextValues = new ArrayList<PtextValue>();

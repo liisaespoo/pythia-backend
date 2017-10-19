@@ -9,6 +9,8 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,9 +20,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
+
 
 @Entity
 @Table(name = "plan")
+//@TypeDef(name = "statusConverter", typeClass = StatusConverter.class)
 public class Plan implements Serializable, Comparable<Plan> {
 
 	/**
@@ -62,10 +69,12 @@ public class Plan implements Serializable, Comparable<Plan> {
 	@Column(name = "url")
 	private String url;
 
-	// boolean
-	@Column(name = "approved")
-	private boolean approved;
+//	@Column(name = "status")
+//	@Type(type="statusConverter")
+//	private Status status;
 
+	@Enumerated(EnumType.STRING)
+	private Status status;
 	// https://jdbc.postgresql.org/documentation/head/java8-date-time.html
 	// timestamp with timezone
 	// @Temporal(TemporalType.TIMESTAMP)
@@ -92,6 +101,27 @@ public class Plan implements Serializable, Comparable<Plan> {
 	public Plan() {
 
 	}
+
+	
+	public Plan(ProjectUpdate project, List<Ptext> ptextList, short mainNo, short subNo, short version,
+			String url, Status status, OffsetDateTime createdAt, String createdBy, OffsetDateTime updatedAt,
+			String updatedBy, boolean deleted) {
+		super();
+		
+		this.project = project;
+		this.ptextList = ptextList;
+		this.mainNo = mainNo;
+		this.subNo = subNo;
+		this.version = version;
+		this.url = url;
+		this.status = status;
+		this.createdAt = createdAt;
+		this.createdBy = createdBy;
+		this.updatedAt = updatedAt;
+		this.updatedBy = updatedBy;
+		this.deleted = deleted;
+	}
+
 
 	@JsonIgnore
 	public ProjectUpdate getProject() {
@@ -152,12 +182,13 @@ public class Plan implements Serializable, Comparable<Plan> {
 		this.url = url;
 	}
 
-	public boolean isApproved() {
-		return approved;
+
+	public Status getStatus() {
+		return status;
 	}
 
-	public void setApproved(boolean approved) {
-		this.approved = approved;
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	public OffsetDateTime getCreatedAt() {

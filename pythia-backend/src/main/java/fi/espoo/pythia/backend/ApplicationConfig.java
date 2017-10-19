@@ -95,7 +95,8 @@ public class ApplicationConfig {
 		entityManagerFactoryBean.setPackagesToScan("fi.espoo.pythia.backend.repos.entities");
 
 		Properties jpaProperties = new Properties();
-
+		
+		
 		// Configures the used database dialect. This allows Hibernate to create
 		// SQL
 		// that is optimized for the used database.

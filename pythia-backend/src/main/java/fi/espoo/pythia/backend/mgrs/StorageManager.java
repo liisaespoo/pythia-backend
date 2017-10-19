@@ -1,5 +1,13 @@
 package fi.espoo.pythia.backend.mgrs;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributeView;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.UserPrincipal;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,7 +16,9 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import fi.espoo.pythia.backend.converters.FileConverter;
 import fi.espoo.pythia.backend.mappers.LPToLPValueMapper;
 import fi.espoo.pythia.backend.mappers.PlanToPlanValueMapper;
 import fi.espoo.pythia.backend.mappers.PlanValueToPlanMapper;
@@ -31,6 +41,7 @@ import fi.espoo.pythia.backend.repos.entities.ProjectUpdate;
 import fi.espoo.pythia.backend.repos.entities.Ptext;
 import fi.espoo.pythia.backend.repos.entities.SisterProject;
 import fi.espoo.pythia.backend.repos.entities.SisterProjectUpdate;
+import fi.espoo.pythia.backend.repos.entities.Status;
 import fi.espoo.pythia.backend.transfer.LatestPlansValue;
 import fi.espoo.pythia.backend.transfer.PlanValue;
 import fi.espoo.pythia.backend.transfer.ProjectUpdateValue;
@@ -211,13 +222,13 @@ public class StorageManager {
 	 * 
 	 * @return PlanValue
 	 */
-	public PlanValue createPlan(PlanValue planV) {
+	public PlanValue createPlan2(PlanValue planV) {
 
 		Long projectId = planV.getProjectId();
 		// get project by projectid
 		ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
 		// map planV to plan
-		Plan mappedPlan = PlanValueToPlanMapper.planValueToPlan(planV, projectUpdate, false, false);
+		Plan mappedPlan = PlanValueToPlanMapper.planValueToPlan(planV, projectUpdate, false);
 
 		// get all plans with planV.projectId and planV.mainNo & planV.subNo
 
@@ -243,14 +254,86 @@ public class StorageManager {
 
 		}
 		mappedPlan.setVersion(version);
-		mappedPlan.setApproved(approved);
+		// mappedPlan.setApproved(approved);
 
 		Plan savedPlan = planRepository.save(mappedPlan);
 
-		//send mail TODO
+		// send mail TODO
 		PlanValue savedPlanValue = PlanToPlanValueMapper.planToPlanValue(savedPlan, projectUpdate);
 		// finally
 		return savedPlanValue;
+	}
+
+	
+	
+	/**
+	 *  Checks if 1st version and if approved
+	 * 
+	 * If the 1st then version = 0 and approved = true
+	 * 
+	 * If not the 1st then increase version number by one
+	 * 
+	 * @param mfile
+	 * @param projectId
+	 * @return
+	 */
+	public PlanValue createPlan(MultipartFile mfile, long projectId) {
+
+		// create plan
+		File file;
+		try {
+			file = FileConverter.multipartFileToFile(mfile);
+			String name = file.getName();
+			String smainNo = name.substring(0, 3);
+			String ssubNo = name.substring(5, 7);
+			
+			//String fromCharCode(int... codePoints) {
+			
+			short version = 0;
+			short mainNo = Short.parseShort(smainNo);
+			short subNo = Short.parseShort(ssubNo);
+			Status status = Status.APPROVED;
+			UserPrincipal owner = java.nio.file.Files.getOwner(file.toPath());
+			String sowner = owner.toString();
+			ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
+			
+			List<Plan> existingPlans = planRepository.findByProjectInAndMainNoInAndSubNoIn(projectUpdate,mainNo,
+					subNo);
+
+			
+			if (existingPlans.isEmpty()) {
+				version = 0;
+				status = Status.APPROVED;
+
+			} else {
+				// sorting from min to max
+				Collections.sort(existingPlans);
+				// get existingPlans max version with projctId, mainno and subno
+				Plan max = existingPlans.get(existingPlans.size() - 1);
+				// max version
+				short maxVersion = max.getVersion();
+				version = (short) (maxVersion + 1);
+				status = Status.WAITING_FOR_APPROVAL;
+
+			}
+			
+			
+			Plan plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, null, status,
+					OffsetDateTime.now(), sowner, null, null, false);
+
+			
+			
+			
+			Plan savedPlan = planRepository.save(plan);
+			PlanValue savedPlanValue = PlanToPlanValueMapper.planToPlanValue(savedPlan, projectUpdate);
+
+			return savedPlanValue;
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return null;
+
 	}
 
 	/**
@@ -337,10 +420,10 @@ public class StorageManager {
 	public PlanValue updatePlan(PlanValue planV) {
 
 		Long id = planV.getProjectId();
-		boolean approved = planV.isApproved();
+		// boolean approved = planV.isApproved();
 		ProjectUpdate projectUp = projectUpdateRepository.findByProjectId(id);
 
-		Plan plan = PlanValueToPlanMapper.planValueToPlan(planV, projectUp, true, approved);
+		Plan plan = PlanValueToPlanMapper.planValueToPlan(planV, projectUp, true);
 
 		Plan updatedPlan = planRepository.save(plan);
 		PlanValue returnPlan = PlanToPlanValueMapper.planToPlanValue(updatedPlan, projectUp);
@@ -350,14 +433,15 @@ public class StorageManager {
 
 	public PtextValue updatePtext(PtextValue pTextVal, long id) {
 
-		//TODO
-		//VERIFY THAT path variable commentId long id and pTextVal.pTextVal.getTextId() match
+		// TODO
+		// VERIFY THAT path variable commentId long id and
+		// pTextVal.pTextVal.getTextId() match
 
 		Plan plan = planRepository.findByPlanId(pTextVal.getPlanId());
 		Ptext pText = PtextValueToPtextMapper.commentValueToComment(pTextVal, plan, pTextVal.isApproved(), true);
 
 		pText.setTextId(id);
-		
+
 		Ptext updatedPtext = ptextRepository.save(pText);
 
 		PtextValue updatedPtextValue = PtextToPtextValueMapper.ptextToPtextValue(updatedPtext, plan);
