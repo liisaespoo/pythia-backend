@@ -5,6 +5,8 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,15 +16,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fi.espoo.pythia.backend.transfer.PtextValue;
 
 @Entity
 @Table(name = "latest_plans")
-public class LatestPlans
-
-		implements Serializable, Comparable<LatestPlans> {
+//@TypeDef(name = "statusConverter", typeClass = StatusConverter.class)
+public class LatestPlans implements Serializable, Comparable<LatestPlans> {
 
 	/**
 	 * 
@@ -63,10 +67,13 @@ public class LatestPlans
 	@Column(name = "url")
 	private String url;
 
-	// boolean
-	@Column(name = "approved")
-	private boolean approved;
-	
+
+//	@Column(name = "status")
+//	@Type(type="statusConverter")
+//	private Status status;
+
+	@Enumerated(EnumType.STRING)
+	private Status status;
 
 	// https://jdbc.postgresql.org/documentation/head/java8-date-time.html
 	// timestamp with timezone
@@ -152,12 +159,12 @@ public class LatestPlans
 		this.url = url;
 	}
 
-	public boolean isApproved() {
-		return approved;
+	public Status getStatus() {
+		return status;
 	}
 
-	public void setApproved(boolean approved) {
-		this.approved = approved;
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	public OffsetDateTime getCreatedAt() {

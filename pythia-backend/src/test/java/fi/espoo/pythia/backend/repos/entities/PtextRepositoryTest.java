@@ -50,7 +50,7 @@ public class PtextRepositoryTest {
 		project.setUpdatedBy(null);
 
 		Plan plan = new Plan();
-		plan.setApproved(false);
+		plan.setStatus(Status.APPROVED);
 		plan.setPtextList(null);
 		plan.setCreatedAt(null);
 		plan.setDeleted(false);

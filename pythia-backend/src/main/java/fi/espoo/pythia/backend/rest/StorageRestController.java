@@ -17,7 +17,9 @@
 
 package fi.espoo.pythia.backend.rest;
 
+import java.io.File;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -38,10 +40,12 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import fi.espoo.pythia.backend.converters.FileConverter;
 import fi.espoo.pythia.backend.mgrs.S3Manager;
 import fi.espoo.pythia.backend.mgrs.SESManager;
 import fi.espoo.pythia.backend.mgrs.StorageManager;
 import fi.espoo.pythia.backend.repos.entities.Ptext;
+import fi.espoo.pythia.backend.repos.entities.Status;
 import fi.espoo.pythia.backend.repos.entities.Project;
 import fi.espoo.pythia.backend.repos.entities.ProjectUpdate;
 import fi.espoo.pythia.backend.transfer.PtextValue;
@@ -186,35 +190,43 @@ public class StorageRestController {
 
 	// --------------------------POST-------------------------------------
 
-	/**
-	 * create a new plan to the db and return the whole project with all
-	 * attributes
-	 * 
-	 * 
-	 * Checks if 1st version and if approved
-	 * 
-	 * If the 1st then version = 0 and approved = true
-	 * 
-	 * If not the 1st then increase version number by one
-	 * 
-	 * @param projectValue
-	 * @return
-	 */
-	@PostMapping(value = "/projects/{projectId}/plans/", produces = "application/json", consumes = "application/json")
-	public ResponseEntity<PlanValue> createPlan(@RequestBody PlanValue planV) {
-
-		// TODO if id the return error
-		// Value object mapping
-		try {
-
-			PlanValue savedPlan = storageManager.createPlan(planV);
-
-			return new ResponseEntity<PlanValue>(savedPlan, HttpStatus.OK);
-		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-			return new ResponseEntity<PlanValue>(HttpStatus.FORBIDDEN);
-		}
-
-	}
+	// /**
+	// * create a new plan to the db and return the whole project with all
+	// * attributes
+	// *
+	// *
+	// * Checks if 1st version and if approved
+	// *
+	// * If the 1st then version = 0 and approved = true
+	// *
+	// * If not the 1st then increase version number by one
+	// *
+	// * @param projectValue
+	// * @return
+	// */
+	// @PostMapping(value = "/projects/{projectId}/plans/", produces =
+	// "application/json", consumes = "application/json")
+	// public ResponseEntity<PlanValue> createPlan(@RequestBody PlanValue planV)
+	// {
+	//
+	// // TODO if id then return error
+	// if (planV.getPlanId() == null) {
+	// System.out.println(planV.getPlanId() + " id was null");
+	// } else {
+	// planV.getPlanId();
+	// }
+	// // Value object mapping
+	// try {
+	//
+	// PlanValue savedPlan = storageManager.createPlan(planV);
+	//
+	// return new ResponseEntity<PlanValue>(savedPlan, HttpStatus.OK);
+	// } catch (org.springframework.transaction.CannotCreateTransactionException
+	// e) {
+	// return new ResponseEntity<PlanValue>(HttpStatus.FORBIDDEN);
+	// }
+	//
+	// }
 
 	/**
 	 * create a new plan to the db and return the whole project with all
@@ -299,68 +311,126 @@ public class StorageRestController {
 	//
 	// }
 	//
+	//
+	// /**
+	// * @PostMapping(value =
+	// * "/projects/{projectId}/plans/{planId}/comments/{commentId}/files/"
+	// * , produces = "application/json", consumes =
+	// * "multipart/form-data") public ResponseEntity<String>
+	// * createCommentFile(@RequestPart("mfile") MultipartFile
+	// * mfile, @RequestPart("plan") @Valid
+	// * ConnectionProperties properties)
+	// * @param mfile
+	// * @param id
+	// * @return
+	// *
+	// * When posting multipart file add size by teaking both
+	// * src/main/resources application.propeties and
+	// * PythiaBackendApplication.class Tomcat setMaxPostSize Bean
+	// *
+	// */
+	// // , produces = "application/json", consumes = "file"
+	// @PostMapping(value = "/projects/{projectId}/plans/{planId}/files/")
+	// public ResponseEntity<String> createPlanFile(@RequestParam("mfile")
+	// MultipartFile mfile,
+	// @PathVariable("planId") long id) {
+	//
+	// System.out.println("id:" + id);
+	//
+	// SESManager sesManager = new SESManager();
+	// // Value object mapping
+	// try {
+	//
+	// PlanValue planV = storageManager.getPlan(id);
+	// ProjectValue2 p = storageManager.getProject2(planV.getProjectId());
+	//
+	// if (planV == null) {
+	// return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
+	// }
+	//
+	// String savedImageUrl =
+	// s3Manager.createPlanMultipartFile("kirapythia-plans-bucket", mfile);
+	//
+	// // set PlanValue url
+	// planV.setUrl(savedImageUrl);
+	// // update Plan with url
+	// storageManager.updatePlan(planV);
+	//
+	// if (savedImageUrl.isEmpty() || savedImageUrl == null) {
+	// return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
+	// }
+	//
+	// String project = p.getName();
+	// String projectId = p.getProjectId().toString();
+	//
+	// // if 1st version no email
+	// if (planV.getVersion() > 0) {
+	// sesManager.newVersion(project, projectId, savedImageUrl);
+	// }
+	//
+	// return new ResponseEntity<String>(savedImageUrl, HttpStatus.OK);
+	//
+	// } catch (org.springframework.transaction.CannotCreateTransactionException
+	// e) {
+	// return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// return new ResponseEntity<String>(HttpStatus.I_AM_A_TEAPOT);
+	// }
+	//
+	// }
 
 	/**
-	 * @PostMapping(value =
-	 *                    "/projects/{projectId}/plans/{planId}/comments/{commentId}/files/"
-	 *                    , produces = "application/json", consumes =
-	 *                    "multipart/form-data") public ResponseEntity<String>
-	 *                    createCommentFile(@RequestPart("mfile") MultipartFile
-	 *                    mfile, @RequestPart("plan") @Valid
-	 *                    ConnectionProperties properties)
+	 * 
 	 * @param mfile
 	 * @param id
 	 * @return
-	 * 
-	 * When posting multipart file add size by teaking both src/main/resources application.propeties and PythiaBackendApplication.class Tomcat setMaxPostSize Bean  
-	 * 
 	 */
+
 	// , produces = "application/json", consumes = "file"
-	@PostMapping(value = "/projects/{projectId}/plans/{planId}/files/")
-	public ResponseEntity<String> createPlanFile(@RequestParam("mfile") MultipartFile mfile,
-			@PathVariable("planId") long id) {
+	@PostMapping(value = "/projects/{projectId}/plans/")
+	public ResponseEntity<String> createPlan2(@RequestParam("mfile") MultipartFile mfile,
+			@PathVariable("projectId") long projectId) {
 
-		System.out.println("id:" + id);
 		
-		SESManager sesManager = new SESManager();
-		// Value object mapping
-		try {
+			// Value object mapping
+			try {
 
-			PlanValue planV = storageManager.getPlan(id);
-		    ProjectValue2 p = storageManager.getProject2(planV.getProjectId());
+				String savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-plans-bucket", mfile);
 
-			if (planV == null) {
-				return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
+				PlanValue planV = storageManager.createPlan(mfile, projectId);
+				
+				
+				ProjectValue2 p = storageManager.getProject2(planV.getProjectId());
+				// set PlanValue url
+				planV.setUrl(savedImageUrl);
+				// update Plan with url
+				storageManager.updatePlan(planV);
+
+				if (savedImageUrl.isEmpty() || savedImageUrl == null) {
+					return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
+				}
+
+				String project = p.getName();
+				String projectSId = p.getProjectId().toString();
+
+				// if 1st version no email
+				if (planV.getVersion() > 0) {
+					SESManager sesManager = new SESManager();
+					sesManager.newVersion(project, projectSId, savedImageUrl);
+				}
+
+				return new ResponseEntity<String>(savedImageUrl, HttpStatus.OK);
+
+			} catch (org.springframework.transaction.CannotCreateTransactionException e) {
+				return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return new ResponseEntity<String>(HttpStatus.I_AM_A_TEAPOT);
 			}
 
-			String savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-plans-bucket", mfile);
-
-			// set PlanValue url
-			planV.setUrl(savedImageUrl);
-			// update Plan with url
-			storageManager.updatePlan(planV);
-
-			if (savedImageUrl.isEmpty() || savedImageUrl == null) {
-				return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
-			}
-			
-			String project = p.getName();
-			String projectId = p.getProjectId().toString();
-			
-			// if 1st version no email
-			if(planV.getVersion() > 0){
-				sesManager.newVersion(project, projectId, savedImageUrl);
-			}
-			
-			return new ResponseEntity<String>(savedImageUrl, HttpStatus.OK);
-			
-		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return new ResponseEntity<String>(HttpStatus.I_AM_A_TEAPOT);
-		}
-
+		
+		
 	}
 
 	// @PostMapping(value =
@@ -422,7 +492,7 @@ public class StorageRestController {
 			// set PlanValue url
 			ptextVal.setUrl(savedImageUrl);
 			// update Plan with url
-			storageManager.updatePtext(ptextVal,id);
+			storageManager.updatePtext(ptextVal, id);
 
 			if (savedImageUrl.isEmpty() || savedImageUrl == null) {
 				return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
@@ -454,7 +524,7 @@ public class StorageRestController {
 			String projectId = p.getProjectId().toString();
 			String planUrl = updatedPlan.getUrl();
 			// if update approved = true
-			if(updatedPlan.isApproved()){
+			if (updatedPlan.getStatus().equals(Status.APPROVED)) {
 				sesManager.planApproved(project, projectId, planUrl);
 			}
 			PlanValue returnPlan = storageManager.getPlan(updatedPlan.getPlanId());
