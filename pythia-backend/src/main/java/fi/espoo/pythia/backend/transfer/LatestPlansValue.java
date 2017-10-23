@@ -17,7 +17,11 @@ public class LatestPlansValue {
 
 	private short version;
 
-	private String url;
+	private String pdfUrl;
+
+	private String dwgUrl;
+
+	private String xmlUrl;
 
 	private Status status;
 
@@ -73,12 +77,28 @@ public class LatestPlansValue {
 		this.version = version;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getPdfUrl() {
+		return pdfUrl;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setPdfUrl(String pdfUrl) {
+		this.pdfUrl = pdfUrl;
+	}
+
+	public String getDwgUrl() {
+		return dwgUrl;
+	}
+
+	public void setDwgUrl(String dwgUrl) {
+		this.dwgUrl = dwgUrl;
+	}
+
+	public String getXmlUrl() {
+		return xmlUrl;
+	}
+
+	public void setXmlUrl(String xmlUrl) {
+		this.xmlUrl = xmlUrl;
 	}
 
 	public Status getStatus() {

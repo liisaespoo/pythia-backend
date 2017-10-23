@@ -17,17 +17,12 @@
 
 package fi.espoo.pythia.backend.rest;
 
-import java.io.File;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import java.util.List;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.datasource.embedded.ConnectionProperties;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,23 +31,19 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import fi.espoo.pythia.backend.converters.FileConverter;
 import fi.espoo.pythia.backend.mgrs.S3Manager;
 import fi.espoo.pythia.backend.mgrs.SESManager;
 import fi.espoo.pythia.backend.mgrs.StorageManager;
-import fi.espoo.pythia.backend.repos.entities.Ptext;
-import fi.espoo.pythia.backend.repos.entities.Status;
-import fi.espoo.pythia.backend.repos.entities.Project;
 import fi.espoo.pythia.backend.repos.entities.ProjectUpdate;
-import fi.espoo.pythia.backend.transfer.PtextValue;
-import fi.espoo.pythia.backend.transfer.LatestPlansValue;
+import fi.espoo.pythia.backend.repos.entities.Status;
 import fi.espoo.pythia.backend.transfer.PlanValue;
 import fi.espoo.pythia.backend.transfer.ProjectUpdateValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue2;
+import fi.espoo.pythia.backend.transfer.PtextValue;
+import fi.espoo.pythia.backend.validators.PlanValidator;
 
 @RestController
 @RequestMapping("/pythia/v1")
@@ -240,72 +231,60 @@ public class StorageRestController {
 	 * @param planId
 	 * @return
 	 */
-//	// , produces = "application/json", consumes = "file"
-//	@PostMapping(value = "/projects/{projectId}/plans/{planId}/files/")
-//	public ResponseEntity<String> createPlanFile(@RequestParam("mfile") MultipartFile mfile,
-//			@PathVariable("planId") long planId) {
-//		try {
-//
-//			PlanValue planV = storageManager.getPlan(planId);
-//
-//			// 1) no plan found return
-//			if (planV == null) {
-//				return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
-//			}
-			
-			
-//			// 2) validate if reference file mainNoR
-//			if(storageManager.isAReferenceFile(planV.getMainNo())){
-//				// save to reference_files table and link to project
-//				storageManager.createANewReference();
-//			}
-			
-//			// 3) validate if XML or DWG
-//			if (mfile.getName().endsWith(".dwg") || mfile.getName().endsWith(".xml")) {
-//				
-//			
-//				// 3.1) compare planV mainNo and subNo
-//				if(storageManager.validateWithMainNoAndSubNo(mfile,planV)){
-//					
-//					String savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-plans-bucket", mfile);
-//					// save to plan -table 
-//					
-//					if(mfile.getName().endsWith(".xml")){
-//						// if XML then xmlurl
-//						planV.setXmlUrl(savedImageUrl);
-//					}
-//					else{
-//						//if DWG then dwgurl
-//						planV.setDwgUrl(savedImageUrl);
-//					}
-//					
-//				}
-//				
-//				// update Plan attributes
-//				storageManager.updatePlan(planV);
-//			}
-//			
-			
-			
+	// , produces = "application/json", consumes = "file"
+	@PostMapping(value = "/projects/{projectId}/plans/{planId}/files/")
+	public ResponseEntity<String> createPlanFile(@RequestParam("mfile") MultipartFile mfile,
+			@PathVariable("planId") long planId) {
+		try {
 
-			
+			PlanValidator validator = new PlanValidator();
+			PlanValue planV = storageManager.getPlan(planId);
+			String savedImageUrl = "";
 
-			
+			// 1) no plan found return
+			if (planV == null) {
+				return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
+			}
 
-		
+			// 2) validate if XML or DWG
+			if (mfile.getName().endsWith(".dwg") || mfile.getName().endsWith(".xml")) {
 
-//			if (savedImageUrl.isEmpty() || savedImageUrl == null) {
-//				return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
-//			}
-//			return new ResponseEntity<String>(savedImageUrl, HttpStatus.OK);
-//		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-//			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//			return new ResponseEntity<String>(HttpStatus.I_AM_A_TEAPOT);
-//		}
-//
-//	}
+				// 3.1) compare planV mainNo and subNo
+				if (validator.isMainNoAndSubNo(mfile, planV)) {
+
+					savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-plans-bucket", mfile);
+					// save to plan -table
+
+					if (mfile.getName().endsWith(".xml")) {
+						// if XML then xmlurl
+						planV.setXmlUrl(savedImageUrl);
+					} else {
+						// if DWG then dwgurl
+						planV.setDwgUrl(savedImageUrl);
+					}
+					// update Plan url
+					storageManager.updatePlan(planV);
+				}				
+			}
+			// 3) validate if reference file mainNoR
+			if (validator.isReferenceFile(planV.getMainNo(),mfile)) {
+				// save to reference_files table and link to project
+				savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-reference-bucket", mfile);
+				storageManager.createNewReference();
+			}
+
+			if (savedImageUrl.isEmpty() || savedImageUrl == null) {
+				return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
+			}
+			return new ResponseEntity<String>(savedImageUrl, HttpStatus.OK);
+		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
+			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>(HttpStatus.I_AM_A_TEAPOT);
+		}
+
+	}
 
 	/**
 	 * 
@@ -331,7 +310,7 @@ public class StorageRestController {
 
 				ProjectValue2 p = storageManager.getProject2(planV.getProjectId());
 				// set PlanValue url
-				planV.setUrl(savedImageUrl);
+				planV.setPdfUrl(savedImageUrl);
 				// update Plan with url
 				storageManager.updatePlan(planV);
 
@@ -417,7 +396,7 @@ public class StorageRestController {
 			ProjectValue2 p = storageManager.getProject2(updatedPlan.getProjectId());
 			String project = p.getName();
 			String projectId = p.getProjectId().toString();
-			String planUrl = updatedPlan.getUrl();
+			String planUrl = updatedPlan.getPdfUrl();
 			// if update approved = true
 			if (updatedPlan.getStatus().equals(Status.APPROVED)) {
 				sesManager.planApproved(project, projectId, planUrl);

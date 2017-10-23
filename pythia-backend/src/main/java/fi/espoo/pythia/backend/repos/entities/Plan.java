@@ -23,11 +23,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
-
-
 @Entity
 @Table(name = "plan")
-//@TypeDef(name = "statusConverter", typeClass = StatusConverter.class)
+// @TypeDef(name = "statusConverter", typeClass = StatusConverter.class)
 public class Plan implements Serializable, Comparable<Plan> {
 
 	/**
@@ -66,12 +64,20 @@ public class Plan implements Serializable, Comparable<Plan> {
 	private short version;
 
 	// varchar
-	@Column(name = "url")
-	private String url;
+	@Column(name = "pdf_url")
+	private String pdfUrl;
 
-//	@Column(name = "status")
-//	@Type(type="statusConverter")
-//	private Status status;
+	// varchar
+	@Column(name = "dwg_url")
+	private String dwgUrl;
+
+	// varchar
+	@Column(name = "xml_url")
+	private String xmlUrl;
+
+	// @Column(name = "status")
+	// @Type(type="statusConverter")
+	// private Status status;
 
 	@Enumerated(EnumType.STRING)
 	private Status status;
@@ -93,8 +99,8 @@ public class Plan implements Serializable, Comparable<Plan> {
 	// varchar
 	@Column(name = "updated_by")
 	private String updatedBy;
-	
-	//boolean
+
+	// boolean
 	@Column(name = "deleted")
 	private boolean deleted;
 
@@ -102,18 +108,17 @@ public class Plan implements Serializable, Comparable<Plan> {
 
 	}
 
-	
 	public Plan(ProjectUpdate project, List<Ptext> ptextList, short mainNo, short subNo, short version,
-			String url, Status status, OffsetDateTime createdAt, String createdBy, OffsetDateTime updatedAt,
-			String updatedBy, boolean deleted) {
-		super();
-		
+			String pdfUrl, String dwgUrl, String xmlUrl, Status status, OffsetDateTime createdAt, String createdBy,
+			OffsetDateTime updatedAt, String updatedBy, boolean deleted) {
 		this.project = project;
 		this.ptextList = ptextList;
 		this.mainNo = mainNo;
 		this.subNo = subNo;
 		this.version = version;
-		this.url = url;
+		this.pdfUrl = pdfUrl;
+		this.dwgUrl = dwgUrl;
+		this.xmlUrl = xmlUrl;
 		this.status = status;
 		this.createdAt = createdAt;
 		this.createdBy = createdBy;
@@ -121,7 +126,6 @@ public class Plan implements Serializable, Comparable<Plan> {
 		this.updatedBy = updatedBy;
 		this.deleted = deleted;
 	}
-
 
 	@JsonIgnore
 	public ProjectUpdate getProject() {
@@ -140,7 +144,6 @@ public class Plan implements Serializable, Comparable<Plan> {
 	public void setPlanId(Long planId) {
 		this.planId = planId;
 	}
-
 
 	public List<Ptext> getPtextList() {
 		return ptextList;
@@ -174,14 +177,29 @@ public class Plan implements Serializable, Comparable<Plan> {
 		this.version = version;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getPdfUrl() {
+		return pdfUrl;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setPdfUrl(String pdfUrl) {
+		this.pdfUrl = pdfUrl;
 	}
 
+	public String getDwgUrl() {
+		return dwgUrl;
+	}
+
+	public void setDwgUrl(String dwgUrl) {
+		this.dwgUrl = dwgUrl;
+	}
+
+	public String getXmlUrl() {
+		return xmlUrl;
+	}
+
+	public void setXmlUrl(String xmlUrl) {
+		this.xmlUrl = xmlUrl;
+	}
 
 	public Status getStatus() {
 		return status;
@@ -222,7 +240,7 @@ public class Plan implements Serializable, Comparable<Plan> {
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
 	}
-	
+
 	public boolean isDeleted() {
 		return deleted;
 	}

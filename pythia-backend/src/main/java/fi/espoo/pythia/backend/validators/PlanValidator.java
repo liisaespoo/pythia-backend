@@ -3,6 +3,10 @@ package fi.espoo.pythia.backend.validators;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import fi.espoo.pythia.backend.transfer.PlanValue;
+
 public class PlanValidator {
 
 	// ^ (only from beginning), 4 * [0-9]
@@ -14,7 +18,14 @@ public class PlanValidator {
 	// ^ (only from beginning), 4 * [0-9] , r OR R , _
 	public String referenceRegex = "^\\d{4,5}(r|R)\\_";
 
-	public boolean isReferenceFile(short mainNo, String name) {
+	/**
+	 * 
+	 * @param mainNo
+	 * @param name
+	 * @return
+	 */
+	public boolean isReferenceFile(short mainNo, MultipartFile mfile) {
+		String name = mfile.getName();
 		short extractedMainNo = extractMainNoFromFileName(name);
 		if (extractedMainNo == mainNo) {
 			// CHECK R
@@ -25,11 +36,28 @@ public class PlanValidator {
 		return false;
 	}
 	
-	
-	
-	
-	
-	
+	/**
+	 * 
+	 * @param mfile
+	 * @param planV
+	 * @return
+	 */
+	public boolean isMainNoAndSubNo(MultipartFile mfile, PlanValue planV) {
+		
+		String name = mfile.getName();
+		
+		short planMainNo = planV.getMainNo();
+		short planSubNo = planV.getSubNo();
+		
+		
+		short mFileMainNo = extractMainNoFromFileName(name);
+		short mFileSubNo = extractSubNoFromFileName(name);
+		
+		if(planMainNo == mFileMainNo && planSubNo == mFileSubNo){
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * 
@@ -198,4 +226,6 @@ public class PlanValidator {
 		}
 
 	}
+
+
 }

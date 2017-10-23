@@ -49,7 +49,7 @@ public class LatestPlans implements Serializable, Comparable<LatestPlans> {
 	private Project project;
 
 	@OneToMany(mappedBy = "plan")
-	private List<Ptext> comments;
+	private List<Ptext> ptextList;
 
 	// smallint
 	@Column(name = "main_no")
@@ -64,13 +64,16 @@ public class LatestPlans implements Serializable, Comparable<LatestPlans> {
 	private short version;
 
 	// varchar
-	@Column(name = "url")
-	private String url;
+		@Column(name = "pdf_url")
+		private String pdfUrl;
 
+		// varchar
+		@Column(name = "dwg_url")
+		private String dwgUrl;
 
-//	@Column(name = "status")
-//	@Type(type="statusConverter")
-//	private Status status;
+		// varchar
+		@Column(name = "xml_url")
+		private String xmlUrl;
 
 	@Enumerated(EnumType.STRING)
 	private Status status;
@@ -119,12 +122,13 @@ public class LatestPlans implements Serializable, Comparable<LatestPlans> {
 		this.planId = planId;
 	}
 
-	public List<Ptext> getComments() {
-		return comments;
+
+	public List<Ptext> getPtextList() {
+		return ptextList;
 	}
 
-	public void setComments(List<Ptext> comments) {
-		this.comments = comments;
+	public void setPtextList(List<Ptext> ptextList) {
+		this.ptextList = ptextList;
 	}
 
 	public short getMainNo() {
@@ -151,12 +155,28 @@ public class LatestPlans implements Serializable, Comparable<LatestPlans> {
 		this.version = version;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getPdfUrl() {
+		return pdfUrl;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setPdfUrl(String pdfUrl) {
+		this.pdfUrl = pdfUrl;
+	}
+
+	public String getDwgUrl() {
+		return dwgUrl;
+	}
+
+	public void setDwgUrl(String dwgUrl) {
+		this.dwgUrl = dwgUrl;
+	}
+
+	public String getXmlUrl() {
+		return xmlUrl;
+	}
+
+	public void setXmlUrl(String xmlUrl) {
+		this.xmlUrl = xmlUrl;
 	}
 
 	public Status getStatus() {

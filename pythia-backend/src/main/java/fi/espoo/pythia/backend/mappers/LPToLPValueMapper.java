@@ -21,11 +21,13 @@ public class LPToLPValueMapper {
 		pv.setMainNo(p.getMainNo());
 		pv.setSubNo(p.getSubNo());
 		pv.setVersion(p.getVersion());
-		pv.setUrl(p.getUrl());
+		pv.setPdfUrl(p.getPdfUrl());
+		pv.setDwgUrl(p.getDwgUrl());
+		pv.setXmlUrl(p.getXmlUrl());
 		pv.setStatus(p.getStatus());
 
 		List<PtextValue> commentValues = new ArrayList<PtextValue>();
-		for (Ptext c : p.getComments()) {
+		for (Ptext c : p.getPtextList()) {
 			commentValues.add(PtextToPtextValueMapper.ptextToPtextValue(c, p));
 		}
 		pv.setCommentValues(commentValues);
