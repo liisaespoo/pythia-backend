@@ -296,7 +296,7 @@ public class StorageManager {
 
 					}
 
-					Plan plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, null, status,
+					Plan plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, null, null, null, status,
 							OffsetDateTime.now(), sowner, null, null, false);
 
 					Plan savedPlan = planRepository.save(plan);
@@ -316,6 +316,14 @@ public class StorageManager {
 		}
 		return p;
 
+	}
+	
+	/**
+	 * create a new reference
+	 */
+	public void createNewReference() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/**
@@ -452,5 +460,8 @@ public class StorageManager {
 		return updatedLAtestPlanValue;
 
 	}
+
+
+
 
 }

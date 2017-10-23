@@ -57,7 +57,7 @@ public class PlanRepositoryTest {
 		plan.setSubNo((short) 0);
 		plan.setUpdatedAt(null);
 		plan.setUpdatedBy(null);
-		plan.setUrl(null);
+		plan.setPdfUrl(null);
 		plan.setVersion((short) 0);
 
 		entityManager.persist(project);
