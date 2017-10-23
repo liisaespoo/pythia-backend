@@ -34,10 +34,8 @@ import fi.espoo.pythia.backend.encoders.EncoderBase64;
 @Component
 public class S3Manager {
 
-	
 	public String createPlanMultipartFile(String bucketName, MultipartFile mfile) throws IOException {
 
-		
 		String publicKey = "";
 		String privateKey = "";
 
@@ -51,45 +49,25 @@ public class S3Manager {
 				publicKey = (String) pair.getValue();
 				System.out.print("publicKey");
 			} else if (pair.getKey().equals("S3PRIVATE")) {
-				privateKey = (String) pair.getValue();	
+				privateKey = (String) pair.getValue();
 				System.out.print("privateKey");
-			}	
-			
-			System.out.println("pair:"+pair.getKey()+":"+pair.getValue());
+			}
+
+			System.out.println("pair:" + pair.getKey() + ":" + pair.getValue());
 		}
 
-//		publicKey = "AKIAIH2IME5TGFXFRRKA";
-//		privateKey = "CEWeBA5GoXQJVGxXyTbxeXYPma6ZZWsEoxXPHqcO";
-//		String AWS_ACCESS_KEY_ID = "AKIAJSWKGGJCGEGYKZHQ";
-//		String AWS_SECRET_ACCESS_KEY = "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";
 		AWSCredentials credentials = new BasicAWSCredentials(publicKey, privateKey);
-//		AWSCredentials credentials = new BasicAWSCredentials(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY);
+		// AWSCredentials credentials = new
+		// BasicAWSCredentials(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY);
 		AmazonS3 s3client = AmazonS3ClientBuilder.standard()
 				.withCredentials(new AWSStaticCredentialsProvider(credentials)).withRegion(Regions.EU_WEST_1).build();
-		
-//		S3ObjectInputStream inputStream = downloadObject(s3client, "onnellisuusseina.jpg");
-//		File onni = inputStreamToFile(inputStream, "C:\\Users\\pakars4\\Desktop\\onni.jpg");
-		
+
 		File file = FileConverter.multipartFileToFile(mfile);
 
 		String key = file.getName();
-		
+
 		String url = uploadObject(s3client, file, key, bucketName);
 
-		System.out.println("filename:"+key);
-//		s3client.putObject(bucketName, key, file);
-//		
-//		String url = s3client.getObjectAsString(bucketName, key);
-
-		// encode base64 to InputStream
-		// S3ObjectInputStream imageStream =
-		// EncoderBase64.base64String2InputStream(json64base);
-		//
-		// File file = FileConverter.inputStreamToVirtualFile(imageStream);
-
-		
-
-		System.out.println("url"+url);
 		// UI should not allow but pdf or dwg filetypes.
 		// If you want to add more filetypes modify the method
 		// getFileList(String dirPath)
@@ -98,16 +76,6 @@ public class S3Manager {
 
 	}
 
-	// public String createPlanFile64(String json) {
-	//
-	// S3ObjectInputStream inputStream2 =
-	// EncoderBase64.base64String2InputStream(json);
-	// ;
-	// String output = null;
-	// FileConverter.inputStreamToFile(inputStream2, output);
-	// return "";
-	// }
-
 	// -----------------------AUTHENTICATION WITH ENVIRONMENTAL VARIABLES
 
 	public AmazonS3 authenticate() {
@@ -115,44 +83,27 @@ public class S3Manager {
 		String privateKey = "";
 
 		Map<String, String> env = System.getenv();
-
 		Iterator it = env.entrySet().iterator();
 
+		// Note! the environmental variables are in capitals
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry) it.next();
 			if (pair.getKey().equals("AWS_ACCESS_KEY_ID")) {
 				publicKey = (String) pair.getValue();
-				// System.out.println(pair.getKey() + " = " + pair.getValue());
 			} else if (pair.getKey().equals("AWS_SECRET_ACCESS_KEY")) {
 				privateKey = (String) pair.getValue();
-				// System.out.println(pair.getKey() + " = " + pair.getValue());
 			}
-			//System.out.println(pair.getKey() + " = " + pair.getValue());
-			// it.remove(); // avoids a ConcurrentModificationException
+
 		}
 
 		// First, we need to create a client connection to access Amazon S3 web
 		// service. We’ll use AmazonS3 interface for this purpose:
-
-		// https://console.aws.amazon.com/iam/home?region=us-east-1#/users/s3pythia?section=security_credentials
-//		 String publicKey = "AKIAIH2IME5TGFXFRRKA";
-//		 String privateKey = "CEWeBA5GoXQJVGxXyTbxeXYPma6ZZWsEoxXPHqcO";
 		AWSCredentials credentials = new BasicAWSCredentials(publicKey, privateKey);
-
-		//AWSCredentials credentials = (AWSCredentials) new EnvironmentVariableCredentialsProvider();
 		// And then configure the client:
 		// http://docs.aws.amazon.com/general/latest/gr/rande.html
 		// EU Ireland Eu_WEST_1
-
-//		AWSCredentialsProvider awsCProv = new EnvironmentVariableCredentialsProvider();
-//		awsCProv.getCredentials();
-		
 		AmazonS3 s3client = AmazonS3ClientBuilder.standard()
 				.withCredentials(new AWSStaticCredentialsProvider(credentials)).withRegion(Regions.EU_WEST_1).build();
-//		
-//		S3ObjectInputStream inputStream = downloadObject(s3client, "onnellisuusseina.jpg");
-//		File onni = inputStreamToFile(inputStream, "C:\\Users\\pakars4\\Desktop\\onni.jpg");
-		//AmazonS3 s3client = AmazonS3ClientBuilder.standard().withCredentials(awsCProv).withRegion(Regions.EU_WEST_1).build();
 
 		return s3client;
 	}
@@ -255,53 +206,53 @@ public class S3Manager {
 		});
 		return fileList;
 	}
-	
-	private static File inputStreamToFile(S3ObjectInputStream inputStream2, String output) {
 
-		InputStream inputStream = inputStream2;
-		OutputStream outputStream = null;
-
-		try {
-			// read this file into InputStream
-			// inputStream = new FileInputStream(input);
-
-			// write the inputStream to a FileOutputStream
-			outputStream = new FileOutputStream(new File(output));
-
-			int read = 0;
-			byte[] bytes = new byte[1024];
-
-			while ((read = inputStream.read(bytes)) != -1) {
-				outputStream.write(bytes, 0, read);
-			}
-
-			System.out.println("Done!");
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (inputStream != null) {
-				try {
-					inputStream.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			if (outputStream != null) {
-				try {
-					// outputStream.flush();
-					outputStream.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-			}
-		}
-
-		File returnFile = new File(output);
-		return returnFile;
-
-	}
+//	private static File inputStreamToFile(S3ObjectInputStream inputStream2, String output) {
+//
+//		InputStream inputStream = inputStream2;
+//		OutputStream outputStream = null;
+//
+//		try {
+//			// read this file into InputStream
+//			// inputStream = new FileInputStream(input);
+//
+//			// write the inputStream to a FileOutputStream
+//			outputStream = new FileOutputStream(new File(output));
+//
+//			int read = 0;
+//			byte[] bytes = new byte[1024];
+//
+//			while ((read = inputStream.read(bytes)) != -1) {
+//				outputStream.write(bytes, 0, read);
+//			}
+//
+//			System.out.println("Done!");
+//
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} finally {
+//			if (inputStream != null) {
+//				try {
+//					inputStream.close();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//			if (outputStream != null) {
+//				try {
+//					// outputStream.flush();
+//					outputStream.close();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//
+//			}
+//		}
+//
+//		File returnFile = new File(output);
+//		return returnFile;
+//
+//	}
 	// -----------------------ENCODING ----------------------------------
 
 }

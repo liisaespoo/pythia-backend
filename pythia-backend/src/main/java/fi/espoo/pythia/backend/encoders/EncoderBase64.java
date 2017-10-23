@@ -1,3 +1,6 @@
+/*
+ * this class is never used
+ */
 package fi.espoo.pythia.backend.encoders;
 
 import java.io.ByteArrayInputStream;
