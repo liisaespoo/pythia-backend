@@ -76,7 +76,8 @@ public class StorageRestController {
 	}
 
 	/**
-	 * return a single project by id if found. Otherwise return null. 2 latest versions of plans
+	 * return a single project by id if found. Otherwise return null. 2 latest
+	 * versions of plans
 	 */
 	@GetMapping(value = "/projects/{projectId}", produces = "application/json")
 	public ResponseEntity<ProjectValue2> getProject(@PathVariable("projectId") Long projectId) {
@@ -91,8 +92,7 @@ public class StorageRestController {
 			return new ResponseEntity<ProjectValue2>(HttpStatus.FORBIDDEN);
 		}
 	}
-	
-	
+
 	/**
 	 * return a single project by id if found. All plan versions
 	 */
@@ -109,8 +109,6 @@ public class StorageRestController {
 			return new ResponseEntity<ProjectUpdateValue>(HttpStatus.FORBIDDEN);
 		}
 	}
-	
-	
 
 	/**
 	 * return a single project by hansuprojectid if found. Otherwise return
@@ -201,8 +199,6 @@ public class StorageRestController {
 
 	// --------------------------POST-------------------------------------
 
-
-
 	/**
 	 * create a new project to the db and return the whole project with all
 	 * attributes
@@ -237,7 +233,7 @@ public class StorageRestController {
 			@PathVariable("projectId") long projectId) {
 
 		String fname = mfile.getOriginalFilename();
-		if (fname.endsWith(".pdf") ||fname.endsWith(".xml")) {
+		if (fname.endsWith(".pdf") || fname.endsWith(".xml")) {
 			System.out.println("is pdf or xml");
 			// Value object mapping
 			try {
@@ -294,7 +290,7 @@ public class StorageRestController {
 	@PostMapping(value = "/projects/{projectId}/plans/{planId}/files/")
 	public ResponseEntity<PlanValue> createPlanFile(@RequestParam("mfile") MultipartFile mfile,
 			@PathVariable("planId") long planId) {
-		
+
 		String fname = mfile.getOriginalFilename();
 		try {
 
@@ -342,7 +338,7 @@ public class StorageRestController {
 			return new ResponseEntity<PlanValue>(HttpStatus.I_AM_A_TEAPOT);
 		}
 	}
-	
+
 	/**
 	 * create a new plan to the db and return the whole project with all
 	 * attributes
@@ -432,8 +428,12 @@ public class StorageRestController {
 	public ResponseEntity<ProjectValue2> updateProject(@RequestBody ProjectUpdateValue projectUpVal) {
 
 		try {
+
 			storageManager.updateProject(projectUpVal);
 			ProjectValue2 updatedProject = storageManager.getProject2(projectUpVal.getProjectId());
+			if (projectUpVal.isCompleted()) {
+				// send mail 
+			}
 			return new ResponseEntity<ProjectValue2>(updatedProject, HttpStatus.OK);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
 			return new ResponseEntity<ProjectValue2>(HttpStatus.FORBIDDEN);

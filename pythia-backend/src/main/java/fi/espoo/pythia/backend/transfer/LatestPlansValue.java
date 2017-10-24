@@ -3,6 +3,8 @@ package fi.espoo.pythia.backend.transfer;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import javax.persistence.Column;
+
 import fi.espoo.pythia.backend.repos.entities.Status;
 
 public class LatestPlansValue {
@@ -34,6 +36,8 @@ public class LatestPlansValue {
 	private String updatedBy;
 
 	private boolean deleted;
+
+	private OffsetDateTime maintenanceDuty;
 
 	public Long getPlanId() {
 		return planId;
@@ -148,4 +152,13 @@ public class LatestPlansValue {
 		this.commentValues = commentValues;
 	}
 
+	public OffsetDateTime getMaintenanceDuty() {
+		return maintenanceDuty;
+	}
+
+	public void setMaintenanceDuty(OffsetDateTime maintenanceDuty) {
+		this.maintenanceDuty = maintenanceDuty;
+	}
+
+	
 }
