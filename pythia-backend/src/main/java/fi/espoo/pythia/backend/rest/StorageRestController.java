@@ -201,25 +201,7 @@ public class StorageRestController {
 
 	// --------------------------POST-------------------------------------
 
-	/**
-	 * create a new plan to the db and return the whole project with all
-	 * attributes
-	 * 
-	 * @param projectValue
-	 * @return
-	 */
-	@PostMapping(value = "/projects/{projectId}/plans/{planId}/comments", produces = "application/json", consumes = "application/json")
-	public ResponseEntity<PtextValue> createComment(@RequestBody PtextValue pTextVal, @PathVariable("planId") long id) {
 
-		// TODO if id the return error
-		try {
-			PtextValue savedPtext = storageManager.createPtext(pTextVal, id);
-			return new ResponseEntity<PtextValue>(savedPtext, HttpStatus.OK);
-		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-			return new ResponseEntity<PtextValue>(HttpStatus.FORBIDDEN);
-		}
-
-	}
 
 	/**
 	 * create a new project to the db and return the whole project with all
@@ -254,7 +236,9 @@ public class StorageRestController {
 	public ResponseEntity<PlanValue> createPlan(@RequestParam("mfile") MultipartFile mfile,
 			@PathVariable("projectId") long projectId) {
 
-		if (mfile.getName().endsWith(".pdf") || mfile.getName().endsWith(".xml")) {
+		String fname = mfile.getOriginalFilename();
+		if (fname.endsWith(".pdf") ||fname.endsWith(".xml")) {
+			System.out.println("is pdf or xml");
 			// Value object mapping
 			try {
 				// first save file to S3
@@ -263,11 +247,11 @@ public class StorageRestController {
 				PlanValue planV = storageManager.createPlan(mfile, projectId);
 				ProjectValue2 p = storageManager.getProject2(planV.getProjectId());
 				// set PlanValue url
-				if (mfile.getName().endsWith(".pdf")) {
+				if (fname.endsWith(".pdf")) {
 					planV.setPdfUrl(savedImageUrl);
 					// update Plan with url
 					storageManager.updatePlan(planV);
-				} else if (mfile.getName().endsWith(".xml")) {
+				} else if (fname.endsWith(".xml")) {
 					planV.setXmlUrl(savedImageUrl);
 					// update Plan with url
 					storageManager.updatePlan(planV);
@@ -310,6 +294,8 @@ public class StorageRestController {
 	@PostMapping(value = "/projects/{projectId}/plans/{planId}/files/")
 	public ResponseEntity<PlanValue> createPlanFile(@RequestParam("mfile") MultipartFile mfile,
 			@PathVariable("planId") long planId) {
+		
+		String fname = mfile.getOriginalFilename();
 		try {
 
 			PlanValidator validator = new PlanValidator();
@@ -322,18 +308,18 @@ public class StorageRestController {
 			}
 
 			// 2) validate if XML or DWG
-			if (mfile.getName().endsWith(".pdf") || mfile.getName().endsWith(".xml")) {
+			if (fname.endsWith(".pdf") || fname.endsWith(".xml")) {
 
 				// 3.1) compare planV mainNo and subNo
 				if (validator.isMainNoAndSubNo(mfile, planV)) {
 
-					if (!planV.getXmlUrl().isEmpty() && mfile.getName().endsWith(".pdf")) {
+					if (!planV.getXmlUrl().isEmpty() && fname.endsWith(".pdf")) {
 						savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-plans-bucket", mfile);
 						// save to plan -table
 						planV.setPdfUrl(savedImageUrl);
 						// update Plan with url
 						storageManager.updatePlan(planV);
-					} else if (!planV.getPdfUrl().isEmpty() && mfile.getName().endsWith(".xml")) {
+					} else if (!planV.getPdfUrl().isEmpty() && fname.endsWith(".xml")) {
 						savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-plans-bucket", mfile);
 						// save to plan -table
 						planV.setXmlUrl(savedImageUrl);
@@ -355,6 +341,26 @@ public class StorageRestController {
 			e.printStackTrace();
 			return new ResponseEntity<PlanValue>(HttpStatus.I_AM_A_TEAPOT);
 		}
+	}
+	
+	/**
+	 * create a new plan to the db and return the whole project with all
+	 * attributes
+	 * 
+	 * @param projectValue
+	 * @return
+	 */
+	@PostMapping(value = "/projects/{projectId}/plans/{planId}/comments", produces = "application/json", consumes = "application/json")
+	public ResponseEntity<PtextValue> createComment(@RequestBody PtextValue pTextVal, @PathVariable("planId") long id) {
+
+		// TODO if id the return error
+		try {
+			PtextValue savedPtext = storageManager.createPtext(pTextVal, id);
+			return new ResponseEntity<PtextValue>(savedPtext, HttpStatus.OK);
+		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
+			return new ResponseEntity<PtextValue>(HttpStatus.FORBIDDEN);
+		}
+
 	}
 
 	/**
