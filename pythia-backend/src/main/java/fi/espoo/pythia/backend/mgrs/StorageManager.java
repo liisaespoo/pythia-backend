@@ -324,7 +324,7 @@ public class StorageManager {
 					}
 
 					Plan plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, null, null,
-							status, OffsetDateTime.now(), sowner, null, null, false, null);
+							status, OffsetDateTime.now(), sowner, null, null, false, false);
 
 					Plan savedPlan = planRepository.save(plan);
 					PlanValue savedPlanValue = PlanToPlanValueMapper.planToPlanValue(savedPlan, projectUpdate);

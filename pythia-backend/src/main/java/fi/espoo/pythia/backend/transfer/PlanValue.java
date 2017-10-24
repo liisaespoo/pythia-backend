@@ -41,7 +41,7 @@ public class PlanValue implements Serializable {
 
 	List<PtextValue> commentValues;
 	
-	private OffsetDateTime maintenanceDuty;
+	private boolean maintenanceDuty;
 
 	public Long getPlanId() {
 		return planId;
@@ -155,14 +155,15 @@ public class PlanValue implements Serializable {
 		this.commentValues = commentValues;
 	}
 
-	public OffsetDateTime getMaintenanceDuty() {
+	public boolean isMaintenanceDuty() {
 		return maintenanceDuty;
 	}
 
-	public void setMaintenanceDuty(OffsetDateTime maintenanceDuty) {
+	public void setMaintenanceDuty(boolean maintenanceDuty) {
 		this.maintenanceDuty = maintenanceDuty;
 	}
-	
+
+
 	
 
 }
