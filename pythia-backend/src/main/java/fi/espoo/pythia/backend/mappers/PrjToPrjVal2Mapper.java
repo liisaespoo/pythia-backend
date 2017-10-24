@@ -36,7 +36,7 @@ public class PrjToPrjVal2Mapper {
 		//Latest plans
 		
 		List<LatestPlansValue> lplanvs = new ArrayList<LatestPlansValue>();
-		for (LatestPlans pp : p.getLatestPlans()) {
+		for (LatestPlans pp : p.getPlans()) {
 			System.out.println("Planid:" + pp.getPlanId());
 			lplanvs.add(LPToLPValueMapper.lpTolpValue(pp, p));
 		}
