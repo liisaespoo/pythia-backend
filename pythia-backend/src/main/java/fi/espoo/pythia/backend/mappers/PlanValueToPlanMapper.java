@@ -35,7 +35,7 @@ public class PlanValueToPlanMapper {
 		p.setUpdatedAt(OffsetDateTime.now());
 		p.setUpdatedBy(pv.getUpdatedBy());
 		p.setDeleted(pv.isDeleted());
-		p.setMaintenanceDuty(pv.getMaintenanceDuty());
+		p.setMaintenanceDuty(pv.isMaintenanceDuty());
 		
 		return p;
 	}

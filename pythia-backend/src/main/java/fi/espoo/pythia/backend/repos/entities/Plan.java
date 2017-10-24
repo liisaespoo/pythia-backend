@@ -101,7 +101,7 @@ public class Plan implements Serializable, Comparable<Plan> {
 	private boolean deleted;
 	
 	@Column(name = "maintenance_duty")
-	private OffsetDateTime maintenanceDuty;
+	private boolean maintenanceDuty;
 
 	public Plan() {
 
@@ -109,7 +109,7 @@ public class Plan implements Serializable, Comparable<Plan> {
 
 	public Plan(ProjectUpdate project, List<Ptext> ptextList, short mainNo, short subNo, short version,
 			String pdfUrl, String xmlUrl, Status status, OffsetDateTime createdAt, String createdBy,
-			OffsetDateTime updatedAt, String updatedBy, boolean deleted, OffsetDateTime maintenanceDuty) {
+			OffsetDateTime updatedAt, String updatedBy, boolean deleted, boolean maintenanceDuty) {
 		this.project = project;
 		this.ptextList = ptextList;
 		this.mainNo = mainNo;
@@ -240,14 +240,12 @@ public class Plan implements Serializable, Comparable<Plan> {
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
 	}
-	
-	
 
-	public OffsetDateTime getMaintenanceDuty() {
+	public boolean isMaintenanceDuty() {
 		return maintenanceDuty;
 	}
 
-	public void setMaintenanceDuty(OffsetDateTime maintenanceDuty) {
+	public void setMaintenanceDuty(boolean maintenanceDuty) {
 		this.maintenanceDuty = maintenanceDuty;
 	}
 

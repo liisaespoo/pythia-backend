@@ -40,7 +40,7 @@ public class PlanToPlanValueMapper {
 		pv.setUpdatedAt(p.getUpdatedAt());
 		pv.setUpdatedBy(p.getUpdatedBy());
 		pv.setDeleted(p.isDeleted());
-		pv.setMaintenanceDuty(p.getMaintenanceDuty());
+		pv.setMaintenanceDuty(p.isMaintenanceDuty());
 		return pv;
 	}
 

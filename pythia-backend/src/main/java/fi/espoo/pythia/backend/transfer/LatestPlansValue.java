@@ -37,7 +37,7 @@ public class LatestPlansValue {
 
 	private boolean deleted;
 
-	private OffsetDateTime maintenanceDuty;
+	private boolean maintenanceDuty;
 
 	public Long getPlanId() {
 		return planId;
@@ -152,13 +152,15 @@ public class LatestPlansValue {
 		this.commentValues = commentValues;
 	}
 
-	public OffsetDateTime getMaintenanceDuty() {
+	public boolean isMaintenanceDuty() {
 		return maintenanceDuty;
 	}
 
-	public void setMaintenanceDuty(OffsetDateTime maintenanceDuty) {
+	public void setMaintenanceDuty(boolean maintenanceDuty) {
 		this.maintenanceDuty = maintenanceDuty;
 	}
+
+
 
 	
 }

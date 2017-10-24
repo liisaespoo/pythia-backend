@@ -35,7 +35,7 @@ public class LPToLPValueMapper {
 		pv.setCreatedBy(p.getCreatedBy());
 		pv.setUpdatedAt(p.getUpdatedAt());
 		pv.setUpdatedBy(p.getUpdatedBy());
-		pv.setMaintenanceDuty(p.getMaintenanceDuty());
+		pv.setMaintenanceDuty(p.isMaintenanceDuty());
 
 		return pv;
 	}
