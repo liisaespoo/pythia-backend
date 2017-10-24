@@ -50,7 +50,7 @@ public class StorageRestControllerTest {
 	String name = "testproject";
 	short mainNo = 2345;
 	String description = "some desc";
-	List<PlanValue> plans = new ArrayList();
+	List<PlanValue> plans = new ArrayList<PlanValue>();
 
 	ProjectUpdateValue mockProjectUpdateValue = new ProjectUpdateValue();
 	ProjectValue2 mockProjectValue2 = new ProjectValue2();

@@ -40,7 +40,7 @@ public class ProjectRepositoryTest {
         project.setCreatedBy(null);
         project.setDescription("");
         project.setHansuProjectId("E2222");
-        project.setLatestPlans(new ArrayList<LatestPlans>());
+        project.setPlans(new ArrayList<LatestPlans>());
         project.setMainNo((short) 2345);
         project.setName("Bert's project");
         //project.setProjectId(1L);
