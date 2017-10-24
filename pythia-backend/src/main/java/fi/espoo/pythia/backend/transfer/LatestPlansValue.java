@@ -19,8 +19,6 @@ public class LatestPlansValue {
 
 	private String pdfUrl;
 
-	private String dwgUrl;
-
 	private String xmlUrl;
 
 	private Status status;
@@ -85,13 +83,6 @@ public class LatestPlansValue {
 		this.pdfUrl = pdfUrl;
 	}
 
-	public String getDwgUrl() {
-		return dwgUrl;
-	}
-
-	public void setDwgUrl(String dwgUrl) {
-		this.dwgUrl = dwgUrl;
-	}
 
 	public String getXmlUrl() {
 		return xmlUrl;

@@ -22,7 +22,6 @@ public class PlanToPlanValueMapper {
 		pv.setSubNo(p.getSubNo());
 		pv.setVersion(p.getVersion());
 		pv.setPdfUrl(p.getPdfUrl());
-		pv.setDwgUrl(p.getDwgUrl());
 		pv.setXmlUrl(p.getXmlUrl());
 		pv.setStatus(p.getStatus());
 

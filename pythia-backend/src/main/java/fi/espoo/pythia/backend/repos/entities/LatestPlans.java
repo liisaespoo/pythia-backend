@@ -25,7 +25,7 @@ import fi.espoo.pythia.backend.transfer.PtextValue;
 
 @Entity
 @Table(name = "latest_plans")
-//@TypeDef(name = "statusConverter", typeClass = StatusConverter.class)
+// @TypeDef(name = "statusConverter", typeClass = StatusConverter.class)
 public class LatestPlans implements Serializable, Comparable<LatestPlans> {
 
 	/**
@@ -64,16 +64,12 @@ public class LatestPlans implements Serializable, Comparable<LatestPlans> {
 	private short version;
 
 	// varchar
-		@Column(name = "pdf_url")
-		private String pdfUrl;
+	@Column(name = "pdf_url")
+	private String pdfUrl;
 
-		// varchar
-		@Column(name = "dwg_url")
-		private String dwgUrl;
-
-		// varchar
-		@Column(name = "xml_url")
-		private String xmlUrl;
+	// varchar
+	@Column(name = "xml_url")
+	private String xmlUrl;
 
 	@Enumerated(EnumType.STRING)
 	private Status status;
@@ -122,7 +118,6 @@ public class LatestPlans implements Serializable, Comparable<LatestPlans> {
 		this.planId = planId;
 	}
 
-
 	public List<Ptext> getPtextList() {
 		return ptextList;
 	}
@@ -161,14 +156,6 @@ public class LatestPlans implements Serializable, Comparable<LatestPlans> {
 
 	public void setPdfUrl(String pdfUrl) {
 		this.pdfUrl = pdfUrl;
-	}
-
-	public String getDwgUrl() {
-		return dwgUrl;
-	}
-
-	public void setDwgUrl(String dwgUrl) {
-		this.dwgUrl = dwgUrl;
 	}
 
 	public String getXmlUrl() {

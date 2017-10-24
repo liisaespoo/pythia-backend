@@ -56,9 +56,6 @@ public class StorageManager {
 	private ProjectRepository projectRepository;
 
 	@Autowired
-	private SisterProjectRepository sisterProjectRepository;
-
-	@Autowired
 	private SisterProjectUpdateRepository sisterProjectUpdateRepository;
 
 	@Autowired
@@ -69,12 +66,13 @@ public class StorageManager {
 
 	@Autowired
 	private LatestPlansRepository latestPlansRepository;
+	
 	// ---------------------GET------------------------------------
 
 	/**
 	 * NEW
 	 * 
-	 * @return list of projects
+	 * @return list of projects 2 latest values
 	 */
 	public ArrayList<ProjectValue2> getProjects2() {
 
@@ -86,6 +84,20 @@ public class StorageManager {
 		for (Project p : prjList) {
 			// map each project to projectValue
 			ProjectValue2 pval = PrjToPrjVal2Mapper.ProjectToProjectValue2(p);
+			prjValList.add(pval);
+		}
+		// return projectValue -ArrayList
+		return prjValList;
+	}
+	
+	
+	public ArrayList<ProjectUpdateValue> getProjects(){
+		ArrayList<ProjectUpdate> prjList = (ArrayList<ProjectUpdate>) projectUpdateRepository.findAll();
+		ArrayList<ProjectUpdateValue> prjValList = new ArrayList();
+		
+		for (ProjectUpdate p : prjList) {
+			// map each project to projectValue
+			ProjectUpdateValue pval = PrjUpToPrjUpValMapper.ProjectUpdateToProjectUpdateValue(p) ;
 			prjValList.add(pval);
 		}
 		// return projectValue -ArrayList
@@ -104,6 +116,15 @@ public class StorageManager {
 
 	}
 
+	
+	public ProjectUpdateValue getProjectAllPlans(Long projectId) {
+		ProjectUpdate project = projectUpdateRepository.findByProjectId(projectId);
+		ProjectUpdateValue pval = PrjUpToPrjUpValMapper.ProjectUpdateToProjectUpdateValue(project);
+		return pval;
+	}
+
+	
+	
 	/**
 	 * 
 	 * @param hansuId
@@ -188,15 +209,15 @@ public class StorageManager {
 		return updatedProject;
 	}
 
-	/**
-	 * Checks if 1st version and if approved
-	 * 
-	 * If the 1st then version = 0 and approved = true
-	 * 
-	 * If not the 1st then increase version number by one
-	 * 
-	 * @return PlanValue
-	 */
+//	/**
+//	 * Checks if 1st version and if approved
+//	 * 
+//	 * If the 1st then version = 0 and approved = true
+//	 * 
+//	 * If not the 1st then increase version number by one
+//	 * 
+//	 * @return PlanValue
+//	 */
 //	public PlanValue createPlan2(PlanValue planV) {
 //
 //		Long projectId = planV.getProjectId();
@@ -204,9 +225,7 @@ public class StorageManager {
 //		ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
 //		// map planV to plan
 //		Plan mappedPlan = PlanValueToPlanMapper.planValueToPlan(planV, projectUpdate, false);
-//
 //		// get all plans with planV.projectId and planV.mainNo & planV.subNo
-//
 //		List<Plan> existingPlans = planRepository.findByProjectInAndMainNoInAndSubNoIn(projectUpdate, planV.getMainNo(),
 //				planV.getSubNo());
 //
@@ -226,7 +245,6 @@ public class StorageManager {
 //			short maxVersion = max.getVersion();
 //			version = (short) (maxVersion + 1);
 //			approved = false;
-//
 //		}
 //		mappedPlan.setVersion(version);
 //		// mappedPlan.setApproved(approved);
@@ -261,7 +279,7 @@ public class StorageManager {
 		try {
 			file = FileConverter.multipartFileToFile(mfile);
 			String name = file.getName();
-			if (name.endsWith(".pdf")) {
+			if (name.endsWith(".pdf") || name.endsWith(".xml")) {
 				PlanValidator validator = new PlanValidator();
 				// create plan
 
@@ -296,7 +314,7 @@ public class StorageManager {
 
 					}
 
-					Plan plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, null, null, null, status,
+					Plan plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, null, null, status,
 							OffsetDateTime.now(), sowner, null, null, false);
 
 					Plan savedPlan = planRepository.save(plan);
@@ -318,13 +336,6 @@ public class StorageManager {
 
 	}
 	
-	/**
-	 * create a new reference
-	 */
-	public void createNewReference() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	/**
 	 * 
@@ -460,6 +471,8 @@ public class StorageManager {
 		return updatedLAtestPlanValue;
 
 	}
+
+
 
 
 

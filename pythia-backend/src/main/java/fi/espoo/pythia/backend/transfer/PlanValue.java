@@ -25,8 +25,6 @@ public class PlanValue implements Serializable {
 
 	private String pdfUrl;
 	
-	private String dwgUrl;
-	
 	private String xmlUrl;
 
 	private Status status;
@@ -89,14 +87,6 @@ public class PlanValue implements Serializable {
 
 	public void setPdfUrl(String pdfUrl) {
 		this.pdfUrl = pdfUrl;
-	}
-
-	public String getDwgUrl() {
-		return dwgUrl;
-	}
-
-	public void setDwgUrl(String dwgUrl) {
-		this.dwgUrl = dwgUrl;
 	}
 
 	public String getXmlUrl() {

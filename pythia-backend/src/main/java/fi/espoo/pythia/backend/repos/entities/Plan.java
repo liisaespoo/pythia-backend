@@ -68,10 +68,6 @@ public class Plan implements Serializable, Comparable<Plan> {
 	private String pdfUrl;
 
 	// varchar
-	@Column(name = "dwg_url")
-	private String dwgUrl;
-
-	// varchar
 	@Column(name = "xml_url")
 	private String xmlUrl;
 
@@ -109,7 +105,7 @@ public class Plan implements Serializable, Comparable<Plan> {
 	}
 
 	public Plan(ProjectUpdate project, List<Ptext> ptextList, short mainNo, short subNo, short version,
-			String pdfUrl, String dwgUrl, String xmlUrl, Status status, OffsetDateTime createdAt, String createdBy,
+			String pdfUrl, String xmlUrl, Status status, OffsetDateTime createdAt, String createdBy,
 			OffsetDateTime updatedAt, String updatedBy, boolean deleted) {
 		this.project = project;
 		this.ptextList = ptextList;
@@ -117,7 +113,6 @@ public class Plan implements Serializable, Comparable<Plan> {
 		this.subNo = subNo;
 		this.version = version;
 		this.pdfUrl = pdfUrl;
-		this.dwgUrl = dwgUrl;
 		this.xmlUrl = xmlUrl;
 		this.status = status;
 		this.createdAt = createdAt;
@@ -185,13 +180,6 @@ public class Plan implements Serializable, Comparable<Plan> {
 		this.pdfUrl = pdfUrl;
 	}
 
-	public String getDwgUrl() {
-		return dwgUrl;
-	}
-
-	public void setDwgUrl(String dwgUrl) {
-		this.dwgUrl = dwgUrl;
-	}
 
 	public String getXmlUrl() {
 		return xmlUrl;
