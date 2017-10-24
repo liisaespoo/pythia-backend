@@ -66,7 +66,7 @@ public class StorageManager {
 
 	@Autowired
 	private LatestPlansRepository latestPlansRepository;
-	
+
 	// ---------------------GET------------------------------------
 
 	/**
@@ -89,15 +89,14 @@ public class StorageManager {
 		// return projectValue -ArrayList
 		return prjValList;
 	}
-	
-	
-	public ArrayList<ProjectUpdateValue> getProjects(){
+
+	public ArrayList<ProjectUpdateValue> getProjects() {
 		ArrayList<ProjectUpdate> prjList = (ArrayList<ProjectUpdate>) projectUpdateRepository.findAll();
 		ArrayList<ProjectUpdateValue> prjValList = new ArrayList();
-		
+
 		for (ProjectUpdate p : prjList) {
 			// map each project to projectValue
-			ProjectUpdateValue pval = PrjUpToPrjUpValMapper.ProjectUpdateToProjectUpdateValue(p) ;
+			ProjectUpdateValue pval = PrjUpToPrjUpValMapper.ProjectUpdateToProjectUpdateValue(p);
 			prjValList.add(pval);
 		}
 		// return projectValue -ArrayList
@@ -116,15 +115,12 @@ public class StorageManager {
 
 	}
 
-	
 	public ProjectUpdateValue getProjectAllPlans(Long projectId) {
 		ProjectUpdate project = projectUpdateRepository.findByProjectId(projectId);
 		ProjectUpdateValue pval = PrjUpToPrjUpValMapper.ProjectUpdateToProjectUpdateValue(project);
 		return pval;
 	}
 
-	
-	
 	/**
 	 * 
 	 * @param hansuId
@@ -195,8 +191,6 @@ public class StorageManager {
 
 	}
 
-
-
 	// ---------------------POST-----------------------------------
 
 	public ProjectUpdate createProject(ProjectUpdateValue projectV) {
@@ -209,53 +203,58 @@ public class StorageManager {
 		return updatedProject;
 	}
 
-//	/**
-//	 * Checks if 1st version and if approved
-//	 * 
-//	 * If the 1st then version = 0 and approved = true
-//	 * 
-//	 * If not the 1st then increase version number by one
-//	 * 
-//	 * @return PlanValue
-//	 */
-//	public PlanValue createPlan2(PlanValue planV) {
-//
-//		Long projectId = planV.getProjectId();
-//		// get project by projectid
-//		ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
-//		// map planV to plan
-//		Plan mappedPlan = PlanValueToPlanMapper.planValueToPlan(planV, projectUpdate, false);
-//		// get all plans with planV.projectId and planV.mainNo & planV.subNo
-//		List<Plan> existingPlans = planRepository.findByProjectInAndMainNoInAndSubNoIn(projectUpdate, planV.getMainNo(),
-//				planV.getSubNo());
-//
-//		short version = 0;
-//		boolean approved = true;
-//		// first version
-//		if (existingPlans.isEmpty()) {
-//			version = 0;
-//			approved = true;
-//
-//		} else {
-//			// sorting from min to max
-//			Collections.sort(existingPlans);
-//			// get existingPlans max version with projctId, mainno and subno
-//			Plan max = existingPlans.get(existingPlans.size() - 1);
-//			// max version
-//			short maxVersion = max.getVersion();
-//			version = (short) (maxVersion + 1);
-//			approved = false;
-//		}
-//		mappedPlan.setVersion(version);
-//		// mappedPlan.setApproved(approved);
-//
-//		Plan savedPlan = planRepository.save(mappedPlan);
-//
-//		// send mail TODO
-//		PlanValue savedPlanValue = PlanToPlanValueMapper.planToPlanValue(savedPlan, projectUpdate);
-//		// finally
-//		return savedPlanValue;
-//	}
+	// /**
+	// * Checks if 1st version and if approved
+	// *
+	// * If the 1st then version = 0 and approved = true
+	// *
+	// * If not the 1st then increase version number by one
+	// *
+	// * @return PlanValue
+	// */
+	// public PlanValue createPlan2(PlanValue planV) {
+	//
+	// Long projectId = planV.getProjectId();
+	// // get project by projectid
+	// ProjectUpdate projectUpdate =
+	// projectUpdateRepository.findByProjectId(projectId);
+	// // map planV to plan
+	// Plan mappedPlan = PlanValueToPlanMapper.planValueToPlan(planV,
+	// projectUpdate, false);
+	// // get all plans with planV.projectId and planV.mainNo & planV.subNo
+	// List<Plan> existingPlans =
+	// planRepository.findByProjectInAndMainNoInAndSubNoIn(projectUpdate,
+	// planV.getMainNo(),
+	// planV.getSubNo());
+	//
+	// short version = 0;
+	// boolean approved = true;
+	// // first version
+	// if (existingPlans.isEmpty()) {
+	// version = 0;
+	// approved = true;
+	//
+	// } else {
+	// // sorting from min to max
+	// Collections.sort(existingPlans);
+	// // get existingPlans max version with projctId, mainno and subno
+	// Plan max = existingPlans.get(existingPlans.size() - 1);
+	// // max version
+	// short maxVersion = max.getVersion();
+	// version = (short) (maxVersion + 1);
+	// approved = false;
+	// }
+	// mappedPlan.setVersion(version);
+	// // mappedPlan.setApproved(approved);
+	//
+	// Plan savedPlan = planRepository.save(mappedPlan);
+	//
+	// // send mail TODO
+	// PlanValue savedPlanValue =
+	// PlanToPlanValueMapper.planToPlanValue(savedPlan, projectUpdate);
+	// // finally
+	// return savedPlanValue;
+	// }
 
 	/**
 	 * Checks if 1st version and if approved
@@ -290,18 +289,20 @@ public class StorageManager {
 					short version = 0;
 					// String fromCharCode(int... codePoints) {
 					Status status = Status.APPROVED;
+
 					UserPrincipal owner = java.nio.file.Files.getOwner(file.toPath());
 					String sowner = owner.toString();
 					ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
 
-					List<Plan> existingPlans = planRepository.findByProjectInAndMainNoInAndSubNoIn(projectUpdate,
+					List <Plan> existingPlans = planRepository.findByProjectInAndMainNoInAndSubNoIn(projectUpdate,
 							mainNo, subNo);
 
-					if (existingPlans.isEmpty()) {
+					if (existingPlans == null) {
 						version = 0;
 						status = Status.APPROVED;
+					}
 
-					} else {
+					else {
 						// sorting from min to max
 						Collections.sort(existingPlans);
 						// get existingPlans max version with projctId, mainno
@@ -309,13 +310,21 @@ public class StorageManager {
 						Plan max = existingPlans.get(existingPlans.size() - 1);
 						// max version
 						short maxVersion = max.getVersion();
-						version = (short) (maxVersion + 1);
-						status = Status.WAITING_FOR_APPROVAL;
 
+						if (max.getPdfUrl().isEmpty() && name.endsWith(".xml")) {
+
+						} else if (max.getXmlUrl().isEmpty() && name.endsWith(".pdf")) {
+
+						} else {
+
+							version = (short) (maxVersion + 1);
+							status = Status.WAITING_FOR_APPROVAL;
+
+						}
 					}
 
-					Plan plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, null, null, status,
-							OffsetDateTime.now(), sowner, null, null, false);
+					Plan plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, null, null,
+							status, OffsetDateTime.now(), sowner, null, null, false, null);
 
 					Plan savedPlan = planRepository.save(plan);
 					PlanValue savedPlanValue = PlanToPlanValueMapper.planToPlanValue(savedPlan, projectUpdate);
@@ -328,14 +337,15 @@ public class StorageManager {
 				return null;
 
 			}
-		} catch (IOException e) {
+		} catch (
+
+		IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return p;
 
 	}
-	
 
 	/**
 	 * 
@@ -421,7 +431,6 @@ public class StorageManager {
 	public PlanValue updatePlan(PlanValue planV) {
 
 		Long id = planV.getProjectId();
-		// boolean approved = planV.isApproved();
 		ProjectUpdate projectUp = projectUpdateRepository.findByProjectId(id);
 
 		Plan plan = PlanValueToPlanMapper.planValueToPlan(planV, projectUp, true);
@@ -471,10 +480,5 @@ public class StorageManager {
 		return updatedLAtestPlanValue;
 
 	}
-
-
-
-
-
 
 }

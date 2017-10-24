@@ -14,4 +14,5 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
 	// get all plans with planV.projectId and planV.mainNo & planV.subNo
 	List<Plan> findByProjectInAndMainNoInAndSubNoIn(ProjectUpdate p, short mainNo, short subNo);
 	
+	
 }

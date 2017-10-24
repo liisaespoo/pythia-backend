@@ -96,6 +96,9 @@ public class LatestPlans implements Serializable, Comparable<LatestPlans> {
 	@Column(name = "deleted")
 	private boolean deleted;
 
+	@Column(name = "maintenance_duty")
+	private OffsetDateTime maintenanceDuty;
+
 	public LatestPlans() {
 
 	}
@@ -212,6 +215,14 @@ public class LatestPlans implements Serializable, Comparable<LatestPlans> {
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	public OffsetDateTime getMaintenanceDuty() {
+		return maintenanceDuty;
+	}
+
+	public void setMaintenanceDuty(OffsetDateTime maintenanceDuty) {
+		this.maintenanceDuty = maintenanceDuty;
 	}
 
 	@Override
