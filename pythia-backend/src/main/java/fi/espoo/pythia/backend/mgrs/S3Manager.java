@@ -36,25 +36,25 @@ public class S3Manager {
 
 	public String createPlanMultipartFile(String bucketName, MultipartFile mfile) throws IOException {
 
-//		String publicKey = "";
-//		String privateKey = "";
-//
-//		Map<String, String> env = System.getenv();
-//
-//		Iterator it = env.entrySet().iterator();
-//
-//		while (it.hasNext()) {
-//			Map.Entry pair = (Map.Entry) it.next();
-//			if (pair.getKey().equals("S3PUBLIC") || pair.getKey().equals("s3public")) {
-//				publicKey = (String) pair.getValue();
-//				System.out.print("publicKey");
-//			} else if (pair.getKey().equals("S3PRIVATE") || pair.getKey().equals("s3private")) {
-//				privateKey = (String) pair.getValue();
-//				System.out.print("privateKey");
-//			}
-//
-//			System.out.println("pair:" + pair.getKey() + ":" + pair.getValue());
-//		}
+		String publicKey = "";
+		String privateKey = "";
+
+		Map<String, String> env = System.getenv();
+
+		Iterator it = env.entrySet().iterator();
+
+		while (it.hasNext()) {
+			Map.Entry pair = (Map.Entry) it.next();
+			if (pair.getKey().equals("S3PUBLIC") || pair.getKey().equals("s3public")) {
+				publicKey = (String) pair.getValue();
+				System.out.print("publicKey");
+			} else if (pair.getKey().equals("S3PRIVATE") || pair.getKey().equals("s3private")) {
+				privateKey = (String) pair.getValue();
+				System.out.print("privateKey");
+			}
+
+			System.out.println("pair:" + pair.getKey() + ":" + pair.getValue());
+		}
 
 		
 		AWSCredentials credentials = new BasicAWSCredentials(publicKey, privateKey);
