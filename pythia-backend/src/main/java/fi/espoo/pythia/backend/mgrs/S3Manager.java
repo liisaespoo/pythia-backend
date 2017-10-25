@@ -56,8 +56,7 @@ public class S3Manager {
 //			System.out.println("pair:" + pair.getKey() + ":" + pair.getValue());
 //		}
 
-		String publicKey = "AKIAIMP3ZD36XZ2F62HQ";
-		String privateKey = "f6dCchAtPgTELPKEa7R/i3Nx0ldsNeE82pBvUBs4";
+		
 		AWSCredentials credentials = new BasicAWSCredentials(publicKey, privateKey);
 		// AWSCredentials credentials = new
 		// BasicAWSCredentials(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY);
@@ -99,7 +98,7 @@ public class S3Manager {
 		}
 
 		// First, we need to create a client connection to access Amazon S3 web
-		// service. We’ll use AmazonS3 interface for this purpose:
+		// service. Weâ€™ll use AmazonS3 interface for this purpose:
 		AWSCredentials credentials = new BasicAWSCredentials(publicKey, privateKey);
 		// And then configure the client:
 		// http://docs.aws.amazon.com/general/latest/gr/rande.html
