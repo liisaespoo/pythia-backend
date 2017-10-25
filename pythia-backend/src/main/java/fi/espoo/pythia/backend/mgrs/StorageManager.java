@@ -203,58 +203,53 @@ public class StorageManager {
 		return updatedProject;
 	}
 
-	// /**
-	// * Checks if 1st version and if approved
-	// *
-	// * If the 1st then version = 0 and approved = true
-	// *
-	// * If not the 1st then increase version number by one
-	// *
-	// * @return PlanValue
-	// */
-	// public PlanValue createPlan2(PlanValue planV) {
-	//
-	// Long projectId = planV.getProjectId();
-	// // get project by projectid
-	// ProjectUpdate projectUpdate =
-	// projectUpdateRepository.findByProjectId(projectId);
-	// // map planV to plan
-	// Plan mappedPlan = PlanValueToPlanMapper.planValueToPlan(planV,
-	// projectUpdate, false);
-	// // get all plans with planV.projectId and planV.mainNo & planV.subNo
-	// List<Plan> existingPlans =
-	// planRepository.findByProjectInAndMainNoInAndSubNoIn(projectUpdate,
-	// planV.getMainNo(),
-	// planV.getSubNo());
-	//
-	// short version = 0;
-	// boolean approved = true;
-	// // first version
-	// if (existingPlans.isEmpty()) {
-	// version = 0;
-	// approved = true;
-	//
-	// } else {
-	// // sorting from min to max
-	// Collections.sort(existingPlans);
-	// // get existingPlans max version with projctId, mainno and subno
-	// Plan max = existingPlans.get(existingPlans.size() - 1);
-	// // max version
-	// short maxVersion = max.getVersion();
-	// version = (short) (maxVersion + 1);
-	// approved = false;
-	// }
-	// mappedPlan.setVersion(version);
-	// // mappedPlan.setApproved(approved);
-	//
-	// Plan savedPlan = planRepository.save(mappedPlan);
-	//
-	// // send mail TODO
-	// PlanValue savedPlanValue =
-	// PlanToPlanValueMapper.planToPlanValue(savedPlan, projectUpdate);
-	// // finally
-	// return savedPlanValue;
-	// }
+	/**
+	 * Checks if 1st version and if approved
+	 *
+	 * If the 1st then version = 0 and approved = true
+	 *
+	 * If not the 1st then increase version number by one
+	 *
+	 * @return PlanValue
+	 */
+	public PlanValue createPlan2(PlanValue planV) {
+
+		Long projectId = planV.getProjectId();
+		// get project by projectid
+		ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
+		// map planV to plan
+		Plan mappedPlan = PlanValueToPlanMapper.planValueToPlan(planV, projectUpdate, false);
+		// get all plans with planV.projectId and planV.mainNo & planV.subNo
+		List<Plan> existingPlans = planRepository.findByProjectInAndMainNoInAndSubNoIn(projectUpdate, planV.getMainNo(),
+				planV.getSubNo());
+
+		short version = 0;
+		boolean approved = true;
+		// first version
+		if (existingPlans.isEmpty()) {
+			version = 0;
+			approved = true;
+
+		} else {
+			// sorting from min to max
+			Collections.sort(existingPlans);
+			// get existingPlans max version with projctId, mainno and subno
+			Plan max = existingPlans.get(existingPlans.size() - 1);
+			// max version
+			short maxVersion = max.getVersion();
+			version = (short) (maxVersion + 1);
+			approved = false;
+		}
+		mappedPlan.setVersion(version);
+		// mappedPlan.setApproved(approved);
+
+		Plan savedPlan = planRepository.save(mappedPlan);
+
+		// send mail TODO
+		PlanValue savedPlanValue = PlanToPlanValueMapper.planToPlanValue(savedPlan, projectUpdate);
+		// finally
+		return savedPlanValue;
+	}
 
 	/**
 	 * Checks if 1st version and if approved
@@ -268,82 +263,99 @@ public class StorageManager {
 	 * @param mfile
 	 * @param projectId
 	 * @return
+	 * @throws IOException
 	 */
-	public PlanValue createPlan(MultipartFile mfile, long projectId) {
+	public PlanValue createPlan(MultipartFile mfile, long projectId, String url) throws IOException {
 
 		// create plan
 		File file;
 		PlanValue p = new PlanValue();
+		boolean newPlan = false;
 
-		try {
+		file = FileConverter.multipartFileToFile(mfile);
+		String name = file.getName();
+		if (name.endsWith(".pdf") || name.endsWith(".xml")) {
+			// new plan row or not
+			PlanValidator validator = new PlanValidator();
+
 			file = FileConverter.multipartFileToFile(mfile);
-			String name = file.getName();
-			if (name.endsWith(".pdf") || name.endsWith(".xml")) {
-				PlanValidator validator = new PlanValidator();
-				// create plan
-
-				try {
-					file = FileConverter.multipartFileToFile(mfile);
-					short mainNo = validator.extractMainNoFromFileName(name);
-					short subNo = validator.extractSubNoFromFileName(name);
-					short version = 0;
-					// String fromCharCode(int... codePoints) {
-					Status status = Status.APPROVED;
-
-					UserPrincipal owner = java.nio.file.Files.getOwner(file.toPath());
-					String sowner = owner.toString();
-					ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
-
-					List <Plan> existingPlans = planRepository.findByProjectInAndMainNoInAndSubNoIn(projectUpdate,
-							mainNo, subNo);
-
-					if (existingPlans == null) {
-						version = 0;
-						status = Status.APPROVED;
+			short mainNo = validator.extractMainNoFromFileName(name);
+			short subNo = validator.extractSubNoFromFileName(name);
+			ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
+			// find by projectid, mainno, subno
+			List<Plan> existingPlans = planRepository.findByProjectInAndMainNoInAndSubNoIn(projectUpdate, mainNo,
+					subNo);
+			Collections.sort(existingPlans);
+			Plan max = existingPlans.get(existingPlans.size());
+			
+			List<Ptext> ptextList = new ArrayList<Ptext>();			
+			OffsetDateTime createdAt =  OffsetDateTime.now();			
+			OffsetDateTime updatedAt = null;			
+			UserPrincipal owner = java.nio.file.Files.getOwner(file.toPath());
+			String createdBy = owner.toString();			
+			String updatedBy = null;
+			boolean deleted = false;
+			boolean maintenanceDuty = false;
+			short version = 0;
+			Status status = Status.APPROVED;
+			String pdfUrl = "";
+			String xmlUrl = "";
+			
+			Plan plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, pdfUrl, xmlUrl,
+					status, createdAt, createdBy, updatedAt,updatedBy, deleted, maintenanceDuty);
+			
+			// sort and get max version
+			if (existingPlans.isEmpty() || existingPlans == null) {
+				// FIRST
+				version = 0;
+				status = Status.APPROVED;
+				newPlan = true;
+				
+			} else {
+				// max version
+				short maxVersion = max.getVersion();
+				// IF BOTH URLS ARE FULL THEN NEW VERSION
+				if (max.getPdfUrl().endsWith(".pdf") && max.getXmlUrl().endsWith(".xml")) {
+					newPlan = true;
+					version = (short) (maxVersion + 1);
+					status = Status.WAITING_FOR_APPROVAL;
+					if(name.endsWith(".pdf")){
+						
 					}
-
-					else {
-						// sorting from min to max
-						Collections.sort(existingPlans);
-						// get existingPlans max version with projctId, mainno
-						// and subno
-						Plan max = existingPlans.get(existingPlans.size() - 1);
-						// max version
-						short maxVersion = max.getVersion();
-
-						if (max.getPdfUrl().isEmpty() && name.endsWith(".xml")) {
-
-						} else if (max.getXmlUrl().isEmpty() && name.endsWith(".pdf")) {
-
-						} else {
-
-							version = (short) (maxVersion + 1);
-							status = Status.WAITING_FOR_APPROVAL;
-
-						}
-					}
-
-					Plan plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, null, null,
-							status, OffsetDateTime.now(), sowner, null, null, false, false);
-
-					Plan savedPlan = planRepository.save(plan);
-					PlanValue savedPlanValue = PlanToPlanValueMapper.planToPlanValue(savedPlan, projectUpdate);
-
-					return savedPlanValue;
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
-				return null;
+				// PDF EXISTS BUT XML IS EMPTY
+				else if (max.getPdfUrl().endsWith(".pdf") && (max.getXmlUrl() == null || max.getXmlUrl().isEmpty())) {
+					max.setXmlUrl(url);
+					
+				}
+				// XML EXISTS BUT PDF IS EMPTY
+				else {
+					max.setPdfUrl(url);
+					//just return max planValue				
+				}
 
 			}
-		} catch (
+			
+			//IF NEW PLAN
+			if(newPlan){
+				plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, pdfUrl, xmlUrl,
+						status, createdAt, createdBy, updatedAt,updatedBy, deleted, maintenanceDuty);
+			}
+			// IF EXISTING PLAN
+			else{
+				plan = max;
+			}
+			
+			Plan savedPlan = planRepository.save(plan);
+			PlanValue savedPlanValue = PlanToPlanValueMapper.planToPlanValue(savedPlan, projectUpdate);
 
-		IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return savedPlanValue;
+
 		}
-		return p;
+		else{
+			return null;
+		}
+		
 
 	}
 
