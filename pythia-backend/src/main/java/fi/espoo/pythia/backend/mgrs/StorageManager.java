@@ -251,111 +251,154 @@ public class StorageManager {
 		return savedPlanValue;
 	}
 
+	public PlanValue createPlanVersion(MultipartFile mfile, long projectId, String savedImageUrl) {
+
+		File file;
+		try {
+			file = FileConverter.multipartFileToFile(mfile);
+			String name = file.getName();
+			PlanValidator validator = new PlanValidator();
+
+			file = FileConverter.multipartFileToFile(mfile);
+
+			short mainNo = validator.extractMainNoFromFileName(name);
+			short subNo = validator.extractSubNoFromFileName(name);
+			ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
+			List<Plan> existingPlans = planRepository.findByProjectInAndMainNoInAndSubNoIn(projectUpdate, mainNo,
+					subNo);
+			Collections.sort(existingPlans);
+			Plan max = existingPlans.get(existingPlans.size() - 1);
+			// max version
+			short maxVersion = max.getVersion();
+			short version = (short) (maxVersion + 1);
+			Status status = Status.WAITING_FOR_APPROVAL;
+
+			OffsetDateTime createdAt = OffsetDateTime.now();
+			OffsetDateTime updatedAt = null;
+			UserPrincipal owner;
+
+			owner = java.nio.file.Files.getOwner(file.toPath());
+
+			String createdBy = owner.toString();
+			String updatedBy = null;
+			boolean deleted = false;
+			boolean maintenanceDuty = false;
+			String pdfUrl = "";
+			String xmlUrl = "";
+
+			if (name.endsWith(".pdf")) {
+
+				// CREATE NEW VERSION
+				pdfUrl = savedImageUrl;
+
+			} else if (name.endsWith(".xml")) {
+				xmlUrl = savedImageUrl;
+
+			} else {
+				return null;
+			}
+
+			Plan plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, pdfUrl, null, status,
+					createdAt, createdBy, updatedAt, updatedBy, deleted, maintenanceDuty);
+			Plan savedPlan = planRepository.save(plan);
+			PlanValue savedPlanValue = PlanToPlanValueMapper.planToPlanValue(savedPlan, projectUpdate);
+
+			return savedPlanValue;
+
+		} catch (IOException e) {
+			return null;
+		}
+
+	}
+
 	/**
-	 * Checks if 1st version and if approved
+	 * Is always 1st version
 	 * 
 	 * If the 1st then version = 0 and approved = true
 	 * 
-	 * If not the 1st then increase version number by one
 	 * 
-	 * must be PDF
+	 * must be PDF or XML
 	 * 
 	 * @param mfile
 	 * @param projectId
 	 * @return
 	 * @throws IOException
 	 */
-	public PlanValue createPlan(MultipartFile mfile, long projectId, String url) throws IOException {
+	public PlanValue createUpdatePlan(MultipartFile mfile, long projectId, String url) throws IOException {
 
-		// create plan
-		File file;
-		PlanValue p = new PlanValue();
-		boolean newPlan = false;
-
-		file = FileConverter.multipartFileToFile(mfile);
+		File file = FileConverter.multipartFileToFile(mfile);
 		String name = file.getName();
-		if (name.endsWith(".pdf") || name.endsWith(".xml")) {
-			// new plan row or not
-			PlanValidator validator = new PlanValidator();
+		PlanValidator validator = new PlanValidator();
+		short mainNo = validator.extractMainNoFromFileName(name);
+		short subNo = validator.extractSubNoFromFileName(name);
+		ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
+		// find by projectid, mainno, subno
+		List<Plan> existingPlans = planRepository.findByProjectInAndMainNoInAndSubNoIn(projectUpdate, mainNo, subNo);
+		Collections.sort(existingPlans);
 
-			file = FileConverter.multipartFileToFile(mfile);
-			short mainNo = validator.extractMainNoFromFileName(name);
-			short subNo = validator.extractSubNoFromFileName(name);
-			ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
-			// find by projectid, mainno, subno
-			List<Plan> existingPlans = planRepository.findByProjectInAndMainNoInAndSubNoIn(projectUpdate, mainNo,
-					subNo);
-			Collections.sort(existingPlans);
-			Plan max = existingPlans.get(existingPlans.size());
-			
-			List<Ptext> ptextList = new ArrayList<Ptext>();			
-			OffsetDateTime createdAt =  OffsetDateTime.now();			
-			OffsetDateTime updatedAt = null;			
-			UserPrincipal owner = java.nio.file.Files.getOwner(file.toPath());
-			String createdBy = owner.toString();			
-			String updatedBy = null;
-			boolean deleted = false;
-			boolean maintenanceDuty = false;
-			short version = 0;
-			Status status = Status.APPROVED;
-			String pdfUrl = "";
-			String xmlUrl = "";
-			
-			Plan plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, pdfUrl, xmlUrl,
-					status, createdAt, createdBy, updatedAt,updatedBy, deleted, maintenanceDuty);
-			
-			// sort and get max version
-			if (existingPlans.isEmpty() || existingPlans == null) {
-				// FIRST
-				version = 0;
-				status = Status.APPROVED;
-				newPlan = true;
-				
+		// max version
+		short version = 0;
+		Status status = Status.APPROVED;
+		String pdfUrl = "";
+		String xmlUrl = "";
+		UserPrincipal owner = java.nio.file.Files.getOwner(file.toPath());
+		String createdBy = owner.toString();
+		String updatedBy = null;
+		boolean deleted = false;
+		boolean maintenanceDuty = false;
+		OffsetDateTime createdAt = null;
+		OffsetDateTime updatedAt = null;
+
+		Plan plan = new Plan();
+
+		if (name.endsWith(".pdf")) {
+			pdfUrl = url;
+			if (existingPlans.size() == 0) {
+				createdAt = OffsetDateTime.now();
+				plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, pdfUrl, xmlUrl, status,
+						createdAt, createdBy, updatedAt, updatedBy, deleted, maintenanceDuty);
+				// CREATE NEW PLAN WITH pdfUrl
 			} else {
-				// max version
-				short maxVersion = max.getVersion();
-				// IF BOTH URLS ARE FULL THEN NEW VERSION
-				if (max.getPdfUrl().endsWith(".pdf") && max.getXmlUrl().endsWith(".xml")) {
-					newPlan = true;
-					version = (short) (maxVersion + 1);
-					status = Status.WAITING_FOR_APPROVAL;
-					if(name.endsWith(".pdf")){
-						
-					}
-				}
-				// PDF EXISTS BUT XML IS EMPTY
-				else if (max.getPdfUrl().endsWith(".pdf") && (max.getXmlUrl() == null || max.getXmlUrl().isEmpty())) {
-					max.setXmlUrl(url);
-					
-				}
-				// XML EXISTS BUT PDF IS EMPTY
-				else {
-					max.setPdfUrl(url);
-					//just return max planValue				
-				}
 
-			}
-			
-			//IF NEW PLAN
-			if(newPlan){
-				plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, pdfUrl, xmlUrl,
-						status, createdAt, createdBy, updatedAt,updatedBy, deleted, maintenanceDuty);
-			}
-			// IF EXISTING PLAN
-			else{
+				updatedAt = OffsetDateTime.now();
+				Plan max = existingPlans.get(existingPlans.size() - 1);
+				if (!max.getPdfUrl().isEmpty()) {
+					return null;
+				}
+				max.setPdfUrl(pdfUrl);
+				max.setUpdatedAt(updatedAt);
 				plan = max;
+				// IF max hasXml but NO pdfUrl
+				// UPDATE WITH PDFURL
 			}
-			
-			Plan savedPlan = planRepository.save(plan);
-			PlanValue savedPlanValue = PlanToPlanValueMapper.planToPlanValue(savedPlan, projectUpdate);
 
-			return savedPlanValue;
-
-		}
-		else{
+		} else if (name.endsWith(".xml")) {
+			xmlUrl = url;
+			if (existingPlans.size() == 0) {
+				createdAt = OffsetDateTime.now();
+				plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, pdfUrl, xmlUrl, status,
+						createdAt, createdBy, updatedAt, updatedBy, deleted, maintenanceDuty);
+				// CREATE NEW PLAN WITH xmlUrl
+			} else {
+				updatedAt = OffsetDateTime.now();
+				Plan max = existingPlans.get(existingPlans.size() - 1);
+				if (!max.getXmlUrl().isEmpty()) {
+					return null;
+				}
+				max.setUpdatedAt(updatedAt);
+				max.setXmlUrl(xmlUrl);
+				plan = max;
+				// IF max hasPdf but NO xmlUrl
+				// UPDATE WITH XMLURL
+			}
+		} else {
 			return null;
 		}
-		
+
+		Plan savedPlan = planRepository.save(plan);
+		PlanValue savedPlanValue = PlanToPlanValueMapper.planToPlanValue(savedPlan, projectUpdate);
+
+		return savedPlanValue;
 
 	}
 
