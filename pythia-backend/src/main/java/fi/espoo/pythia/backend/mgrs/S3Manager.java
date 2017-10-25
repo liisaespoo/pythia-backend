@@ -34,30 +34,28 @@ import fi.espoo.pythia.backend.encoders.EncoderBase64;
 @Component
 public class S3Manager {
 
-	public String createPlanMultipartFile(String bucketName, MultipartFile mfile) throws IOException {
+	public String createPlanMultipartFile(String bucketName, MultipartFile mfile, short version) throws IOException {
 
-//		String publicKey = "";
-//		String privateKey = "";
-//
-//		Map<String, String> env = System.getenv();
-//
-//		Iterator it = env.entrySet().iterator();
-//
-//		while (it.hasNext()) {
-//			Map.Entry pair = (Map.Entry) it.next();
-//			if (pair.getKey().equals("S3PUBLIC") || pair.getKey().equals("s3public")) {
-//				publicKey = (String) pair.getValue();
-//				System.out.print("publicKey");
-//			} else if (pair.getKey().equals("S3PRIVATE") || pair.getKey().equals("s3private")) {
-//				privateKey = (String) pair.getValue();
-//				System.out.print("privateKey");
-//			}
-//
-//			System.out.println("pair:" + pair.getKey() + ":" + pair.getValue());
-//		}
+		String publicKey = "";
+		String privateKey = "";
 
-		String publicKey = "AKIAIMP3ZD36XZ2F62HQ";
-		String privateKey = "f6dCchAtPgTELPKEa7R/i3Nx0ldsNeE82pBvUBs4";
+		Map<String, String> env = System.getenv();
+
+		Iterator it = env.entrySet().iterator();
+
+		while (it.hasNext()) {
+			Map.Entry pair = (Map.Entry) it.next();
+			if (pair.getKey().equals("S3PUBLIC") || pair.getKey().equals("s3public")) {
+				publicKey = (String) pair.getValue();
+				System.out.print("publicKey");
+			} else if (pair.getKey().equals("S3PRIVATE") || pair.getKey().equals("s3private")) {
+				privateKey = (String) pair.getValue();
+				System.out.print("privateKey");
+			}
+
+			System.out.println("pair:" + pair.getKey() + ":" + pair.getValue());
+		}
+
 		AWSCredentials credentials = new BasicAWSCredentials(publicKey, privateKey);
 		// AWSCredentials credentials = new
 		// BasicAWSCredentials(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY);
@@ -66,7 +64,7 @@ public class S3Manager {
 
 		File file = FileConverter.multipartFileToFile(mfile);
 
-		String key = file.getName();
+		String key = file.getName() + "_" + version;
 
 		String url = uploadObject(s3client, file, key, bucketName);
 
@@ -208,6 +206,5 @@ public class S3Manager {
 		});
 		return fileList;
 	}
-
 
 }

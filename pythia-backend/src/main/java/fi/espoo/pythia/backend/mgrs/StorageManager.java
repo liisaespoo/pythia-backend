@@ -67,6 +67,8 @@ public class StorageManager {
 	@Autowired
 	private LatestPlansRepository latestPlansRepository;
 
+	@Autowired
+	private S3Manager s3Manager;
 	// ---------------------GET------------------------------------
 
 	/**
@@ -251,7 +253,7 @@ public class StorageManager {
 		return savedPlanValue;
 	}
 
-	public PlanValue createPlanVersion(MultipartFile mfile, long projectId, String savedImageUrl) {
+	public PlanValue createPlanVersion(MultipartFile mfile, long projectId) {
 
 		File file;
 		try {
@@ -285,6 +287,8 @@ public class StorageManager {
 			boolean maintenanceDuty = false;
 			String pdfUrl = "";
 			String xmlUrl = "";
+
+			String savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-plans-bucket", mfile, version);
 
 			if (name.endsWith(".pdf")) {
 
@@ -324,7 +328,7 @@ public class StorageManager {
 	 * @return
 	 * @throws IOException
 	 */
-	public PlanValue createUpdatePlan(MultipartFile mfile, long projectId, String url) throws IOException {
+	public PlanValue createUpdatePlan(MultipartFile mfile, long projectId) throws IOException {
 
 		File file = FileConverter.multipartFileToFile(mfile);
 		String name = file.getName();
@@ -348,11 +352,12 @@ public class StorageManager {
 		boolean maintenanceDuty = false;
 		OffsetDateTime createdAt = null;
 		OffsetDateTime updatedAt = null;
+		String savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-plans-bucket", mfile, version);
 
 		Plan plan = new Plan();
 
 		if (name.endsWith(".pdf")) {
-			pdfUrl = url;
+			pdfUrl = savedImageUrl;
 			if (existingPlans.size() == 0) {
 				createdAt = OffsetDateTime.now();
 				plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, pdfUrl, xmlUrl, status,
@@ -373,7 +378,7 @@ public class StorageManager {
 			}
 
 		} else if (name.endsWith(".xml")) {
-			xmlUrl = url;
+			xmlUrl = savedImageUrl;
 			if (existingPlans.size() == 0) {
 				createdAt = OffsetDateTime.now();
 				plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, pdfUrl, xmlUrl, status,

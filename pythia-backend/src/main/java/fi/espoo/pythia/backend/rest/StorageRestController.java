@@ -238,13 +238,16 @@ public class StorageRestController {
 			// Value object mapping
 			try {
 				PlanValue planV = new PlanValue();
-				String savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-plans-bucket", mfile);
+				String savedImageUrl = "";
 				if (isVersion) {
 					// NEW VERSION
-					planV = storageManager.createPlanVersion(mfile, projectId, savedImageUrl);
+
+					planV = storageManager.createPlanVersion(mfile, projectId);
+
 				} else {
 					// NEW PLAN
-					planV = storageManager.createUpdatePlan(mfile, projectId, savedImageUrl);
+					planV = storageManager.createUpdatePlan(mfile, projectId);
+
 				}
 				if (planV == null) {
 					return new ResponseEntity<PlanValue>(HttpStatus.CONFLICT);
@@ -254,6 +257,12 @@ public class StorageRestController {
 					String project = p.getName();
 					String projectSId = p.getProjectId().toString();
 					SESManager sesManager = new SESManager();
+
+					if (planV.getXmlUrl().isEmpty()) {
+						savedImageUrl = planV.getPdfUrl();
+					} else {
+						savedImageUrl = planV.getXmlUrl();
+					}
 					sesManager.newVersion(project, projectSId, savedImageUrl);
 				}
 				return new ResponseEntity<PlanValue>(planV, HttpStatus.OK);
@@ -301,14 +310,15 @@ public class StorageRestController {
 				// 3.1) compare planV mainNo and subNo
 				if (validator.isMainNoAndSubNo(mfile, planV)) {
 
+					short version = 0;
 					if (!planV.getXmlUrl().isEmpty() && fname.endsWith(".pdf")) {
-						savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-plans-bucket", mfile);
+						savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-plans-bucket", mfile, version);
 						// save to plan -table
 						planV.setPdfUrl(savedImageUrl);
 						// update Plan with url
 						storageManager.updatePlan(planV);
 					} else if (!planV.getPdfUrl().isEmpty() && fname.endsWith(".xml")) {
-						savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-plans-bucket", mfile);
+						savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-plans-bucket", mfile, version);
 						// save to plan -table
 						planV.setXmlUrl(savedImageUrl);
 						// update Plan with url
@@ -367,7 +377,8 @@ public class StorageRestController {
 			if (ptextVal == null) {
 				return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
 			}
-			String savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-comments-bucket", mfile);
+			short version = 0;
+			String savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-comments-bucket", mfile, version);
 			// set PlanValue url
 			ptextVal.setUrl(savedImageUrl);
 			// update Plan with url
