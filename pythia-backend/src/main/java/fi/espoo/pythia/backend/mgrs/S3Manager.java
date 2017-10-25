@@ -45,10 +45,10 @@ public class S3Manager {
 
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry) it.next();
-			if (pair.getKey().equals("S3PUBLIC")) {
+			if (pair.getKey().equals("S3PUBLIC") || pair.getKey().equals("s3public")) {
 				publicKey = (String) pair.getValue();
 				System.out.print("publicKey");
-			} else if (pair.getKey().equals("S3PRIVATE")) {
+			} else if (pair.getKey().equals("S3PRIVATE") || pair.getKey().equals("s3private")) {
 				privateKey = (String) pair.getValue();
 				System.out.print("privateKey");
 			}
