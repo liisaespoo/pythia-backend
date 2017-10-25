@@ -240,33 +240,18 @@ public class StorageRestController {
 				// first save file to S3
 				String savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-plans-bucket", mfile);
 				// create a new Plan from file attributes
-				PlanValue planV = storageManager.createPlan(mfile, projectId);
-				ProjectValue2 p = storageManager.getProject2(planV.getProjectId());
-				// set PlanValue url
-				if (fname.endsWith(".pdf")) {
-					planV.setPdfUrl(savedImageUrl);
-					// update Plan with url
-					storageManager.updatePlan(planV);
-				} else if (fname.endsWith(".xml")) {
-					planV.setXmlUrl(savedImageUrl);
-					// update Plan with url
-					storageManager.updatePlan(planV);
-				} else {
-					return new ResponseEntity<PlanValue>(HttpStatus.NOT_ACCEPTABLE);
-				}
-
-				if (savedImageUrl.isEmpty() || savedImageUrl == null) {
-					return new ResponseEntity<PlanValue>(HttpStatus.NOT_FOUND);
-				}
-				String project = p.getName();
-				String projectSId = p.getProjectId().toString();
-				// if 1st version no email
+				PlanValue planV = storageManager.createPlan(mfile, projectId, savedImageUrl);
 				if (planV.getVersion() > 0) {
+					ProjectValue2 p = storageManager.getProject2(planV.getProjectId());
+					String project = p.getName();
+					String projectSId = p.getProjectId().toString();
 					SESManager sesManager = new SESManager();
 					sesManager.newVersion(project, projectSId, savedImageUrl);
 				}
 				return new ResponseEntity<PlanValue>(planV, HttpStatus.OK);
 			} catch (org.springframework.transaction.CannotCreateTransactionException e) {
+				return new ResponseEntity<PlanValue>(HttpStatus.NOT_FOUND);
+			} catch (java.lang.NullPointerException e) {
 				return new ResponseEntity<PlanValue>(HttpStatus.NOT_FOUND);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -275,7 +260,6 @@ public class StorageRestController {
 		} else {
 			return new ResponseEntity<PlanValue>(HttpStatus.NOT_ACCEPTABLE);
 		}
-
 	}
 
 	/**
@@ -432,7 +416,7 @@ public class StorageRestController {
 			storageManager.updateProject(projectUpVal);
 			ProjectValue2 updatedProject = storageManager.getProject2(projectUpVal.getProjectId());
 			if (projectUpVal.isCompleted()) {
-				// send mail 
+				// send mail
 			}
 			return new ResponseEntity<ProjectValue2>(updatedProject, HttpStatus.OK);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
