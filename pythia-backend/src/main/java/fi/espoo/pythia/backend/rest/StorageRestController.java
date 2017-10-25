@@ -230,17 +230,25 @@ public class StorageRestController {
 	 */
 	@PostMapping(value = "/projects/{projectId}/plans")
 	public ResponseEntity<PlanValue> createPlan(@RequestParam("mfile") MultipartFile mfile,
-			@PathVariable("projectId") long projectId) {
+			@PathVariable("projectId") long projectId,
+			@RequestParam(value = "version", required = false) boolean isVersion) {
 
 		String fname = mfile.getOriginalFilename();
 		if (fname.endsWith(".pdf") || fname.endsWith(".xml")) {
-			System.out.println("is pdf or xml");
 			// Value object mapping
 			try {
-				// first save file to S3
+				PlanValue planV = new PlanValue();
 				String savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-plans-bucket", mfile);
-				// create a new Plan from file attributes
-				PlanValue planV = storageManager.createPlan(mfile, projectId, savedImageUrl);
+				if (isVersion) {
+					// NEW VERSION
+					planV = storageManager.createPlanVersion(mfile, projectId, savedImageUrl);
+				} else {
+					// NEW PLAN
+					planV = storageManager.createUpdatePlan(mfile, projectId, savedImageUrl);
+				}
+				if (planV == null) {
+					return new ResponseEntity<PlanValue>(HttpStatus.CONFLICT);
+				}
 				if (planV.getVersion() > 0) {
 					ProjectValue2 p = storageManager.getProject2(planV.getProjectId());
 					String project = p.getName();
