@@ -368,14 +368,14 @@ public class StorageRestController {
 	 * @return
 	 */
 	@PostMapping(value = "/projects/{projectId}/plans/{planId}/comments/{commentId}/files")
-	public ResponseEntity<String> createCommentFile(@RequestParam("mfile") MultipartFile mfile,
+	public ResponseEntity<PtextValue> createCommentFile(@RequestParam("mfile") MultipartFile mfile,
 			@PathVariable("commentId") long id) {
 
 		// Value object mapping
 		try {
 			PtextValue ptextVal = storageManager.getComment(id);
 			if (ptextVal == null) {
-				return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
+				return new ResponseEntity<PtextValue>(HttpStatus.NOT_FOUND);
 			}
 			short version = 0;
 			String savedImageUrl = s3Manager.createPlanMultipartFile("kirapythia-comments-bucket", mfile, version);
@@ -384,14 +384,14 @@ public class StorageRestController {
 			// update Plan with url
 			storageManager.updatePtext(ptextVal, id);
 			if (savedImageUrl.isEmpty() || savedImageUrl == null) {
-				return new ResponseEntity<String>("", HttpStatus.NOT_FOUND);
+				return new ResponseEntity<PtextValue>(HttpStatus.NOT_FOUND);
 			}
-			return new ResponseEntity<String>(savedImageUrl, HttpStatus.OK);
+			return new ResponseEntity<PtextValue>(ptextVal, HttpStatus.OK);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-			return new ResponseEntity<String>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<PtextValue>(HttpStatus.FORBIDDEN);
 		} catch (IOException e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>(HttpStatus.I_AM_A_TEAPOT);
+			return new ResponseEntity<PtextValue>(HttpStatus.I_AM_A_TEAPOT);
 		}
 
 	}
