@@ -34,6 +34,7 @@ import fi.espoo.pythia.backend.encoders.EncoderBase64;
 @Component
 public class S3Manager {
 
+
 	public String createPlanMultipartFile(String bucketName, MultipartFile mfile, short version) throws IOException {
 
 		String publicKey = "";
@@ -55,6 +56,7 @@ public class S3Manager {
 
 			System.out.println("pair:" + pair.getKey() + ":" + pair.getValue());
 		}
+
 
 		AWSCredentials credentials = new BasicAWSCredentials(publicKey, privateKey);
 		// AWSCredentials credentials = new
@@ -97,7 +99,7 @@ public class S3Manager {
 		}
 
 		// First, we need to create a client connection to access Amazon S3 web
-		// service. We’ll use AmazonS3 interface for this purpose:
+		// service. Weâ€™ll use AmazonS3 interface for this purpose:
 		AWSCredentials credentials = new BasicAWSCredentials(publicKey, privateKey);
 		// And then configure the client:
 		// http://docs.aws.amazon.com/general/latest/gr/rande.html
