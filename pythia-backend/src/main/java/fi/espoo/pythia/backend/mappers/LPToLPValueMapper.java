@@ -36,6 +36,7 @@ public class LPToLPValueMapper {
 		pv.setUpdatedAt(p.getUpdatedAt());
 		pv.setUpdatedBy(p.getUpdatedBy());
 		pv.setMaintenanceDuty(p.isMaintenanceDuty());
+		pv.setStreetManagementDecision(p.getStreetManagementDecision());
 
 		return pv;
 	}

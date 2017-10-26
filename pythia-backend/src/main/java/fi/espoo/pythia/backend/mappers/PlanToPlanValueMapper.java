@@ -41,6 +41,7 @@ public class PlanToPlanValueMapper {
 		pv.setUpdatedBy(p.getUpdatedBy());
 		pv.setDeleted(p.isDeleted());
 		pv.setMaintenanceDuty(p.isMaintenanceDuty());
+		pv.setStreetManagementDecision(p.getStreetManagementDecision());
 		return pv;
 	}
 

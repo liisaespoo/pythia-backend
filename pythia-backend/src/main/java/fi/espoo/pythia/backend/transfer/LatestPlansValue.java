@@ -38,6 +38,8 @@ public class LatestPlansValue {
 	private boolean deleted;
 
 	private boolean maintenanceDuty;
+	
+	private OffsetDateTime streetManagementDecision;
 
 	public Long getPlanId() {
 		return planId;
@@ -160,7 +162,15 @@ public class LatestPlansValue {
 		this.maintenanceDuty = maintenanceDuty;
 	}
 
+	public OffsetDateTime getStreetManagementDecision() {
+		return streetManagementDecision;
+	}
 
+	public void setStreetManagementDecision(OffsetDateTime streetManagementDecision) {
+		this.streetManagementDecision = streetManagementDecision;
+	}
+
+    
 
 	
 }
