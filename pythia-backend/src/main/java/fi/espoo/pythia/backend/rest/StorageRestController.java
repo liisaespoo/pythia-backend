@@ -18,6 +18,7 @@
 package fi.espoo.pythia.backend.rest;
 
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +35,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import fi.espoo.pythia.backend.mappers.PrjUpVal2PrjValMapper;
 import fi.espoo.pythia.backend.mgrs.S3Manager;
 import fi.espoo.pythia.backend.mgrs.SESManager;
 import fi.espoo.pythia.backend.mgrs.StorageManager;
 import fi.espoo.pythia.backend.repos.entities.ProjectUpdate;
 import fi.espoo.pythia.backend.repos.entities.Status;
+import fi.espoo.pythia.backend.transfer.LatestPlansValue;
 import fi.espoo.pythia.backend.transfer.PlanValue;
 import fi.espoo.pythia.backend.transfer.ProjectUpdateValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue2;
@@ -77,38 +80,39 @@ public class StorageRestController {
 
 	/**
 	 * return a single project by id if found. Otherwise return null. 2 latest
-	 * versions of plans
+	 * versions of plans if allPlanVersions is false. All versions if allPlanVersions is true
 	 */
 	@GetMapping(value = "/projects/{projectId}", produces = "application/json")
-	public ResponseEntity<ProjectValue2> getProject(@PathVariable("projectId") Long projectId) {
+	public ResponseEntity<ProjectValue2> getProject(@PathVariable("projectId") Long projectId,
+			@RequestParam(value = "allPlanVersions", required = false) boolean isAllVersions) {
 
 		try {
-			ProjectValue2 project = storageManager.getProject2(projectId);
-
+			ProjectValue2 project = new ProjectValue2();
+			if (isAllVersions) {
+				project = storageManager.getProject2(projectId);
+			} else {
+				ProjectUpdateValue projectUpdate = storageManager.getProjectAllPlans(projectId);
+				project = PrjUpVal2PrjValMapper.projectUpdateValue2ProjectValue(projectUpdate);
+			}
 			return new ResponseEntity<ProjectValue2>(project, HttpStatus.OK);
 		} catch (java.lang.NullPointerException e) {
 			return new ResponseEntity<ProjectValue2>(new ProjectValue2(), HttpStatus.NOT_FOUND);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
 			return new ResponseEntity<ProjectValue2>(HttpStatus.FORBIDDEN);
 		}
+
 	}
 
-	/**
-	 * return a single project by id if found. All plan versions
-	 */
-	@GetMapping(value = "/projects/{projectId}/all", produces = "application/json")
-	public ResponseEntity<ProjectUpdateValue> getProjectAllPlans(@PathVariable("projectId") Long projectId) {
-
-		try {
-			ProjectUpdateValue project = storageManager.getProjectAllPlans(projectId);
-
-			return new ResponseEntity<ProjectUpdateValue>(project, HttpStatus.OK);
-		} catch (java.lang.NullPointerException e) {
-			return new ResponseEntity<ProjectUpdateValue>(HttpStatus.NOT_FOUND);
-		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-			return new ResponseEntity<ProjectUpdateValue>(HttpStatus.FORBIDDEN);
-		}
-	}
+	// /**
+	// * return a single project by id if found. All plan versions
+	// */
+	// @GetMapping(value = "/projects/{projectId}", produces =
+	// "application/json")
+	// public ResponseEntity<ProjectUpdateValue>
+	// getProjectAllPlans(@PathVariable("projectId") Long projectId) {
+	//
+	//
+	// }
 
 	/**
 	 * return a single project by hansuprojectid if found. Otherwise return

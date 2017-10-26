@@ -16,8 +16,13 @@ public class ProjectUpdateValue implements Serializable {
 	private String name;
 	private short mainNo;
 	private String description;
+	private List<PlanValue> plans;
+	private List<Long> sisterProjects;
+	private OffsetDateTime createdAt;
+	private String createdBy;
+	private OffsetDateTime updatedAt;
+	private String updatedBy;
 	private boolean completed;
-	
 	
 	
 	public ProjectUpdateValue() {
@@ -96,12 +101,6 @@ public class ProjectUpdateValue implements Serializable {
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
 	}
-	private List<PlanValue> plans;
-	private List<Long> sisterProjects;
-	private OffsetDateTime createdAt;
-	private String createdBy;
-	private OffsetDateTime updatedAt;
-	private String updatedBy;
 	
 	
 }

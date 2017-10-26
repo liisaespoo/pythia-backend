@@ -26,8 +26,26 @@ public class ProjectValue2 implements Serializable {
 	private String createdBy;
 	private OffsetDateTime updatedAt;
 	private String updatedBy;
+	
 
 	public ProjectValue2() {
+	}
+
+	public ProjectValue2(Long projectId, String hansuProjectId, String name, short mainNo, String description,
+			boolean completed, List<LatestPlansValue> plans, List<Long> sisterProjects, OffsetDateTime createdAt,
+			String createdBy, OffsetDateTime updatedAt, String updatedBy) {
+		this.projectId = projectId;
+		this.hansuProjectId = hansuProjectId;
+		this.name = name;
+		this.mainNo = mainNo;
+		this.description = description;
+		this.completed = completed;
+		this.plans = plans;
+		this.sisterProjects = sisterProjects;
+		this.createdAt = createdAt;
+		this.createdBy = createdBy;
+		this.updatedAt = updatedAt;
+		this.updatedBy = updatedBy;
 	}
 
 
