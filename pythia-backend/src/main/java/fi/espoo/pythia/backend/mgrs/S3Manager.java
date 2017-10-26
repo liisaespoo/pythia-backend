@@ -34,7 +34,8 @@ import fi.espoo.pythia.backend.encoders.EncoderBase64;
 @Component
 public class S3Manager {
 
-	public String createPlanMultipartFile(String bucketName, MultipartFile mfile) throws IOException {
+
+	public String createPlanMultipartFile(String bucketName, MultipartFile mfile, short version) throws IOException {
 
 		String publicKey = "";
 		String privateKey = "";
@@ -56,7 +57,7 @@ public class S3Manager {
 			System.out.println("pair:" + pair.getKey() + ":" + pair.getValue());
 		}
 
-		
+
 		AWSCredentials credentials = new BasicAWSCredentials(publicKey, privateKey);
 		// AWSCredentials credentials = new
 		// BasicAWSCredentials(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY);
@@ -65,7 +66,7 @@ public class S3Manager {
 
 		File file = FileConverter.multipartFileToFile(mfile);
 
-		String key = file.getName();
+		String key = file.getName() + "_" + version;
 
 		String url = uploadObject(s3client, file, key, bucketName);
 
@@ -207,6 +208,5 @@ public class S3Manager {
 		});
 		return fileList;
 	}
-
 
 }
