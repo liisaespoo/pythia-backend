@@ -260,11 +260,13 @@ public class StorageManager {
 			file = FileConverter.multipartFileToFile(mfile);
 			String name = file.getName();
 			PlanValidator validator = new PlanValidator();
-
-			file = FileConverter.multipartFileToFile(mfile);
-
-			short mainNo = validator.extractMainNoFromFileName(name);
-			short subNo = validator.extractSubNoFromFileName(name);
+			file = FileConverter.multipartFileToFile(mfile);		
+			short mainNo = 0;
+			short subNo = 0;
+			if(validator.isValidFile(mfile)){
+				mainNo = validator.getMainNo();
+				 subNo = validator.getSubNo();	
+			}
 			ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
 			List<Plan> existingPlans = planRepository.findByProjectInAndMainNoInAndSubNoIn(projectUpdate, mainNo,
 					subNo);
@@ -333,8 +335,13 @@ public class StorageManager {
 		File file = FileConverter.multipartFileToFile(mfile);
 		String name = file.getName();
 		PlanValidator validator = new PlanValidator();
-		short mainNo = validator.extractMainNoFromFileName(name);
-		short subNo = validator.extractSubNoFromFileName(name);
+		short mainNo = 0;
+		short  subNo = 0;
+		if(validator.isValidFile(mfile)){
+			mainNo = validator.getMainNo();
+			 subNo = validator.getSubNo();	
+		}
+		 
 		ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
 		// find by projectid, mainno, subno
 		List<Plan> existingPlans = planRepository.findByProjectInAndMainNoInAndSubNoIn(projectUpdate, mainNo, subNo);
