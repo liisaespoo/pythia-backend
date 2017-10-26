@@ -23,7 +23,7 @@ public class PlanValue2LPValueMapper {
 		pv.setUpdatedBy(lpv.getUpdatedBy());
 		pv.setVersion(lpv.getVersion());
 		pv.setXmlUrl(lpv.getXmlUrl());
-		
+		pv.setStreetManagementDecision(lpv.getStreetManagementDecision());
 		return lpv;
 	}
 }

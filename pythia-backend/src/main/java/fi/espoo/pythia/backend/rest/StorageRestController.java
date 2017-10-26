@@ -12,13 +12,14 @@
  *  When posting multipart file add size by tweaking both 
  *  1)src/main/resources application.propeties and 
  *  2)PythiaBackendApplication.class Tomcat setMaxPostSize Bean  
+ *  
+ *  
  *   
  */
 
 package fi.espoo.pythia.backend.rest;
 
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,6 @@ import fi.espoo.pythia.backend.mgrs.SESManager;
 import fi.espoo.pythia.backend.mgrs.StorageManager;
 import fi.espoo.pythia.backend.repos.entities.ProjectUpdate;
 import fi.espoo.pythia.backend.repos.entities.Status;
-import fi.espoo.pythia.backend.transfer.LatestPlansValue;
 import fi.espoo.pythia.backend.transfer.PlanValue;
 import fi.espoo.pythia.backend.transfer.ProjectUpdateValue;
 import fi.espoo.pythia.backend.transfer.ProjectValue2;
@@ -371,7 +371,7 @@ public class StorageRestController {
 	 * @param id
 	 * @return
 	 */
-	@PostMapping(value = "/projects/{projectId}/plans/{planId}/comments/{commentId}/files")
+	@PostMapping(value = "/projects/{projectId}/plans/{planId}/comments/{commentId}/files", produces = "application/json")
 	public ResponseEntity<PtextValue> createCommentFile(@RequestParam("mfile") MultipartFile mfile,
 			@PathVariable("commentId") long id) {
 
@@ -404,6 +404,7 @@ public class StorageRestController {
 
 	/**
 	 * update plan -table attributes
+	 * ROLES: 
 	 */
 
 	@PutMapping(value = "/projects/{projectId}/plans/{planId}", produces = "application/json", consumes = "application/json")

@@ -16,13 +16,9 @@ public class ProjectValue2 implements Serializable {
 	private short mainNo;
 	private String description;
 	private boolean completed;
-	// removed ArrayList definition
-	//private List<PlanValue> plans;
 	private List<LatestPlansValue> plans;
 	private List<Long> sisterProjects;
-	// private Date createdAt;
 	private OffsetDateTime createdAt;
-
 	private String createdBy;
 	private OffsetDateTime updatedAt;
 	private String updatedBy;

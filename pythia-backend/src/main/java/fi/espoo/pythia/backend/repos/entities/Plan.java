@@ -102,6 +102,10 @@ public class Plan implements Serializable, Comparable<Plan> {
 	
 	@Column(name = "maintenance_duty")
 	private boolean maintenanceDuty;
+	
+	@Column(name = "street_management_decision")
+	private OffsetDateTime streetManagementDecision;
+
 
 	public Plan() {
 
@@ -247,6 +251,14 @@ public class Plan implements Serializable, Comparable<Plan> {
 
 	public void setMaintenanceDuty(boolean maintenanceDuty) {
 		this.maintenanceDuty = maintenanceDuty;
+	}
+
+	public OffsetDateTime getStreetManagementDecision() {
+		return streetManagementDecision;
+	}
+
+	public void setStreetManagementDecision(OffsetDateTime streetManagementDecision) {
+		this.streetManagementDecision = streetManagementDecision;
 	}
 
 	@Override
