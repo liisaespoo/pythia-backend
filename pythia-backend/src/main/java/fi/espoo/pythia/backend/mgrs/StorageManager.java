@@ -28,7 +28,6 @@ import fi.espoo.pythia.backend.repos.PlanRepository;
 import fi.espoo.pythia.backend.repos.ProjectRepository;
 import fi.espoo.pythia.backend.repos.ProjectUpdateRepository;
 import fi.espoo.pythia.backend.repos.PtextRepository;
-import fi.espoo.pythia.backend.repos.SisterProjectRepository;
 import fi.espoo.pythia.backend.repos.SisterProjectUpdateRepository;
 import fi.espoo.pythia.backend.repos.entities.LatestPlans;
 import fi.espoo.pythia.backend.repos.entities.Plan;
