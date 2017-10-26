@@ -57,8 +57,6 @@ public class S3Manager {
 		}
 
 		AWSCredentials credentials = new BasicAWSCredentials(publicKey, privateKey);
-		// AWSCredentials credentials = new
-		// BasicAWSCredentials(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY);
 		AmazonS3 s3client = AmazonS3ClientBuilder.standard()
 				.withCredentials(new AWSStaticCredentialsProvider(credentials)).withRegion(Regions.EU_WEST_1).build();
 
