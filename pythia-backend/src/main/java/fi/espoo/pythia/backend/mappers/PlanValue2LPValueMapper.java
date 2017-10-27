@@ -8,22 +8,22 @@ public class PlanValue2LPValueMapper {
 	public static LatestPlansValue planValue2LPValue(PlanValue pv){
 		
 		LatestPlansValue lpv = new LatestPlansValue();
-		pv.setCommentValues(lpv.getCommentValues());
-		pv.setCreatedAt(pv.getCreatedAt());
-		pv.setCreatedBy(lpv.getCreatedBy());
-		pv.setDeleted(lpv.isDeleted());
-		pv.setMainNo(lpv.getMainNo());
-		pv.setMaintenanceDuty(lpv.isMaintenanceDuty());
-		pv.setPdfUrl(lpv.getPdfUrl());
-		pv.setPlanId(lpv.getPlanId());
-		pv.setProjectId(lpv.getProjectId());
-		pv.setStatus(lpv.getStatus());
-		pv.setSubNo(lpv.getSubNo());
-		pv.setUpdatedAt(lpv.getUpdatedAt());
-		pv.setUpdatedBy(lpv.getUpdatedBy());
-		pv.setVersion(lpv.getVersion());
-		pv.setXmlUrl(lpv.getXmlUrl());
-		pv.setStreetManagementDecision(lpv.getStreetManagementDecision());
+		lpv.setCommentValues(pv.getCommentValues());
+		lpv.setCreatedAt(pv.getCreatedAt());
+		lpv.setCreatedBy(pv.getCreatedBy());
+		lpv.setDeleted(pv.isDeleted());
+		lpv.setMainNo(pv.getMainNo());
+		lpv.setMaintenanceDuty(pv.isMaintenanceDuty());
+		lpv.setPdfUrl(pv.getPdfUrl());
+		lpv.setPlanId(pv.getPlanId());
+		lpv.setProjectId(pv.getProjectId());
+		lpv.setStatus(pv.getStatus());
+		lpv.setSubNo(pv.getSubNo());
+		lpv.setUpdatedAt(pv.getUpdatedAt());
+		lpv.setUpdatedBy(pv.getUpdatedBy());
+		lpv.setVersion(pv.getVersion());
+		lpv.setXmlUrl(pv.getXmlUrl());
+		lpv.setStreetManagementDecision(pv.getStreetManagementDecision());
 		return lpv;
 	}
 }

@@ -89,10 +89,10 @@ public class StorageRestController {
 		try {
 			ProjectValue2 project = new ProjectValue2();
 			if (isAllVersions) {
-				project = storageManager.getProject2(projectId);
-			} else {
 				ProjectUpdateValue projectUpdate = storageManager.getProjectAllPlans(projectId);
 				project = PrjUpVal2PrjValMapper.projectUpdateValue2ProjectValue(projectUpdate);
+			} else {
+				project = storageManager.getProject2(projectId);
 			}
 			return new ResponseEntity<ProjectValue2>(project, HttpStatus.OK);
 		} catch (java.lang.NullPointerException e) {
