@@ -64,8 +64,8 @@ public class S3Manager {
 
 		File file = FileConverter.multipartFileToFile(mfile);
 
-		String key = file.getName() + "_" + version;
-
+		//String key = file.getName() + "_" + version;
+		String key = file.getName();
 		String url = uploadObject(s3client, file, key, bucketName);
 
 		// UI should not allow but pdf or dwg filetypes.
