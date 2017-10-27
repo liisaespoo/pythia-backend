@@ -53,10 +53,8 @@ public class S3Manager {
 				privateKey = (String) pair.getValue();
 				System.out.print("privateKey");
 			}
-
 			System.out.println("pair:" + pair.getKey() + ":" + pair.getValue());
 		}
-
 
 		AWSCredentials credentials = new BasicAWSCredentials(publicKey, privateKey);
 		AmazonS3 s3client = AmazonS3ClientBuilder.standard()
@@ -64,8 +62,15 @@ public class S3Manager {
 
 		File file = FileConverter.multipartFileToFile(mfile);
 
-		//String key = file.getName() + "_" + version;
-		String key = file.getName();
+		String fileName = file.getName();
+		
+		int point = fileName.indexOf(".");
+		
+		String key_start = fileName.substring(0, point);
+		String key_end = fileName.substring(point);
+		
+		String key = key_start+"_"+version+key_end;
+		//String key = file.getName();
 		String url = uploadObject(s3client, file, key, bucketName);
 
 		// UI should not allow but pdf or dwg filetypes.

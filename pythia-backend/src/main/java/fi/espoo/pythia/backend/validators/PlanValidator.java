@@ -10,7 +10,7 @@ import fi.espoo.pythia.backend.transfer.PlanValue;
 public class PlanValidator {
 
 	// general validation
-	public String generalValidation = "^(\\d{4,})_(\\d{3})([a-zA-Z]{1,2})?\\.(pdf|xml)$";
+	public String generalValidation = "^(\\d{4,})_(\\d{3,4})([a-zA-Z]{1,2})?\\.(pdf|xml)$";
 	// ^ (only from beginning), 4 * [0-9]
 	// public String mainNoRegex = "^\\d{4}";
 	// // anywhere , _ , 1 OR 2 * 0 , 1 OR 2 * [1-9], .
@@ -40,7 +40,13 @@ public class PlanValidator {
 			setVersion(matcher.group(3));
 		}
 
-		return matcher.find();
+		if (!pattern.matcher(name).find()) {
+			 		System.out.println("no match");
+			 			return false;
+			 
+			 		} else {
+			 			return true;
+			 		}
 	}
 	
 	

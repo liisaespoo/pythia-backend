@@ -342,7 +342,13 @@ public class StorageManager {
 		PlanValidator validator = new PlanValidator();
 		short mainNo = 0;
 		short  subNo = 0;
+		boolean isValidFile = validator.isValidFile(mfile);
+		if(!validator.isValidFile(mfile)){
+			return null;
+		}
+		
 		if(validator.isValidFile(mfile)){
+			
 			mainNo = validator.getMainNo();
 			 subNo = validator.getSubNo();	
 		}
