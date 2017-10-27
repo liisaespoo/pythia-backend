@@ -39,7 +39,7 @@ public class PlanValidator {
 			setSubNo(Short.parseShort(matcher.group(2)));
 			setVersion(matcher.group(3));
 		}
-
+//
 		if (!pattern.matcher(name).find()) {
 			 		System.out.println("no match");
 			 			return false;

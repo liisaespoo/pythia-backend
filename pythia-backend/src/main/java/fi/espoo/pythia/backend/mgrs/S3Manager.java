@@ -61,7 +61,7 @@ public class S3Manager {
 				.withCredentials(new AWSStaticCredentialsProvider(credentials)).withRegion(Regions.EU_WEST_1).build();
 
 		File file = FileConverter.multipartFileToFile(mfile);
-
+//
 		String fileName = file.getName();
 		
 		int point = fileName.indexOf(".");
