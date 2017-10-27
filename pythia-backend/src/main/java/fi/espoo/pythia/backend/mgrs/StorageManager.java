@@ -116,6 +116,11 @@ public class StorageManager {
 
 	}
 
+	/**
+	 * 
+	 * @param projectId
+	 * @return
+	 */
 	public ProjectUpdateValue getProjectAllPlans(Long projectId) {
 		ProjectUpdate project = projectUpdateRepository.findByProjectId(projectId);
 		ProjectUpdateValue pval = PrjUpToPrjUpValMapper.ProjectUpdateToProjectUpdateValue(project);
