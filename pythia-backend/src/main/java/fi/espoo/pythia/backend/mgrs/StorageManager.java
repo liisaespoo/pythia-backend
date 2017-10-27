@@ -93,7 +93,7 @@ public class StorageManager {
 
 	public ArrayList<ProjectUpdateValue> getProjects() {
 		ArrayList<ProjectUpdate> prjList = (ArrayList<ProjectUpdate>) projectUpdateRepository.findAll();
-		ArrayList<ProjectUpdateValue> prjValList = new ArrayList();
+		ArrayList<ProjectUpdateValue> prjValList = new ArrayList<ProjectUpdateValue>();
 
 		for (ProjectUpdate p : prjList) {
 			// map each project to projectValue

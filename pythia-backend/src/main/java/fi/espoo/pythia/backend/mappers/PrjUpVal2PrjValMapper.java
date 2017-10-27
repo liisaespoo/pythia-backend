@@ -16,7 +16,7 @@ public class PrjUpVal2PrjValMapper {
 	
 		ProjectValue2 project = new ProjectValue2();
 		
-		
+		project.setProjectId(projectUpdate.getProjectId());
 		project.setHansuProjectId(projectUpdate.getHansuProjectId());
 		project.setName( projectUpdate.getName());
 		project.setMainNo(projectUpdate.getMainNo()); 
