@@ -266,16 +266,17 @@ public class StorageManager {
 	public PlanValue createPlanVersion(MultipartFile mfile, long projectId) {
 
 		File file;
+		PlanValue savedPlanValue = new PlanValue();
 		try {
 			file = FileConverter.multipartFileToFile(mfile);
 			String name = file.getName();
 			PlanValidator validator = new PlanValidator();
-			file = FileConverter.multipartFileToFile(mfile);		
+			file = FileConverter.multipartFileToFile(mfile);
 			short mainNo = 0;
 			short subNo = 0;
-			if(validator.isValidFile(mfile)){
+			if (validator.isValidFile(mfile)) {
 				mainNo = validator.getMainNo();
-				 subNo = validator.getSubNo();	
+				subNo = validator.getSubNo();
 			}
 			ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
 			List<Plan> existingPlans = planRepository.findByProjectInAndMainNoInAndSubNoIn(projectUpdate, mainNo,
@@ -317,13 +318,12 @@ public class StorageManager {
 			Plan plan = new Plan(projectUpdate, new ArrayList<Ptext>(), mainNo, subNo, version, pdfUrl, null, status,
 					createdAt, createdBy, updatedAt, updatedBy, deleted, maintenanceDuty);
 			Plan savedPlan = planRepository.save(plan);
-			PlanValue savedPlanValue = PlanToPlanValueMapper.planToPlanValue(savedPlan, projectUpdate);
-
-			return savedPlanValue;
+			savedPlanValue = PlanToPlanValueMapper.planToPlanValue(savedPlan, projectUpdate);
 
 		} catch (IOException e) {
-			return null;
+
 		}
+		return savedPlanValue;
 
 	}
 
@@ -346,18 +346,18 @@ public class StorageManager {
 		String name = file.getName();
 		PlanValidator validator = new PlanValidator();
 		short mainNo = 0;
-		short  subNo = 0;
+		short subNo = 0;
 		boolean isValidFile = validator.isValidFile(mfile);
-		if(!validator.isValidFile(mfile)){
+		if (!validator.isValidFile(mfile)) {
 			return null;
 		}
-		
-		if(validator.isValidFile(mfile)){
-			
+
+		if (validator.isValidFile(mfile)) {
+
 			mainNo = validator.getMainNo();
-			 subNo = validator.getSubNo();	
+			subNo = validator.getSubNo();
 		}
-		 
+
 		ProjectUpdate projectUpdate = projectUpdateRepository.findByProjectId(projectId);
 		// find by projectid, mainno, subno
 		List<Plan> existingPlans = planRepository.findByProjectInAndMainNoInAndSubNoIn(projectUpdate, mainNo, subNo);

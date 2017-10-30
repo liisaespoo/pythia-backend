@@ -80,7 +80,8 @@ public class StorageRestController {
 
 	/**
 	 * return a single project by id if found. Otherwise return null. 2 latest
-	 * versions of plans if allPlanVersions is false. All versions if allPlanVersions is true
+	 * versions of plans if allPlanVersions is false. All versions if
+	 * allPlanVersions is true
 	 */
 	@GetMapping(value = "/projects/{projectId}", produces = "application/json")
 	public ResponseEntity<ProjectValue2> getProject(@PathVariable("projectId") Long projectId,
@@ -156,8 +157,6 @@ public class StorageRestController {
 
 	}
 
-
-
 	/**
 	 * 
 	 * return all comments by planId
@@ -209,56 +208,59 @@ public class StorageRestController {
 	 * @param mfile
 	 * @param id
 	 * @return
+	 * @throws IOException 
 	 */
 	@PostMapping(value = "/projects/{projectId}/plans")
 	public ResponseEntity<PlanValue> createPlan(@RequestParam("mfile") MultipartFile mfile,
 			@PathVariable("projectId") long projectId,
-			@RequestParam(value = "version", required = false) boolean isVersion) {
+			@RequestParam(value = "version", required = false) boolean isVersion){
 
+		try {
 		String fname = mfile.getOriginalFilename();
 		if (fname.endsWith(".pdf") || fname.endsWith(".xml")) {
 			// Value object mapping
-			try {
-				PlanValue planV = new PlanValue();
+			
+
 				String savedImageUrl = "";
 				if (isVersion) {
 					// NEW VERSION
 
-					planV = storageManager.createPlanVersion(mfile, projectId);
+					PlanValue planV1 = storageManager.createPlanVersion(mfile, projectId);
+					// Send e-mail of new version
 
-				} else {
-					// NEW PLAN
-					planV = storageManager.createUpdatePlan(mfile, projectId);
-
-				}
-				if (planV == null) {
-					return new ResponseEntity<PlanValue>(HttpStatus.CONFLICT);
-				}
-				if (planV.getVersion() > 0) {
-					ProjectValue2 p = storageManager.getProject2(planV.getProjectId());
+					ProjectValue2 p = storageManager.getProject2(planV1.getProjectId());
 					String project = p.getName();
 					String projectSId = p.getProjectId().toString();
 					SESManager sesManager = new SESManager();
+					sesManager.newVersion(project, projectSId, planV1.getPdfUrl(), planV1.getXmlUrl());
 
-					if (planV.getXmlUrl().isEmpty()) {
-						savedImageUrl = planV.getPdfUrl();
-					} else {
-						savedImageUrl = planV.getXmlUrl();
+					return new ResponseEntity<PlanValue>(planV1, HttpStatus.OK);
+
+				} else {
+					// NEW PLAN
+
+					PlanValue planV;
+					try {
+						planV = storageManager.createUpdatePlan(mfile, projectId);
+					
+					if (planV == null) {
+						return new ResponseEntity<PlanValue>(HttpStatus.CONFLICT);
 					}
-					sesManager.newVersion(project, projectSId, savedImageUrl);
+
+					return new ResponseEntity<PlanValue>(planV, HttpStatus.OK);
+					} catch (IOException e) {
+						return new ResponseEntity<PlanValue>(HttpStatus.FORBIDDEN);
+					}
 				}
-				return new ResponseEntity<PlanValue>(planV, HttpStatus.OK);
-			} catch (org.springframework.transaction.CannotCreateTransactionException e) {
-				return new ResponseEntity<PlanValue>(HttpStatus.NOT_FOUND);
-			} catch (java.lang.NullPointerException e) {
-				return new ResponseEntity<PlanValue>(HttpStatus.NOT_FOUND);
-			} catch (IOException e) {
-				e.printStackTrace();
-				return new ResponseEntity<PlanValue>(HttpStatus.I_AM_A_TEAPOT);
-			}
+
+			
 		} else {
 			return new ResponseEntity<PlanValue>(HttpStatus.NOT_ACCEPTABLE);
 		}
+		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
+			return new ResponseEntity<PlanValue>(HttpStatus.FORBIDDEN);
+		}
+		
 	}
 
 	/**
@@ -352,7 +354,7 @@ public class StorageRestController {
 	@PostMapping(value = "/projects/{projectId}/plans/{planId}/comments/{commentId}/files", produces = "application/json")
 	public ResponseEntity<PtextValue> createCommentFile(@RequestParam("mfile") MultipartFile mfile,
 			@PathVariable("commentId") long id) {
-//muutos
+		// muutos
 		// Value object mapping
 		try {
 			PtextValue ptextVal = storageManager.getComment(id);
@@ -381,8 +383,7 @@ public class StorageRestController {
 	// ---------------------------PUT--------------------------------
 
 	/**
-	 * update plan -table attributes
-	 * ROLES: 
+	 * update plan -table attributes ROLES:
 	 */
 
 	@PutMapping(value = "/projects/{projectId}/plans/{planId}", produces = "application/json", consumes = "application/json")
