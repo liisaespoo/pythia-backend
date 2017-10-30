@@ -18,7 +18,7 @@ import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 @Component
 public class SESManager {
 
-	public void newVersion(String project, String projectId, String plan) {
+	public void newVersion(String project, String projectId, String pdfUrl, String xmlUrl) {
 
 		// Replace sender@example.com with your "From" address.
 		// This address must be verified with Amazon SES.
@@ -36,11 +36,13 @@ public class SESManager {
 		// The subject line for the email.
 		final String SUBJECT = "New Version in Project " + project + " is waiting for approval ";
 
-		final String HTMLBODY = "<h1>New version in project " + project + "</h1>" + "<p> New version for plan " + plan
+		final String HTMLBODY = "<h1>New version in project " + project + "</h1>" + "<p> New version for plan pdf: " + pdfUrl
+				+" </p>" + "<BR><p> xml: " + xmlUrl + "</p>"
 				+ " </p>" + "<BR><p> http://localhost:3000/project/" + projectId + "</p>";
 
 		// The email body for recipients with non-HTML email clients.
-		final String TEXTBODY = "New version in project " + project + "\n  New version for plan  " + plan
+		final String TEXTBODY = "New version in project " + project + "\n  New version for plan pdf: " + pdfUrl
+				+" </p>" + "<BR><p> xml: " + xmlUrl + "</p>"
 				+ "\n  http://localhost:3000/project/" + projectId;
 
 		AmazonSimpleEmailService client = authenticate();
