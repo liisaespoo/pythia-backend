@@ -412,14 +412,18 @@ public class StorageRestController {
 	 * update a project with List<Long> sisterProjectIds
 	 */
 	@PutMapping(value = "/projects/{projectId}", produces = "application/json", consumes = "application/json")
-	public ResponseEntity<ProjectValue2> updateProject(@RequestBody ProjectUpdateValue projectUpVal) {
+	public ResponseEntity<ProjectValue2> updateProject(@RequestBody ProjectUpdateValue projectUpVal,
+			@PathVariable("projectId") long projectId) {
 
 		try {
 
 			storageManager.updateProject(projectUpVal);
 			ProjectValue2 updatedProject = storageManager.getProject2(projectUpVal.getProjectId());
 			if (projectUpVal.isCompleted()) {
-				// send mail
+				SESManager sesManager = new SESManager();
+				ProjectValue2 project = storageManager.getProject2(projectId);
+				String projectSid = projectUpVal.getProjectId().toString();
+				sesManager.maintenanceDecision(project.getName(), projectSid);
 			}
 			return new ResponseEntity<ProjectValue2>(updatedProject, HttpStatus.OK);
 		} catch (org.springframework.transaction.CannotCreateTransactionException e) {
@@ -441,8 +445,7 @@ public class StorageRestController {
 
 	}
 
-	// ------------------------ NOT DONE --------------------------
-
+	
 	/**
 	 * not done
 	 */
