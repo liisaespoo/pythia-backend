@@ -15,8 +15,12 @@ import com.amazonaws.services.simpleemail.model.Destination;
 import com.amazonaws.services.simpleemail.model.Message;
 import com.amazonaws.services.simpleemail.model.SendEmailRequest;
 
+import fi.espoo.pythia.backend.transfer.ProjectValue2;
+
 @Component
 public class SESManager {
+
+	private String hostAddress = "52.214.196.107";
 
 	public void newVersion(String project, String projectId, String pdfUrl, String xmlUrl) {
 
@@ -36,14 +40,14 @@ public class SESManager {
 		// The subject line for the email.
 		final String SUBJECT = "New Version in Project " + project + " is waiting for approval ";
 
-		final String HTMLBODY = "<h1>New version in project " + project + "</h1>" + "<p> New version for plan pdf: " + pdfUrl
-				+" </p>" + "<BR><p> xml: " + xmlUrl + "</p>"
-				+ " </p>" + "<BR><p> http://localhost:3000/project/" + projectId + "</p>";
+		final String HTMLBODY = "<h1>New version in project " + project + "</h1>" + "<p> New version for plan pdf: "
+				+ pdfUrl + " </p>" + "<BR><p> xml: " + xmlUrl + "</p>" + " </p>" + "<BR><p> http://" + hostAddress
+				+ ":3000/project/" + projectId + "</p>";
 
 		// The email body for recipients with non-HTML email clients.
 		final String TEXTBODY = "New version in project " + project + "\n  New version for plan pdf: " + pdfUrl
-				+" </p>" + "<BR><p> xml: " + xmlUrl + "</p>"
-				+ "\n  http://localhost:3000/project/" + projectId;
+				+ " </p>" + "<BR><p> xml: " + xmlUrl + "</p>" + "\n  http://" + this.hostAddress + ":3000/project/"
+				+ projectId;
 
 		AmazonSimpleEmailService client = authenticate();
 
@@ -65,18 +69,48 @@ public class SESManager {
 		// static final String CONFIGSET = "ConfigSet";
 
 		// The subject line for the email.
-		final String SUBJECT = "New Version in Project " + project + " for plan "+plan;
+		final String SUBJECT = "New Version in Project " + project + " for plan " + plan;
 
 		final String HTMLBODY = "<h1>New version in project " + project + "</h1>" + "<p> New version for plan " + plan
-				+ " </p>" + "<BR><p> http://localhost:3000/project/" + projectId + "</p>";
+				+ " </p>" + "<BR><p> http://" + this.hostAddress + ":3000/project/" + projectId + "</p>";
 
 		// The email body for recipients with non-HTML email clients.
 		final String TEXTBODY = "New version in project " + project + "\n  New version for plan  " + plan
-				+ "\n  http://localhost:3000/project/" + projectId;
+				+ "\n  http://" + this.hostAddress + ":3000/project/" + projectId;
 
 		AmazonSimpleEmailService client = authenticate();
 
 		sendEmailRequest(client, TO, FROM, SUBJECT, HTMLBODY, TEXTBODY);
+	}
+
+	public void maintenanceDecision(String project, String projectId) {
+		// Replace sender@example.com with your "From" address.
+		// This address must be verified with Amazon SES.
+		final String FROM = "kakedigibot@gmail.com";
+
+		// Replace recipient@example.com with a "To" address. If your account
+		// is still in the sandbox, this address must be verified.
+		final String TO = "kakedigi@gmail.com";
+
+		// The configuration set to use for this email. If you do not want to
+		// use a
+		// configuration set, comment the next line and line 60.
+		// static final String CONFIGSET = "ConfigSet";
+
+		// The subject line for the email.
+		final String SUBJECT = "The Project " + project + " is finished.";
+
+		final String HTMLBODY = "<h1>The project " + project + "</h1>" + "<p> " + " </p>" + "<BR><p> http://"
+				+ this.hostAddress + ":3000/project/" + projectId + "</p>";
+
+		// The email body for recipients with non-HTML email clients.
+		final String TEXTBODY = "The project " + project + "\n  " + "\n  http://" + this.hostAddress + ":3000/project/"
+				+ projectId;
+
+		AmazonSimpleEmailService client = authenticate();
+
+		sendEmailRequest(client, TO, FROM, SUBJECT, HTMLBODY, TEXTBODY);
+
 	}
 
 	public void commentApproved() {
@@ -125,4 +159,5 @@ public class SESManager {
 		}
 
 	}
+
 }
